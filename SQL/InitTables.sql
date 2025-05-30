@@ -109,11 +109,14 @@ GO
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'User')
 BEGIN
-    CREATE TABLE [User] (
+    CREATE TABLE [User]
+	(
         UserID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR(100) NOT NULL UNIQUE,
-        Password NVARCHAR(255) NOT NULL,
-        Email NVARCHAR(255) NOT NULL,
+        FirstName NVARCHAR(100) NOT NULL,
+        LastName NVARCHAR(100) NOT NULL,
+		PasswordHash NVARCHAR(255) NOT NULL,
+		Email NVARCHAR(255) NOT NULL UNIQUE,
         RoleID INT NOT NULL,
         CreatedAt DATETIME DEFAULT GETDATE(),
         UpdatedAt DATETIME DEFAULT GETDATE(),
@@ -124,12 +127,120 @@ GO
 
 IF NOT EXISTS (SELECT * FROM [User] WHERE Username = 'admin')
 BEGIN
-    INSERT INTO [User] (Username, Password, Email, RoleID)
-    VALUES (
+    INSERT INTO [User]
+	(
+		Username,
+		FirstName,
+		LastName,
+		PasswordHash,
+		Email,
+		RoleID
+	)
+    VALUES
+	(
         'admin',
-        'admin',
+		'admin',
+		'admin',
+        '$2a$12$Rk.FhE0mvRwKPqgvJCCc0OeNErCr9wHrk3CJKYwDDNRH3UvWr2y6G',
         'admin@admin.com',
         (SELECT RoleID FROM Role WHERE RoleName = 'Admin')
     )
 END
 GO
+
+
+CREATE OR ALTER PROCEDURE uspCreateUser
+	@UserId INT OUTPUT,
+    @Username NVARCHAR(100),
+	@FirstName NVARCHAR(100),
+	@LastName NVARCHAR(100),
+    @PasswordHash NVARCHAR(255),
+    @Email NVARCHAR(255)
+AS
+BEGIN
+    INSERT INTO [User]
+	(
+		Username,
+		FirstName,
+		LastName,
+		PasswordHash,
+		Email,
+		RoleID
+	)
+    VALUES
+	(
+		@Username,
+		@FirstName,
+		@LastName,
+		@PasswordHash,
+		@Email,
+		(SELECT RoleID FROM Role WHERE RoleName = 'User')
+		);
+
+		SET @UserID = SCOPE_IDENTITY()
+END;
+GO
+
+CREATE OR ALTER PROCEDURE uspSelectUserWithId
+    @UserID INT
+AS
+BEGIN
+    SELECT * FROM [User]
+    WHERE UserID = @UserID;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE uspSelectUserWithUsername
+    @Username NVARCHAR(100)
+AS
+BEGIN
+ SELECT
+        u.UserID,
+        u.Username,
+        u.PasswordHash,
+        u.Email,
+        u.FirstName,
+        u.LastName,
+        u.CreatedAt,
+        u.UpdatedAt,
+        r.RoleName
+    FROM [User] u
+    JOIN [Role] r ON u.RoleID = r.RoleID
+    WHERE u.Username = @Username;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE uspUpdateUserWithId
+    @UserID INT,
+    @Username NVARCHAR(100),
+	@FirstName NVARCHAR(100),
+	@LastName NVARCHAR(100),
+    @PasswordHash NVARCHAR(255),
+    @Email NVARCHAR(255),
+    @RoleID INT
+AS
+BEGIN
+    UPDATE [User]
+    SET
+        Username = @Username,
+		FirstName = @FirstName,
+		LastName = @LastName,
+        PasswordHash = @PasswordHash,
+        Email = @Email,
+        RoleID = @RoleID,
+        UpdatedAt = GETDATE()
+    WHERE UserID = @UserID;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE uspDeleteUserWithId
+    @UserID INT
+AS
+BEGIN
+    DELETE FROM [User]
+    WHERE UserID = @UserID;
+END;
+GO
+
+select * from [User]
+
