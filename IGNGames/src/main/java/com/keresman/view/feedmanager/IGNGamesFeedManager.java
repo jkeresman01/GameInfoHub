@@ -55,11 +55,11 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void initPanels() {
-        tpMain.add("Profile", new ProfilePanel());
         tpMain.add("View Games", new GamesPanel());
         tpMain.add("Edit Games", new EditGamesPanel());
         tpMain.add("Upload Games", new UploadGamesPanel());
         tpMain.add("Favourites", new FavouritesPanel());
+        tpMain.add("Profile", new ProfilePanel());
         tpMain.add("Admin", new AdminPanel());
     }
 }
