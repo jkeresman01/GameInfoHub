@@ -1,8 +1,8 @@
 package com.keresman.view.feedmanager;
 
 import com.keresman.view.admin.AdminPanel;
-import com.keresman.view.admin.favourites.FavouritesPanel;
-import com.keresman.view.admin.uploadgame.UploadGamesPanel;
+import com.keresman.view.favourites.FavouritesPanel;
+import com.keresman.view.uploadgame.UploadGamesPanel;
 import com.keresman.view.editgame.GamesPanel;
 import com.keresman.view.game.EditGamesPanel;
 import com.keresman.view.profile.ProfilePanel;
