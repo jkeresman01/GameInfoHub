@@ -5,7 +5,6 @@ import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
