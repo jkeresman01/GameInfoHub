@@ -1,5 +1,6 @@
-package hr.algebra.dal;
+package com.keresman.dao;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -11,12 +12,17 @@ public final class RepositoryFactory {
     private static final String PATH = "/config/repository.properties";
     private static final String CLASS_NAME = "CLASS_NAME";
 
-    private static Repository repository;
+    private static UserRepository repository;
 
     static {
         try (InputStream is = RepositoryFactory.class.getResourceAsStream(PATH)) {
+
+            if (is == null) {
+                throw new FileNotFoundException("Could not load resource: " + PATH);
+            }
+
             properties.load(is);
-            repository = (Repository) Class
+            repository = (UserRepository) Class
                     .forName(properties.getProperty(CLASS_NAME))
                     .getDeclaredConstructor()
                     .newInstance();
@@ -25,7 +31,7 @@ public final class RepositoryFactory {
         }
     }
 
-    public static Repository getRepository() {
+    public static UserRepository getRepository() {
         return repository;
     }
 }

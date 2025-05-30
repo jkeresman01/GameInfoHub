@@ -36,7 +36,7 @@ public class IGNGamesWelcome extends javax.swing.JFrame {
         tpLoginRegister.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         tpLoginRegister.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         tpLoginRegister.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tpLoginRegister.setMinimumSize(new java.awt.Dimension(200, 5));
+        tpLoginRegister.setMinimumSize(new java.awt.Dimension(200, 10));
         tpLoginRegister.setPreferredSize(new java.awt.Dimension(400, 760));
         getContentPane().add(tpLoginRegister, java.awt.BorderLayout.LINE_START);
 
