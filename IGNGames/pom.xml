@@ -8,9 +8,21 @@
     </parent>
     <artifactId>IGNGames</artifactId>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Utilitites</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.6</version>
+        </dependency>
+    </dependencies>
     <properties>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
-        <exec.mainClass>com.keresman.IGNGames</exec.mainClass>
+        <exec.mainClass>com.keresman.view.IGNGamesLogin</exec.mainClass>
     </properties>
 </project>
