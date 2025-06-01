@@ -2,7 +2,7 @@ package com.keresman.session;
 
 import com.keresman.model.User;
 
-public class SessionManager {
+public final class SessionManager {
 
     private static SessionManager instance;
 

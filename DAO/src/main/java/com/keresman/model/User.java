@@ -148,6 +148,10 @@ public final class User implements Comparable<User> {
         return this.role == Role.ADMIN;
     }
 
+    public Role getRole() {
+        return this.role;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }

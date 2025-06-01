@@ -3,6 +3,7 @@ package com.keresman.view.login;
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
+import com.keresman.session.SessionManager;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.IGNGamesFeedManager;
@@ -33,7 +34,7 @@ public class LoginPanel extends javax.swing.JPanel {
         lblSignInWithAcc = new javax.swing.JTextField();
         tfUsername = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        tfPassword = new javax.swing.JPasswordField();
         lblErrorUsername = new javax.swing.JLabel();
         lblErrorPassword = new javax.swing.JLabel();
 
@@ -71,13 +72,13 @@ public class LoginPanel extends javax.swing.JPanel {
             }
         });
 
-        jPasswordField1.setBackground(new java.awt.Color(24, 24, 24));
-        jPasswordField1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
-        jPasswordField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(65, 30));
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        tfPassword.setBackground(new java.awt.Color(24, 24, 24));
+        tfPassword.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        tfPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        tfPassword.setPreferredSize(new java.awt.Dimension(65, 30));
+        tfPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                tfPasswordActionPerformed(evt);
             }
         });
 
@@ -100,7 +101,7 @@ public class LoginPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +126,7 @@ public class LoginPanel extends javax.swing.JPanel {
                     .addComponent(lblErrorUsername))
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblErrorPassword))
                 .addGap(42, 42, 42)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,14 +136,14 @@ public class LoginPanel extends javax.swing.JPanel {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
-        String username = tfUsername.getText();
-        String password = new String(jPasswordField1.getPassword());
+        String username = tfUsername.getText().trim();
+        String password = new String(tfPassword.getPassword());
 
         try {
-            if (repository.existsUserWithUsername(username)) {
+            if (!repository.existsByUsername(username)) {
                 MessageUtils.showErrorMessage("ERROR", "No user with username: %s".formatted(username));
             } else {
-                Optional<User> optUser = repository.selectUserWithUsername(username);
+                Optional<User> optUser = repository.findByUsername(username);
 
                 if (optUser.isPresent()) {
 
@@ -151,8 +152,12 @@ public class LoginPanel extends javax.swing.JPanel {
                     if (!isPasswordValid) {
                         MessageUtils.showErrorMessage("Ivalid password", "Ivalid password, try again!!");
                     } else {
+                        SessionManager.getInstance().setCurrentUser(optUser.get());
+                        
                         SwingUtilities.invokeLater(() -> {
+                            
                             Window window = SwingUtilities.getWindowAncestor(this);
+                            
                             if (window != null) {
                                 window.dispose();
                             }
@@ -169,9 +174,9 @@ public class LoginPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    private void tfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+    }//GEN-LAST:event_tfPasswordActionPerformed
 
     private List<JLabel> errorLabels;
 
@@ -186,11 +191,11 @@ public class LoginPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel lblErrorPassword;
     private javax.swing.JLabel lblErrorUsername;
     private javax.swing.JTextField lblSignInWithAcc;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JPasswordField tfPassword;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
 }

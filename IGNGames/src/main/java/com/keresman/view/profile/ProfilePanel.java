@@ -1,10 +1,14 @@
 package com.keresman.view.profile;
 
+import com.keresman.model.User;
+import com.keresman.session.SessionManager;
+
 
 public class ProfilePanel extends javax.swing.JPanel {
 
     public ProfilePanel() {
         initComponents();
+        initUpdateForm();
     }
 
     @SuppressWarnings("unchecked")
@@ -165,4 +169,13 @@ public class ProfilePanel extends javax.swing.JPanel {
     private javax.swing.JTextField tfLastName;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void initUpdateForm() {
+        User user = SessionManager.getInstance().getCurrentUser();
+        
+        tfFirstName.setText(user.getFirstName());
+        tfLastName.setText(user.getLastName());
+        tfEmail.setText(user.getEmail());
+        tfUsername.setText(user.getUsername());
+    }
 }

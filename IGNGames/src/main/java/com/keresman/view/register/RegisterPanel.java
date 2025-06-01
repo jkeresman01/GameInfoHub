@@ -226,13 +226,13 @@ public class RegisterPanel extends javax.swing.JPanel {
         String email = tfEmail.getText();
 
         try {
-            if (repository.existsUserWithUsername(username)) {
+            if (repository.existsByUsername(username)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Username already taken!");
                 lblErrorUsername.setVisible(true);
                 return;
             }
 
-            if (repository.existsUserWithEmail(email)) {
+            if (repository.existsByEmail(email)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Email already in use!!");
                 lblErrorEmail.setVisible(true);
                 return;
@@ -251,7 +251,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         );
 
         try {
-            repository.createUser(user);
+            repository.save(user);
             MessageUtils.showInformationMessage(
                     "Registration successfull",
                     "You have successffully registered, go to login page now!!"
