@@ -6,10 +6,10 @@ import java.util.Objects;
 public final class User implements Comparable<User> {
 
     private int userId;
-    private String username;
-    private String passwordHash;
     private String firstName;
     private String lastName;
+    private String username;
+    private String passwordHash;
     private String email;
     private Role role;
     private LocalDateTime createdAt;
@@ -23,8 +23,7 @@ public final class User implements Comparable<User> {
             String passwordHash,
             String firstName,
             String lastName,
-            String email
-    ) {
+            String email) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -41,8 +40,7 @@ public final class User implements Comparable<User> {
             String email,
             Role role,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
+            LocalDateTime updatedAt) {
         this.userId = userId;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -56,21 +54,48 @@ public final class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return "User{" 
-                + "userId=" + userId 
-                + ", username=" + username 
+        return "User{"
+                + "userId=" + userId
+                + ", username=" + username
                 + ", passwordHash=" + passwordHash
-                + ", firstName=" + firstName 
+                + ", firstName=" + firstName
                 + ", lastName=" + lastName
-                + ", email=" + email 
-                + ", role=" + role + 
-                ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt 
+                + ", email=" + email
+                + ", role=" + role
+                + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt
                 + '}';
     }
 
-    
-    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        return userId == user.userId
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName)
+                && Objects.equals(username, user.username)
+                && Objects.equals(passwordHash, user.passwordHash)
+                && Objects.equals(email, user.email)
+                && Objects.equals(role, user.role)
+                && Objects.equals(createdAt, user.createdAt)
+                && Objects.equals(updatedAt, user.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username);
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.username.compareToIgnoreCase(o.username);
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -143,34 +168,4 @@ public final class User implements Comparable<User> {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.userId;
-        hash = 97 * hash + Objects.hashCode(this.username);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-        if (this.userId != other.userId) {
-            return false;
-        }
-        return Objects.equals(this.username, other.username);
-    }
-
-    @Override
-    public int compareTo(User o) {
-        return this.username.compareToIgnoreCase(o.username);
-    }
 }

@@ -5,7 +5,7 @@ import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.view.feedmanager.IGNGamesFeedManager;
+import com.keresman.view.IGNGamesFeedManager;
 import java.awt.Window;
 import java.util.List;
 import java.util.Optional;

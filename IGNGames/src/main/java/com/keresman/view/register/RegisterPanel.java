@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 public class RegisterPanel extends javax.swing.JPanel {
+
+    private static final int LOGIN_PAGE_INDEX = 0;
 
     public RegisterPanel() {
         initComponents();
@@ -222,17 +226,13 @@ public class RegisterPanel extends javax.swing.JPanel {
         String email = tfEmail.getText();
 
         try {
-            boolean existsUserWithUsername = repository.existsUserWithUsername(username);
-
-            if (existsUserWithUsername) {
+            if (repository.existsUserWithUsername(username)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Username already taken!");
                 lblErrorUsername.setVisible(true);
                 return;
             }
 
-            boolean existsUserWithEmail = repository.existsUserWithEmail(email);
-
-            if (existsUserWithEmail) {
+            if (repository.existsUserWithEmail(email)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Email already in use!!");
                 lblErrorEmail.setVisible(true);
                 return;
@@ -251,11 +251,13 @@ public class RegisterPanel extends javax.swing.JPanel {
         );
 
         try {
-            int id = repository.createUser(user);
+            repository.createUser(user);
             MessageUtils.showInformationMessage(
                     "Registration successfull",
                     "You have successffully registered, go to login page now!!"
             );
+
+            switchToLoginPage();
         } catch (Exception ex) {
             Logger.getLogger(RegisterPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -273,6 +275,12 @@ public class RegisterPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_lblRegisterActionPerformed
 
+    private void switchToLoginPage() {
+        JTabbedPane tabs = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+        if (tabs != null) {
+            tabs.setSelectedIndex(LOGIN_PAGE_INDEX);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegister;
@@ -316,7 +324,7 @@ public class RegisterPanel extends javax.swing.JPanel {
 
     private void initValidation() {
         tfUsername.requestFocus();
-        
+
         validationFields = List.of(
                 tfLastName,
                 tfPassword,
@@ -350,7 +358,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         hideErrors();
         boolean ok = true;
 
-        for (int i = 0; i < validationFields.size(); i++) {
+        for (int i = 0; i < validationFields.size(); ++i) {
             ok &= !validationFields.get(i).getText().trim().isEmpty();
             errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
         }

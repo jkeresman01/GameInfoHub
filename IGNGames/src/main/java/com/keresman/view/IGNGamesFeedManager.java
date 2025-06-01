@@ -1,10 +1,10 @@
-package com.keresman.view.feedmanager;
+package com.keresman.view;
 
 import com.keresman.view.admin.AdminPanel;
-import com.keresman.view.favourites.FavouritesPanel;
-import com.keresman.view.uploadgame.UploadGamesPanel;
-import com.keresman.view.editgame.GamesPanel;
-import com.keresman.view.game.EditGamesPanel;
+import com.keresman.view.games.FavouritesPanel;
+import com.keresman.view.games.UploadGamesPanel;
+import com.keresman.view.games.GamesPanel;
+import com.keresman.view.games.EditGamesPanel;
 import com.keresman.view.profile.ProfilePanel;
 
 public class IGNGamesFeedManager extends javax.swing.JFrame {
