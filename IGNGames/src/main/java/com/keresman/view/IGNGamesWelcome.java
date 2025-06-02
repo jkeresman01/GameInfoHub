@@ -4,15 +4,19 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class IGNGamesWelcome extends javax.swing.JFrame {
+public class IGNGamesWelcome extends JFrame {
 
     private static final String REGISTER = "Register";
     private static final String LOGIN = "Login";
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    protected javax.swing.JLabel lblWelcomImg;
+    protected javax.swing.JTabbedPane tpLoginRegister;
+    // End of variables declaration//GEN-END:variables
+
     public IGNGamesWelcome() {
         initComponents();
-        initPanels();
-        initUI();
+        init();
     }
 
     @SuppressWarnings("unchecked")
@@ -44,11 +48,11 @@ public class IGNGamesWelcome extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-   
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JLabel lblWelcomImg;
-    protected javax.swing.JTabbedPane tpLoginRegister;
-    // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        initUI();
+        initPanels();
+    }
 
     private void initPanels() {
         tpLoginRegister.add(LOGIN, new LoginPanel());
@@ -58,13 +62,22 @@ public class IGNGamesWelcome extends javax.swing.JFrame {
     private void initUI() {
         tpLoginRegister.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
             @Override
-            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+            protected int calculateTabWidth(
+                    int tabPlacement,
+                    int tabIndex,
+                    FontMetrics metrics) {
                 return tabPane.getWidth() / tabPane.getTabCount();
             }
 
             @Override
-            protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex,
-                    Rectangle iconRect, Rectangle textRect, boolean isSelected) {
+            protected void paintFocusIndicator(
+                    Graphics g,
+                    int tabPlacement,
+                    Rectangle[] rects,
+                    int tabIndex,
+                    Rectangle iconRect,
+                    Rectangle textRect,
+                    boolean isSelected) {
             }
         });
     }

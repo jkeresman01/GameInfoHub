@@ -9,17 +9,33 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ProfilePanel extends javax.swing.JPanel {
+public class ProfilePanel extends JPanel {
 
     private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
+    private UserRepository userRepository;
 
-    private UserRepository userRepository = RepositoryFactory.getRepository();
-    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnUpdateProfile;
+    private javax.swing.JLabel lblErrorEmail;
+    private javax.swing.JLabel lblErrorFirstName;
+    private javax.swing.JLabel lblErrorLastName;
+    private javax.swing.JLabel lblErrorUsername;
+    private javax.swing.JLabel lblProfileImage;
+    private javax.swing.JTextField lblSignInWithAcc;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblmage;
+    private javax.swing.JPanel pnlPlaceholder;
+    private javax.swing.JTextField tfEmail;
+    private javax.swing.JTextField tfFirstName;
+    private javax.swing.JTextField tfLastName;
+    private javax.swing.JTextField tfUsername;
+    // End of variables declaration//GEN-END:variables
+
     public ProfilePanel() {
         initComponents();
-        initUpdateForm();
         init();
     }
 
@@ -65,11 +81,6 @@ public class ProfilePanel extends javax.swing.JPanel {
         lblSignInWithAcc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         lblSignInWithAcc.setText("Edit profile");
         lblSignInWithAcc.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
-        lblSignInWithAcc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblSignInWithAccActionPerformed(evt);
-            }
-        });
 
         btnUpdateProfile.setBackground(new java.awt.Color(102, 102, 255));
         btnUpdateProfile.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -98,11 +109,6 @@ public class ProfilePanel extends javax.swing.JPanel {
         tfEmail.setBackground(new java.awt.Color(24, 24, 24));
         tfEmail.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         tfEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-        tfEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfEmailActionPerformed(evt);
-            }
-        });
 
         lblProfileImage.setBackground(new java.awt.Color(153, 153, 153));
         lblProfileImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -143,13 +149,10 @@ public class ProfilePanel extends javax.swing.JPanel {
                             .addComponent(lblErrorUsername)
                             .addComponent(lblErrorEmail)
                             .addComponent(lblErrorLastName)
-                            .addComponent(lblErrorFirstName))
-                        .addContainerGap(407, Short.MAX_VALUE))
-                    .addGroup(pnlPlaceholderLayout.createSequentialGroup()
-                        .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lblErrorFirstName)))
+                    .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlPlaceholderLayout.createSequentialGroup()
                 .addGap(442, 442, 442)
                 .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,39 +197,45 @@ public class ProfilePanel extends javax.swing.JPanel {
         add(pnlPlaceholder, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfEmailActionPerformed
-
     private void btnUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfileActionPerformed
 
-        if(!isFormValid()) {
+        if (!isFormValid()) {
             MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
             return;
         }
-        
+
         String firstName = tfFirstName.getText().trim();
         String lastName = tfLastName.getText().trim();
         String username = tfUsername.getText().trim();
         String email = tfEmail.getText().trim();
 
         User user = SessionManager.getInstance().getCurrentUser();
-        
+
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setUsername(username);
         user.setEmail(email);
-        
+
         try {
             userRepository.updateById(user.getUserId(), user);
+            MessageUtils.showInformationMessage("Update success", "Profile has been successfully updated!");
         } catch (Exception ex) {
             Logger.getLogger(ProfilePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateProfileActionPerformed
 
     private void init() {
-        initValidation();
-        hideErrors();
+        try {
+            initRepository();
+            initValidation();
+            hideErrors();
+            fillForm();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+            System.exit(1);
+        }
     }
 
     private void initValidation() {
@@ -252,34 +261,16 @@ public class ProfilePanel extends javax.swing.JPanel {
     }
 
 
-    private void lblSignInWithAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblSignInWithAccActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblSignInWithAccActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUpdateProfile;
-    private javax.swing.JLabel lblErrorEmail;
-    private javax.swing.JLabel lblErrorFirstName;
-    private javax.swing.JLabel lblErrorLastName;
-    private javax.swing.JLabel lblErrorUsername;
-    private javax.swing.JLabel lblProfileImage;
-    private javax.swing.JTextField lblSignInWithAcc;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    private javax.swing.JPanel pnlPlaceholder;
-    private javax.swing.JTextField tfEmail;
-    private javax.swing.JTextField tfFirstName;
-    private javax.swing.JTextField tfLastName;
-    private javax.swing.JTextField tfUsername;
-    // End of variables declaration//GEN-END:variables
-
-    private void initUpdateForm() {
+    private void fillForm() {
         User user = SessionManager.getInstance().getCurrentUser();
 
         tfFirstName.setText(user.getFirstName());
         tfLastName.setText(user.getLastName());
         tfEmail.setText(user.getEmail());
         tfUsername.setText(user.getUsername());
+    }
+
+    private void initRepository() throws Exception {
+        userRepository = RepositoryFactory.getInstance(UserRepository.class);
     }
 }

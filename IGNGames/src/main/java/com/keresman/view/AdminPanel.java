@@ -8,9 +8,29 @@ import com.keresman.view.model.UserTableModel;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-public class AdminPanel extends javax.swing.JPanel {
+public class AdminPanel extends JPanel {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteAll;
+    private javax.swing.JButton btnDeleteUser;
+    private javax.swing.JButton btnParseRss;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lblImage;
+    private javax.swing.JPanel lblPlaceholder;
+    private javax.swing.JLabel lblStatistics;
+    private javax.swing.JLabel lblUsername;
+    private javax.swing.JLabel lblmage;
+    private javax.swing.JTable tblUsers;
+    // End of variables declaration//GEN-END:variables
+
+    private UserRepository userRepository;
+    private UserTableModel userTableModel;
+    private int selectedUserId;
 
     public AdminPanel() {
         initComponents();
@@ -180,36 +200,17 @@ public class AdminPanel extends javax.swing.JPanel {
 
         try {
             Optional<User> optUser = userRepository.findById(selectedUserId);
-            
+
             if (optUser.isPresent()) {
                 lblUsername.setText(optUser.get().getUsername());
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_tblUsersMouseClicked
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDeleteAll;
-    private javax.swing.JButton btnDeleteUser;
-    private javax.swing.JButton btnParseRss;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel lblImage;
-    private javax.swing.JPanel lblPlaceholder;
-    private javax.swing.JLabel lblStatistics;
-    private javax.swing.JLabel lblUsername;
-    private javax.swing.JLabel lblmage;
-    private javax.swing.JTable tblUsers;
-    // End of variables declaration//GEN-END:variables
-
-    private UserRepository userRepository;
-    private UserTableModel userTableModel;
-    private int selectedUserId;
 
     private void init() {
         try {
@@ -221,8 +222,8 @@ public class AdminPanel extends javax.swing.JPanel {
         }
     }
 
-    private void initRepository() {
-        userRepository = RepositoryFactory.getRepository();
+    private void initRepository() throws Exception {
+        userRepository = RepositoryFactory.getInstance(UserRepository.class);
     }
 
     private void initTable() throws Exception {

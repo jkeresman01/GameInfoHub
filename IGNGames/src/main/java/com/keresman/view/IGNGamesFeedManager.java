@@ -3,7 +3,25 @@ package com.keresman.view;
 import com.keresman.session.SessionManager;
 import javax.swing.SwingUtilities;
 
-public class IGNGamesFeedManager extends javax.swing.JFrame {
+public class IGNGamesFeedManager extends JFrame {
+
+    private static final String PROFILE = "Profile";
+    private static final String FAVOURITES = "Favourites";
+    private static final String UPLOAD_GAMES = "Upload Games";
+    private static final String EDIT_GAMES = "Edit Games";
+    private static final String VIEW_GAMES = "View Games";
+    private static final String ADMIN = "Admin";
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu mAbout;
+    private javax.swing.JMenu mHelp;
+    private javax.swing.JMenu mLogout;
+    private javax.swing.JMenu miAbout;
+    private javax.swing.JMenu miHelp;
+    private javax.swing.JMenu miLogout;
+    private javax.swing.JTabbedPane tpMain;
+    // End of variables declaration//GEN-END:variables
 
     public IGNGamesFeedManager() {
         initComponents();
@@ -67,33 +85,21 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miLogoutMouseClicked
-        // TODO add your handling code here:
         SessionManager.getInstance().clear();
         dispose();
         SwingUtilities.invokeLater(() -> new IGNGamesWelcome().setVisible(true));
     }//GEN-LAST:event_miLogoutMouseClicked
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu mAbout;
-    private javax.swing.JMenu mHelp;
-    private javax.swing.JMenu mLogout;
-    private javax.swing.JMenu miAbout;
-    private javax.swing.JMenu miHelp;
-    private javax.swing.JMenu miLogout;
-    private javax.swing.JTabbedPane tpMain;
-    // End of variables declaration//GEN-END:variables
-
     private void initPanels() {
-        tpMain.add("View Games", new GamesPanel());
-        tpMain.add("Edit Games", new EditGamesPanel());
-        tpMain.add("Upload Games", new UploadGamesPanel());
-        tpMain.add("Favourites", new FavouritesPanel());
-        tpMain.add("Profile", new ProfilePanel());
+        tpMain.add(VIEW_GAMES, new GamesPanel());
+        tpMain.add(EDIT_GAMES, new EditGamesPanel());
+        tpMain.add(UPLOAD_GAMES, new UploadGamesPanel());
+        tpMain.add(FAVOURITES, new FavouritesPanel());
+        tpMain.add(PROFILE, new ProfilePanel());
 
         if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
-            tpMain.add("Admin", new AdminPanel());
+            tpMain.add(ADMIN, new AdminPanel());
         }
     }
 }

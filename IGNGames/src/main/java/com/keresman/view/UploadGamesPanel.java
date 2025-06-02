@@ -1,6 +1,18 @@
 package com.keresman.view;
 
-public class UploadGamesPanel extends javax.swing.JPanel {
+import javax.swing.JPanel;
+
+public class UploadGamesPanel extends JPanel {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblImage;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblmage;
+    // End of variables declaration//GEN-END:variables
 
     public UploadGamesPanel() {
         initComponents();
@@ -122,13 +134,4 @@ public class UploadGamesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblImage;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    // End of variables declaration//GEN-END:variables
 }

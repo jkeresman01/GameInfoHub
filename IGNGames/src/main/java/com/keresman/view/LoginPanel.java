@@ -6,26 +6,33 @@ import com.keresman.model.User;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.view.IGNGamesFeedManager;
 import java.awt.Window;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class LoginPanel extends javax.swing.JPanel {
+public class LoginPanel extends JPanel {
 
     private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
-    private final UserRepository repository;
+    private UserRepository userRepository;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JLabel lblErrorPassword;
+    private javax.swing.JLabel lblErrorUsername;
+    private javax.swing.JTextField lblSignInWithAcc;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JPasswordField tfPassword;
+    private javax.swing.JTextField tfUsername;
+    // End of variables declaration//GEN-END:variables
 
     public LoginPanel() {
         initComponents();
         init();
-        repository = RepositoryFactory.getRepository();
-        tfUsername.requestFocus();
     }
 
     @SuppressWarnings("unchecked")
@@ -78,11 +85,6 @@ public class LoginPanel extends javax.swing.JPanel {
         tfPassword.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         tfPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Password", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         tfPassword.setPreferredSize(new java.awt.Dimension(65, 30));
-        tfPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfPasswordActionPerformed(evt);
-            }
-        });
 
         lblErrorUsername.setForeground(new java.awt.Color(255, 0, 204));
         lblErrorUsername.setText("X");
@@ -139,33 +141,35 @@ public class LoginPanel extends javax.swing.JPanel {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
         if (!isFormValid()) {
+            MessageUtils.showWarningMessage("WARNING", "You forgot to fill soemthing, please try again!");
             return;
         }
 
         String username = tfUsername.getText().trim();
-        String password = new String(tfPassword.getPassword());
 
         try {
-            if (!repository.existsByUsername(username)) {
+            if (!userRepository.existsByUsername(username)) {
                 MessageUtils.showErrorMessage("ERROR", "No user with username: %s".formatted(username));
-            } else {
-                Optional<User> optUser = repository.findByUsername(username);
-
-                if (optUser.isPresent()) {
-                    boolean isPasswordValid = BCryptUtils.veriftyPassword(password, optUser.get().getPasswordHash());
-
-                    if (!isPasswordValid) {
-                        MessageUtils.showErrorMessage("Ivalid password", "Ivalid password, try again!!");
-                    } else {
-                        loginUser(optUser.get());
-                    }
-                }
-
+                return;
             }
+
+            loginUserWithUsername(username);
         } catch (Exception ex) {
             Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void loginUserWithUsername(String username) throws Exception {
+        String password = new String(tfPassword.getPassword());
+
+        User user = userRepository.findByUsername(username).get();
+
+        if (BCryptUtils.veriftyPassword(password, user.getPasswordHash())) {
+            loginUser(user);
+        } else {
+            MessageUtils.showErrorMessage("Ivalid password", "Ivalid password, try again!!");
+        }
+    }
 
     private void loginUser(User user) {
         SessionManager.getInstance().setCurrentUser(user);
@@ -183,13 +187,17 @@ public class LoginPanel extends javax.swing.JPanel {
         SwingUtilities.invokeLater(showMainForm);
     }
 
-    private void tfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfPasswordActionPerformed
-
     private void init() {
-        initValidation();
-        hideErrors();
+        try {
+            initValidation();
+            hideErrors();
+            initRepository();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+            System.exit(1);
+        }
     }
 
     private void initValidation() {
@@ -212,17 +220,8 @@ public class LoginPanel extends javax.swing.JPanel {
         return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
     }
 
-    private void clearForm() {
-        validationsFieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
+    private void initRepository() throws Exception {
+        userRepository = RepositoryFactory.getInstance(UserRepository.class);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel lblErrorPassword;
-    private javax.swing.JLabel lblErrorUsername;
-    private javax.swing.JTextField lblSignInWithAcc;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JPasswordField tfPassword;
-    private javax.swing.JTextField tfUsername;
-    // End of variables declaration//GEN-END:variables
 }

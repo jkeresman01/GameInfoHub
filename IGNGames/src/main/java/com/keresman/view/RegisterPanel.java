@@ -6,6 +6,7 @@ import com.keresman.model.Gender;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,34 @@ import javax.swing.text.JTextComponent;
 public class RegisterPanel extends javax.swing.JPanel {
 
     private static final int LOGIN_PAGE_INDEX = 0;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegister;
+    private javax.swing.JComboBox<Gender> cbGender;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lblErrorCfmPassword;
+    private javax.swing.JLabel lblErrorEmail;
+    private javax.swing.JLabel lblErrorEmail2;
+    private javax.swing.JLabel lblErrorEmail3;
+    private javax.swing.JLabel lblErrorFirstName;
+    private javax.swing.JLabel lblErrorLastName;
+    private javax.swing.JLabel lblErrorPassword;
+    private javax.swing.JLabel lblErrorUsername;
+    private javax.swing.JLabel lblGender;
+    private javax.swing.JTextField lblRegister;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JPasswordField tfCfmPassword;
+    private javax.swing.JTextField tfEmail;
+    private javax.swing.JTextField tfFirstName;
+    private javax.swing.JTextField tfLastName;
+    private javax.swing.JPasswordField tfPassword;
+    private javax.swing.JTextField tfUsername;
+    // End of variables declaration//GEN-END:variables
+
+    private UserRepository userRepository;
 
     public RegisterPanel() {
         initComponents();
@@ -83,20 +112,10 @@ public class RegisterPanel extends javax.swing.JPanel {
         lblRegister.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         lblRegister.setText("Register");
         lblRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
-        lblRegister.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblRegisterActionPerformed(evt);
-            }
-        });
 
         tfUsername.setBackground(new java.awt.Color(24, 24, 24));
         tfUsername.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         tfUsername.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Username", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-        tfUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfUsernameActionPerformed(evt);
-            }
-        });
 
         btnRegister.setBackground(new java.awt.Color(255, 102, 204));
         btnRegister.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -112,11 +131,6 @@ public class RegisterPanel extends javax.swing.JPanel {
         tfEmail.setBackground(new java.awt.Color(24, 24, 24));
         tfEmail.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         tfEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-        tfEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfEmailActionPerformed(evt);
-            }
-        });
 
         tfPassword.setBackground(new java.awt.Color(24, 24, 24));
         tfPassword.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
@@ -235,22 +249,32 @@ public class RegisterPanel extends javax.swing.JPanel {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         if (!isFormValid()) {
+            MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
             return;
         }
 
         String username = tfUsername.getText();
         String email = tfEmail.getText();
+        String password = Arrays.toString(tfPassword.getPassword());
+        String cfmPassword = Arrays.toString(tfCfmPassword.getPassword());
 
         try {
-            if (repository.existsByUsername(username)) {
+            if (userRepository.existsByUsername(username)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Username already taken!");
                 lblErrorUsername.setVisible(true);
                 return;
             }
 
-            if (repository.existsByEmail(email)) {
+            if (userRepository.existsByEmail(email)) {
                 MessageUtils.showErrorMessage("Registration unsucessfull", "Email already in use!!");
                 lblErrorEmail.setVisible(true);
+                return;
+            }
+
+            if (!password.equals(cfmPassword)) {
+                MessageUtils.showErrorMessage("Password mismatch", "Dobule check your password!!!");
+                lblErrorCfmPassword.setVisible(true);
+                lblErrorPassword.setVisible(true);
                 return;
             }
 
@@ -260,14 +284,14 @@ public class RegisterPanel extends javax.swing.JPanel {
 
         User user = new User(
                 username,
-                BCryptUtils.hashPassword(tfPassword.getText()),
+                BCryptUtils.hashPassword(password),
                 tfFirstName.getText(),
                 tfLastName.getText(),
                 tfEmail.getText()
         );
 
         try {
-            repository.save(user);
+            userRepository.save(user);
             MessageUtils.showInformationMessage(
                     "Registration successfull",
                     "You have successffully registered, go to login page now!!"
@@ -281,52 +305,12 @@ public class RegisterPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
-    private void tfEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfEmailActionPerformed
-
-    private void tfUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfUsernameActionPerformed
-
-    private void lblRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblRegisterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblRegisterActionPerformed
-
     private void switchToLoginPage() {
         JTabbedPane tabs = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
         if (tabs != null) {
             tabs.setSelectedIndex(LOGIN_PAGE_INDEX);
         }
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegister;
-    private javax.swing.JComboBox<Gender> cbGender;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel lblErrorCfmPassword;
-    private javax.swing.JLabel lblErrorEmail;
-    private javax.swing.JLabel lblErrorEmail2;
-    private javax.swing.JLabel lblErrorEmail3;
-    private javax.swing.JLabel lblErrorFirstName;
-    private javax.swing.JLabel lblErrorLastName;
-    private javax.swing.JLabel lblErrorPassword;
-    private javax.swing.JLabel lblErrorUsername;
-    private javax.swing.JLabel lblGender;
-    private javax.swing.JTextField lblRegister;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JPasswordField tfCfmPassword;
-    private javax.swing.JTextField tfEmail;
-    private javax.swing.JTextField tfFirstName;
-    private javax.swing.JTextField tfLastName;
-    private javax.swing.JPasswordField tfPassword;
-    private javax.swing.JTextField tfUsername;
-    // End of variables declaration//GEN-END:variables
-
-    private UserRepository repository;
 
     private void init() {
         try {
@@ -361,7 +345,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     }
 
     private void initRepository() throws Exception {
-        repository = RepositoryFactory.getRepository();
+        userRepository = RepositoryFactory.getInstance(UserRepository.class);
     }
 
     private boolean isFormValid() {

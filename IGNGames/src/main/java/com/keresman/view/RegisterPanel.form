@@ -191,9 +191,6 @@
           </Border>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblRegisterActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfUsername">
       <Properties>
@@ -211,9 +208,6 @@
           </Border>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfUsernameActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnRegister">
       <Properties>
@@ -251,9 +245,6 @@
           </Border>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfEmailActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="tfPassword">
       <Properties>

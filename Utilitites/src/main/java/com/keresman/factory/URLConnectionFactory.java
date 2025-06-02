@@ -16,7 +16,7 @@ public class URLConnectionFactory {
         // Suppresses default constructor, ensuring non-instantiability.
     }
 
-    public static HttpURLConnection getHttpUrlConnection(String path) 
+    public static HttpURLConnection getHttpUrlConnection(String path)
             throws MalformedURLException, IOException {
         URL url = new URL(path);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

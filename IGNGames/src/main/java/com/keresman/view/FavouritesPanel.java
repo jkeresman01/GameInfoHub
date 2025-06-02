@@ -1,6 +1,15 @@
 package com.keresman.view;
 
-public class FavouritesPanel extends javax.swing.JPanel {
+import javax.swing.JPanel;
+
+public class FavouritesPanel extends JPanel {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnUpdateProfile;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblmage;
+    // End of variables declaration//GEN-END:variables
 
     public FavouritesPanel() {
         initComponents();
@@ -89,10 +98,4 @@ public class FavouritesPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateProfileActionPerformed
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUpdateProfile;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    // End of variables declaration//GEN-END:variables
 }

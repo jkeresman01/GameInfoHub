@@ -1,6 +1,14 @@
 package com.keresman.view;
 
-public class EditGamesPanel extends javax.swing.JPanel {
+import javax.swing.JPanel;
+
+public class EditGamesPanel extends JPanel {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblmage;
+    // End of variables declaration//GEN-END:variables
 
     public EditGamesPanel() {
         initComponents();
@@ -67,9 +75,4 @@ public class EditGamesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,15 @@
 package com.keresman.view;
 
-public class GamesPanel extends javax.swing.JPanel {
+public class GamesPanel extends JPanel {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblImage;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblmage;
+    // End of variables declaration//GEN-END:variables
 
     public GamesPanel() {
         initComponents();
@@ -100,12 +109,4 @@ public class GamesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblImage;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    // End of variables declaration//GEN-END:variables
 }

@@ -79,16 +79,11 @@
                               <Component id="lblErrorLastName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblErrorFirstName" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="407" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tfLastName" min="-2" pref="300" max="-2" attributes="0"/>
-                              <Component id="tfFirstName" min="-2" pref="300" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="tfLastName" min="-2" pref="300" max="-2" attributes="0"/>
+                      <Component id="tfFirstName" min="-2" pref="300" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="442" max="-2" attributes="0"/>
@@ -181,9 +176,6 @@
               </Border>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblSignInWithAccActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnUpdateProfile">
           <Properties>
@@ -275,9 +267,6 @@
               </Border>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfEmailActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblProfileImage">
           <Properties>
