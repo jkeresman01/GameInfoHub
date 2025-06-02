@@ -25,14 +25,14 @@ public final class SessionManager {
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return this.currentUser;
     }
 
     public void clear() {
-        currentUser = null;
+        this.currentUser = null;
     }
 
     public boolean isLoggedIn() {
-        return currentUser != null;
+        return this.currentUser != null;
     }
 }

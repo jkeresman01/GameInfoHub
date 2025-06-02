@@ -15,7 +15,7 @@ public class UserRowMapper implements RowMapper<User> {
             resultSet.getString("FirstName"),
             resultSet.getString("LastName"),
             resultSet.getString("Email"),
-            Role.fromString(resultSet.getString("RoleName")),
+            Role.from(resultSet.getString("RoleName")),
             resultSet.getTimestamp("CreatedAt").toLocalDateTime(),
             resultSet.getTimestamp("UpdatedAt").toLocalDateTime()
         );

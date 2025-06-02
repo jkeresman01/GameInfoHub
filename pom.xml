@@ -9,7 +9,6 @@
         <module>Utilitites</module>
         <module>IGNGames</module>
         <module>DAO</module>
-        <module>RSSFeedParser</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

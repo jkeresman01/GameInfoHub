@@ -1,13 +1,15 @@
-package com.keresman.view.register;
+package com.keresman.view;
 
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
+import com.keresman.model.Gender;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
-import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -47,6 +49,8 @@ public class RegisterPanel extends javax.swing.JPanel {
         tfFirstName = new javax.swing.JTextField();
         lblErrorCfmPassword = new javax.swing.JLabel();
         lblErrorEmail = new javax.swing.JLabel();
+        cbGender = new javax.swing.JComboBox<>();
+        lblGender = new javax.swing.JLabel();
 
         jLabel3.setText("X");
 
@@ -148,6 +152,10 @@ public class RegisterPanel extends javax.swing.JPanel {
         lblErrorEmail.setForeground(new java.awt.Color(255, 0, 204));
         lblErrorEmail.setText("X");
 
+        cbGender.setBackground(new java.awt.Color(24, 24, 24));
+
+        lblGender.setText("Gender");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,9 +165,17 @@ public class RegisterPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblRegister)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lblGender, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbGender, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tfPassword)
                     .addComponent(tfCfmPassword, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfEmail, javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,15 +191,11 @@ public class RegisterPanel extends javax.swing.JPanel {
                     .addComponent(lblErrorCfmPassword)
                     .addComponent(lblErrorEmail))
                 .addGap(57, 57, 57))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(108, 108, 108)
-                .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(22, 22, 22)
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,7 +211,11 @@ public class RegisterPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblErrorLastName))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cbGender, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(lblGender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblErrorPassword))
@@ -211,9 +227,9 @@ public class RegisterPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblErrorEmail))
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
                 .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addGap(55, 55, 55))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -257,7 +273,9 @@ public class RegisterPanel extends javax.swing.JPanel {
                     "You have successffully registered, go to login page now!!"
             );
 
+            clearForm();
             switchToLoginPage();
+
         } catch (Exception ex) {
             Logger.getLogger(RegisterPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -284,6 +302,7 @@ public class RegisterPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegister;
+    private javax.swing.JComboBox<Gender> cbGender;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -296,6 +315,7 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblErrorLastName;
     private javax.swing.JLabel lblErrorPassword;
     private javax.swing.JLabel lblErrorUsername;
+    private javax.swing.JLabel lblGender;
     private javax.swing.JTextField lblRegister;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPasswordField tfCfmPassword;
@@ -306,13 +326,12 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
 
-    private List<JLabel> errorLabels;
-    private List<JTextComponent> validationFields;
     private UserRepository repository;
 
     private void init() {
         try {
             initValidation();
+            initGenders();
             hideErrors();
             initRepository();
         } catch (Exception ex) {
@@ -322,32 +341,23 @@ public class RegisterPanel extends javax.swing.JPanel {
         }
     }
 
+    private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
+
     private void initValidation() {
         tfUsername.requestFocus();
 
-        validationFields = List.of(
-                tfLastName,
-                tfPassword,
-                tfFirstName,
-                tfUsername,
-                tfPassword,
-                tfCfmPassword,
-                tfEmail
-        );
-
-        errorLabels = List.of(
-                lblErrorLastName,
-                lblErrorPassword,
-                lblErrorFirstName,
-                lblErrorUsername,
-                lblErrorPassword,
-                lblErrorCfmPassword,
-                lblErrorEmail
+        fieldsWithErrorLabels = Map.ofEntries(
+                Map.entry(tfLastName, lblErrorLastName),
+                Map.entry(tfFirstName, lblErrorFirstName),
+                Map.entry(tfUsername, lblErrorUsername),
+                Map.entry(tfPassword, lblErrorPassword),
+                Map.entry(tfCfmPassword, lblErrorCfmPassword),
+                Map.entry(tfEmail, lblErrorEmail)
         );
     }
 
     private void hideErrors() {
-        errorLabels.forEach(e -> e.setVisible(false));
+        fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
     }
 
     private void initRepository() throws Exception {
@@ -356,18 +366,21 @@ public class RegisterPanel extends javax.swing.JPanel {
 
     private boolean isFormValid() {
         hideErrors();
-        boolean ok = true;
 
-        for (int i = 0; i < validationFields.size(); ++i) {
-            ok &= !validationFields.get(i).getText().trim().isEmpty();
-            errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
-        }
-        return ok;
+        fieldsWithErrorLabels.forEach(
+                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+
+        return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
     }
 
     private void clearForm() {
         hideErrors();
-        validationFields.forEach(e -> e.setText(""));
+
+        fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
+    }
+
+    private void initGenders() {
+        cbGender.setModel(new DefaultComboBoxModel<>(Gender.values()));
     }
 
 }

@@ -1,7 +1,5 @@
-package com.keresman.view.welcome;
+package com.keresman.view;
 
-import com.keresman.view.login.LoginPanel;
-import com.keresman.view.register.RegisterPanel;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;

@@ -217,7 +217,6 @@ CREATE OR ALTER PROCEDURE uspUpdateUserWithId
 	@LastName NVARCHAR(100),
     @PasswordHash NVARCHAR(255),
     @Email NVARCHAR(255),
-    @RoleID INT
 AS
 BEGIN
     UPDATE [User]
@@ -242,5 +241,27 @@ BEGIN
 END;
 GO
 
-select * from [User]
 
+CREATE OR ALTER PROCEDURE uspExistsUserWithUsername
+    @Username NVARCHAR(100),
+    @Exists BIT OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM [User] WHERE Username = @Username)
+        SET @Exists = 1;
+    ELSE
+        SET @Exists = 0;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE uspExistsUserWithEmail
+    @Email NVARCHAR(255),
+    @Exists BIT OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM [User] WHERE Email = @Email)
+        SET @Exists = 1;
+    ELSE
+        SET @Exists = 0;
+END;
+GO

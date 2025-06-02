@@ -1,11 +1,7 @@
 package com.keresman.view;
 
-import com.keresman.view.admin.AdminPanel;
-import com.keresman.view.games.FavouritesPanel;
-import com.keresman.view.games.UploadGamesPanel;
-import com.keresman.view.games.GamesPanel;
-import com.keresman.view.games.EditGamesPanel;
-import com.keresman.view.profile.ProfilePanel;
+import com.keresman.session.SessionManager;
+import javax.swing.SwingUtilities;
 
 public class IGNGamesFeedManager extends javax.swing.JFrame {
 
@@ -20,8 +16,12 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
 
         tpMain = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        mAbout = new javax.swing.JMenu();
+        miAbout = new javax.swing.JMenu();
+        mHelp = new javax.swing.JMenu();
+        miHelp = new javax.swing.JMenu();
+        mLogout = new javax.swing.JMenu();
+        miLogout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("IGN Games");
@@ -34,11 +34,31 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
         tpMain.setPreferredSize(new java.awt.Dimension(1480, 800));
         getContentPane().add(tpMain, java.awt.BorderLayout.CENTER);
 
-        jMenu2.setText("File");
-        jMenuBar1.add(jMenu2);
+        mAbout.setText("About");
 
-        jMenu3.setText("Edit");
-        jMenuBar1.add(jMenu3);
+        miAbout.setText("About");
+        mAbout.add(miAbout);
+
+        jMenuBar1.add(mAbout);
+
+        mHelp.setText("Help");
+
+        miHelp.setText("Help");
+        mHelp.add(miHelp);
+
+        jMenuBar1.add(mHelp);
+
+        mLogout.setText("Logout");
+
+        miLogout.setText("Logout");
+        miLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                miLogoutMouseClicked(evt);
+            }
+        });
+        mLogout.add(miLogout);
+
+        jMenuBar1.add(mLogout);
 
         setJMenuBar(jMenuBar1);
 
@@ -46,11 +66,22 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void miLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miLogoutMouseClicked
+        // TODO add your handling code here:
+        SessionManager.getInstance().clear();
+        dispose();
+        SwingUtilities.invokeLater(() -> new IGNGamesWelcome().setVisible(true));
+    }//GEN-LAST:event_miLogoutMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu mAbout;
+    private javax.swing.JMenu mHelp;
+    private javax.swing.JMenu mLogout;
+    private javax.swing.JMenu miAbout;
+    private javax.swing.JMenu miHelp;
+    private javax.swing.JMenu miLogout;
     private javax.swing.JTabbedPane tpMain;
     // End of variables declaration//GEN-END:variables
 
@@ -60,6 +91,9 @@ public class IGNGamesFeedManager extends javax.swing.JFrame {
         tpMain.add("Upload Games", new UploadGamesPanel());
         tpMain.add("Favourites", new FavouritesPanel());
         tpMain.add("Profile", new ProfilePanel());
-        tpMain.add("Admin", new AdminPanel());
+
+        if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
+            tpMain.add("Admin", new AdminPanel());
+        }
     }
 }

@@ -12,6 +12,8 @@ public final class User implements Comparable<User> {
     private String passwordHash;
     private String email;
     private Role role;
+    private Gender gender = Gender.OTHER;
+    private String picturePath;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -138,6 +140,14 @@ public final class User implements Comparable<User> {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getGender() {
+        return gender.toString();
+    }
+
+    public String getPicturePath() {
+        return picturePath;
     }
 
     public void setEmail(String email) {

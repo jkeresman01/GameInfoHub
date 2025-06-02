@@ -19,13 +19,12 @@ public class SQLUserRepository implements UserRepository {
     private static final String LAST_NAME = "LastName";
     private static final String PASSWORD_HASH = "PasswordHash";
     private static final String USERNAME = "Username";
-    private static final String ROLE_NAME = "RoleName";
     private static final String EMAIL = "Email";
 
     private static final String EXISTS = "Exists";
 
     private static final String CREATE_USER = "{ CALL uspCreateUser (?,?,?,?,?,?) }";
-    private static final String UPDATE_USER = "{ CALL uspUpdateUserWithId (?,?,?,?,?,?,?) }";
+    private static final String UPDATE_USER = "{ CALL uspUpdateUserWithId (?,?,?,?,?,?) }";
     private static final String DELETE_USER = "{ CALL uspDeleteUserWithId (?) }";
     private static final String SELECT_USER_BY_ID = "{ CALL uspSelectUserWithId (?) }";
     private static final String SELECT_USER_BY_USERNAME = "{ CALL uspSelectUserWithUsername (?) }";
@@ -55,14 +54,14 @@ public class SQLUserRepository implements UserRepository {
     @Override
     public void updateById(int id, User user) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_USER)) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(UPDATE_USER)) {
             stmt.setInt(USER_ID, id);
             stmt.setString(USERNAME, user.getUsername());
             stmt.setString(FIRST_NAME, user.getFirstName());
             stmt.setString(LAST_NAME, user.getLastName());
             stmt.setString(PASSWORD_HASH, user.getPasswordHash());
             stmt.setString(EMAIL, user.getEmail());
-            stmt.setString(ROLE_NAME, user.getRole().name());
             stmt.executeUpdate();
         }
     }
@@ -70,7 +69,8 @@ public class SQLUserRepository implements UserRepository {
     @Override
     public void deleteById(int id) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_USER)) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(DELETE_USER)) {
             stmt.setInt(USER_ID, id);
             stmt.executeUpdate();
         }
@@ -79,7 +79,8 @@ public class SQLUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(int id) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_USER_BY_ID)) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(SELECT_USER_BY_ID)) {
             stmt.setInt(USER_ID, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -94,7 +95,8 @@ public class SQLUserRepository implements UserRepository {
     public Optional<User> findByUsername(String username) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
 
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_USER_BY_USERNAME)) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(SELECT_USER_BY_USERNAME)) {
 
             stmt.setString(USERNAME, username);
 
@@ -112,7 +114,9 @@ public class SQLUserRepository implements UserRepository {
         List<User> users = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();
 
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ALL_USERS); ResultSet rs = stmt.executeQuery()) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(SELECT_ALL_USERS);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 users.add(userRowMapper.map(rs));
             }
@@ -129,10 +133,10 @@ public class SQLUserRepository implements UserRepository {
                 CallableStatement stmt = con.prepareCall(EXISTS_BY_USERNAME)) {
 
             stmt.setString(USERNAME, username);
-            stmt.registerOutParameter(2, Types.BIT);
+            stmt.registerOutParameter(EXISTS, Types.BIT);
 
             stmt.execute();
-            return stmt.getBoolean(2);
+            return stmt.getBoolean(EXISTS);
         }
     }
 
@@ -141,7 +145,8 @@ public class SQLUserRepository implements UserRepository {
 
         DataSource dataSource = DataSourceSingleton.getInstance();
 
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(EXISTS_BY_EMAIL)) {
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(EXISTS_BY_EMAIL)) {
 
             stmt.setString(EMAIL, email);
             stmt.registerOutParameter(EXISTS, Types.BIT);
@@ -150,5 +155,4 @@ public class SQLUserRepository implements UserRepository {
             return stmt.getBoolean(EXISTS);
         }
     }
-
 }

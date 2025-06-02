@@ -1,4 +1,4 @@
-package com.keresman.view.login;
+package com.keresman.view;
 
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
@@ -8,22 +8,24 @@ import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.IGNGamesFeedManager;
 import java.awt.Window;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class LoginPanel extends javax.swing.JPanel {
 
+    private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
     private final UserRepository repository;
 
     public LoginPanel() {
         initComponents();
+        init();
         repository = RepositoryFactory.getRepository();
         tfUsername.requestFocus();
-        hideErrors();
     }
 
     @SuppressWarnings("unchecked")
@@ -136,6 +138,10 @@ public class LoginPanel extends javax.swing.JPanel {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
+        if (!isFormValid()) {
+            return;
+        }
+
         String username = tfUsername.getText().trim();
         String password = new String(tfPassword.getPassword());
 
@@ -146,25 +152,12 @@ public class LoginPanel extends javax.swing.JPanel {
                 Optional<User> optUser = repository.findByUsername(username);
 
                 if (optUser.isPresent()) {
-
                     boolean isPasswordValid = BCryptUtils.veriftyPassword(password, optUser.get().getPasswordHash());
 
                     if (!isPasswordValid) {
                         MessageUtils.showErrorMessage("Ivalid password", "Ivalid password, try again!!");
                     } else {
-                        SessionManager.getInstance().setCurrentUser(optUser.get());
-                        
-                        SwingUtilities.invokeLater(() -> {
-                            
-                            Window window = SwingUtilities.getWindowAncestor(this);
-                            
-                            if (window != null) {
-                                window.dispose();
-                            }
-
-                            new IGNGamesFeedManager().setVisible(true);
-                        });
-
+                        loginUser(optUser.get());
                     }
                 }
 
@@ -174,19 +167,53 @@ public class LoginPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    private void loginUser(User user) {
+        SessionManager.getInstance().setCurrentUser(user);
+
+        Runnable showMainForm = () -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
+
+            if (window != null) {
+                window.dispose();
+            }
+
+            new IGNGamesFeedManager().setVisible(true);
+        };
+
+        SwingUtilities.invokeLater(showMainForm);
+    }
+
     private void tfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfPasswordActionPerformed
 
-    private List<JLabel> errorLabels;
+    private void init() {
+        initValidation();
+        hideErrors();
+    }
+
+    private void initValidation() {
+        validationsFieldsWithErrorLabels = Map.ofEntries(
+                Map.entry(tfUsername, lblErrorUsername),
+                Map.entry(tfPassword, lblErrorPassword)
+        );
+    }
 
     private void hideErrors() {
-        errorLabels = List.of(
-                lblErrorPassword,
-                lblErrorUsername
-        );
+        validationsFieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+    }
 
-        errorLabels.forEach(lbl -> lbl.setVisible(false));
+    private boolean isFormValid() {
+        hideErrors();
+
+        validationsFieldsWithErrorLabels.forEach(
+                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+
+        return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+    }
+
+    private void clearForm() {
+        validationsFieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

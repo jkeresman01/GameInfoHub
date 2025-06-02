@@ -4,7 +4,7 @@ public enum Role {
     ADMIN,
     USER;
 
-    public static Role fromString(String roleName) {
+    public static Role from(String roleName) {
         return Role.valueOf(roleName.toUpperCase());
     }
 }

@@ -1,6 +1,5 @@
 package com.keresman.dao;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -16,11 +15,6 @@ public final class RepositoryFactory {
 
     static {
         try (InputStream is = RepositoryFactory.class.getResourceAsStream(PATH)) {
-
-            if (is == null) {
-                throw new FileNotFoundException("Could not load resource: " + PATH);
-            }
-
             properties.load(is);
             repository = (UserRepository) Class
                     .forName(properties.getProperty(CLASS_NAME))
