@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface GamePlatformRepository {
 
-    void save(int gameId, int platformId) throws Exception;
+  void save(int gameId, int platformId) throws Exception;
 
-    void delete(int gameId, int platformId) throws Exception;
+  void delete(int gameId, int platformId) throws Exception;
 
-    List<Platform> findPlatformsByGameId(int gameId) throws Exception;
+  List<Platform> findPlatformsByGameId(int gameId) throws Exception;
 
-    List<Game> findGamesByPlatformId(int platformId) throws Exception;
+  List<Game> findGamesByPlatformId(int platformId) throws Exception;
 }

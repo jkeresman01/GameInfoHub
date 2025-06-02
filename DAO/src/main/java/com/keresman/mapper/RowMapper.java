@@ -5,5 +5,5 @@ import java.sql.ResultSet;
 @FunctionalInterface
 public interface RowMapper<T> {
 
-    T map(ResultSet resultSet) throws Exception;
+  T map(ResultSet resultSet) throws Exception;
 }

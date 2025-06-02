@@ -4,98 +4,137 @@ import javax.swing.JPanel;
 
 public class FavouritesPanel extends JPanel {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUpdateProfile;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblmage;
-    // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton btnUpdateProfile;
+  private javax.swing.JPanel jPanel1;
+  private javax.swing.JLabel lblTitle;
+  private javax.swing.JLabel lblmage;
 
-    public FavouritesPanel() {
-        initComponents();
-    }
+  // End of variables declaration//GEN-END:variables
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+  public FavouritesPanel() {
+    initComponents();
+  }
 
-        lblmage = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        lblTitle = new javax.swing.JLabel();
-        btnUpdateProfile = new javax.swing.JButton();
+  @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
 
-        lblmage.setBackground(new java.awt.Color(24, 24, 24));
-        lblmage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/profile12.jpg"))); // NOI18N
+    lblmage = new javax.swing.JLabel();
+    jPanel1 = new javax.swing.JPanel();
+    lblTitle = new javax.swing.JLabel();
+    btnUpdateProfile = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(24, 24, 24));
+    lblmage.setBackground(new java.awt.Color(24, 24, 24));
+    lblmage.setIcon(
+        new javax.swing.ImageIcon(getClass().getResource("/assets/profile12.jpg"))); // NOI18N
 
-        lblTitle.setBackground(new java.awt.Color(24, 24, 24));
-        lblTitle.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 28)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(255, 255, 255));
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("IGN Games RSS Feed");
-        lblTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
+    jPanel1.setBackground(new java.awt.Color(24, 24, 24));
 
-        btnUpdateProfile.setBackground(new java.awt.Color(102, 102, 255));
-        btnUpdateProfile.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        btnUpdateProfile.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdateProfile.setText("Save changes");
-        btnUpdateProfile.setBorder(null);
-        btnUpdateProfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateProfileActionPerformed(evt);
-            }
+    lblTitle.setBackground(new java.awt.Color(24, 24, 24));
+    lblTitle.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 28)); // NOI18N
+    lblTitle.setForeground(new java.awt.Color(255, 255, 255));
+    lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    lblTitle.setText("IGN Games RSS Feed");
+    lblTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
+
+    btnUpdateProfile.setBackground(new java.awt.Color(102, 102, 255));
+    btnUpdateProfile.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+    btnUpdateProfile.setForeground(new java.awt.Color(255, 255, 255));
+    btnUpdateProfile.setText("Save changes");
+    btnUpdateProfile.setBorder(null);
+    btnUpdateProfile.addActionListener(
+        new java.awt.event.ActionListener() {
+          public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnUpdateProfileActionPerformed(evt);
+          }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 942, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(353, 353, 353))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 590, Short.MAX_VALUE)
-                .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73))
-        );
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+        jPanel1Layout
+            .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(
+                lblTitle,
+                javax.swing.GroupLayout.Alignment.TRAILING,
+                javax.swing.GroupLayout.DEFAULT_SIZE,
+                942,
+                Short.MAX_VALUE)
+            .addGroup(
+                javax.swing.GroupLayout.Alignment.TRAILING,
+                jPanel1Layout
+                    .createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(
+                        btnUpdateProfile,
+                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                        172,
+                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(353, 353, 353)));
+    jPanel1Layout.setVerticalGroup(
+        jPanel1Layout
+            .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(
+                javax.swing.GroupLayout.Alignment.TRAILING,
+                jPanel1Layout
+                    .createSequentialGroup()
+                    .addGap(37, 37, 37)
+                    .addComponent(lblTitle)
+                    .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED, 590, Short.MAX_VALUE)
+                    .addComponent(
+                        btnUpdateProfile,
+                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                        39,
+                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(73, 73, 73)));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+    this.setLayout(layout);
+    layout.setHorizontalGroup(
+        layout
+            .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1542, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)
-                    .addComponent(lblmage)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(
+                layout
+                    .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(
+                        layout
+                            .createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(
+                                jPanel1,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, 0)
+                            .addComponent(lblmage)
+                            .addGap(0, 0, Short.MAX_VALUE))));
+    layout.setVerticalGroup(
+        layout
+            .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 800, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblmage))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            .addGroup(
+                layout
+                    .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(
+                        layout
+                            .createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addGroup(
+                                layout
+                                    .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(
+                                        jPanel1,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblmage))
+                            .addGap(0, 0, Short.MAX_VALUE))));
+  } // </editor-fold>//GEN-END:initComponents
 
-    private void btnUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfileActionPerformed
-
-    }//GEN-LAST:event_btnUpdateProfileActionPerformed
-
-
+  private void btnUpdateProfileActionPerformed(
+      java.awt.event.ActionEvent evt) { // GEN-FIRST:event_btnUpdateProfileActionPerformed
+  } // GEN-LAST:event_btnUpdateProfileActionPerformed
 }

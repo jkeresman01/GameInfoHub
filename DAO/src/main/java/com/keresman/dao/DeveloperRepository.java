@@ -6,17 +6,17 @@ import java.util.Optional;
 
 public interface DeveloperRepository {
 
-    int save(Developer developer) throws Exception;
+  int save(Developer developer) throws Exception;
 
-    void updateById(int id, Developer developer) throws Exception;
+  void updateById(int id, Developer developer) throws Exception;
 
-    void deleteById(int id) throws Exception;
+  void deleteById(int id) throws Exception;
 
-    Optional<Developer> findById(int id) throws Exception;
+  Optional<Developer> findById(int id) throws Exception;
 
-    Optional<Developer> findByName(String name) throws Exception;
+  Optional<Developer> findByName(String name) throws Exception;
 
-    List<Developer> findAll() throws Exception;
+  List<Developer> findAll() throws Exception;
 
-    boolean existsByName(String name) throws Exception;
+  boolean existsByName(String name) throws Exception;
 }

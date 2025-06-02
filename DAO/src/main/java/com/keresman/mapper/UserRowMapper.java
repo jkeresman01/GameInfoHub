@@ -6,19 +6,17 @@ import java.sql.ResultSet;
 
 public class UserRowMapper implements RowMapper<User> {
 
-    @Override
-    public User map(ResultSet resultSet) throws Exception {
-        return new User(
-            resultSet.getInt("UserID"),
-            resultSet.getString("Username"),
-            resultSet.getString("PasswordHash"),
-            resultSet.getString("FirstName"),
-            resultSet.getString("LastName"),
-            resultSet.getString("Email"),
-            Role.from(resultSet.getString("RoleName")),
-            resultSet.getTimestamp("CreatedAt").toLocalDateTime(),
-            resultSet.getTimestamp("UpdatedAt").toLocalDateTime()
-        );
-    }
-
+  @Override
+  public User map(ResultSet resultSet) throws Exception {
+    return new User(
+        resultSet.getInt("UserID"),
+        resultSet.getString("Username"),
+        resultSet.getString("PasswordHash"),
+        resultSet.getString("FirstName"),
+        resultSet.getString("LastName"),
+        resultSet.getString("Email"),
+        Role.from(resultSet.getString("RoleName")),
+        resultSet.getTimestamp("CreatedAt").toLocalDateTime(),
+        resultSet.getTimestamp("UpdatedAt").toLocalDateTime());
+  }
 }

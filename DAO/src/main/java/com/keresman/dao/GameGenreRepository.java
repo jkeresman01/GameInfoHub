@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface GameGenreRepository {
 
-    void save(int gameId, int genreId) throws Exception;
+  void save(int gameId, int genreId) throws Exception;
 
-    void delete(int gameId, int genreId) throws Exception;
+  void delete(int gameId, int genreId) throws Exception;
 
-    List<Genre> findGenresByGameId(int gameId) throws Exception;
+  List<Genre> findGenresByGameId(int gameId) throws Exception;
 
-    List<Game> findGamesByGenreId(int genreId) throws Exception;
+  List<Game> findGamesByGenreId(int genreId) throws Exception;
 }
