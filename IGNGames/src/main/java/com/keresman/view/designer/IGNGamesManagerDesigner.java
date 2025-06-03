@@ -1,88 +1,82 @@
 package com.keresman.view.designer;
 
-import com.keresman.session.SessionManager;
-import com.keresman.view.AdminPanel;
-import com.keresman.view.EditGamesPanel;
-import com.keresman.view.FavouritesPanel;
-import com.keresman.view.GamesPanel;
-import com.keresman.view.ProfilePanel;
-import com.keresman.view.UploadGamesPanel;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 
 public abstract class IGNGamesManagerDesigner extends JFrame {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JMenu mAbout;
-    protected javax.swing.JMenu mHelp;
-    protected javax.swing.JMenu mLogout;
-    protected javax.swing.JMenuBar mbMainMenu;
-    protected javax.swing.JMenu miAbout;
-    protected javax.swing.JMenu miHelp;
-    protected javax.swing.JMenu miLogout;
-    protected javax.swing.JTabbedPane tpMain;
-    // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  protected javax.swing.JMenu mAbout;
+  protected javax.swing.JMenu mHelp;
+  protected javax.swing.JMenu mLogout;
+  protected javax.swing.JMenuBar mbMainMenu;
+  protected javax.swing.JMenu miAbout;
+  protected javax.swing.JMenu miHelp;
+  protected javax.swing.JMenu miLogout;
+  protected javax.swing.JTabbedPane tpMain;
 
-    public IGNGamesManagerDesigner() {
-        initComponents();
-    }
+  // End of variables declaration//GEN-END:variables
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+  public IGNGamesManagerDesigner() {
+    initComponents();
+  }
 
-        tpMain = new javax.swing.JTabbedPane();
-        mbMainMenu = new javax.swing.JMenuBar();
-        mAbout = new javax.swing.JMenu();
-        miAbout = new javax.swing.JMenu();
-        mHelp = new javax.swing.JMenu();
-        miHelp = new javax.swing.JMenu();
-        mLogout = new javax.swing.JMenu();
-        miLogout = new javax.swing.JMenu();
+  @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("IGN Games");
+    tpMain = new javax.swing.JTabbedPane();
+    mbMainMenu = new javax.swing.JMenuBar();
+    mAbout = new javax.swing.JMenu();
+    miAbout = new javax.swing.JMenu();
+    mHelp = new javax.swing.JMenu();
+    miHelp = new javax.swing.JMenu();
+    mLogout = new javax.swing.JMenu();
+    miLogout = new javax.swing.JMenu();
 
-        tpMain.setBackground(new java.awt.Color(24, 24, 24));
-        tpMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        tpMain.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        tpMain.setTabPlacement(javax.swing.JTabbedPane.LEFT);
-        tpMain.setMinimumSize(new java.awt.Dimension(1480, 800));
-        tpMain.setPreferredSize(new java.awt.Dimension(1480, 800));
-        getContentPane().add(tpMain, java.awt.BorderLayout.CENTER);
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("IGN Games");
 
-        mAbout.setText("About");
+    tpMain.setBackground(new java.awt.Color(24, 24, 24));
+    tpMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+    tpMain.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+    tpMain.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+    tpMain.setMinimumSize(new java.awt.Dimension(1480, 800));
+    tpMain.setPreferredSize(new java.awt.Dimension(1480, 800));
+    getContentPane().add(tpMain, java.awt.BorderLayout.CENTER);
 
-        miAbout.setText("About");
-        mAbout.add(miAbout);
+    mAbout.setText("About");
 
-        mbMainMenu.add(mAbout);
+    miAbout.setText("About");
+    mAbout.add(miAbout);
 
-        mHelp.setText("Help");
+    mbMainMenu.add(mAbout);
 
-        miHelp.setText("Help");
-        mHelp.add(miHelp);
+    mHelp.setText("Help");
 
-        mbMainMenu.add(mHelp);
+    miHelp.setText("Help");
+    mHelp.add(miHelp);
 
-        mLogout.setText("Logout");
+    mbMainMenu.add(mHelp);
 
-        miLogout.setText("Logout");
-        miLogout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                miLogoutMouseClicked(evt);
-            }
+    mLogout.setText("Logout");
+
+    miLogout.setText("Logout");
+    miLogout.addMouseListener(
+        new java.awt.event.MouseAdapter() {
+          public void mouseClicked(java.awt.event.MouseEvent evt) {
+            miLogoutMouseClicked(evt);
+          }
         });
-        mLogout.add(miLogout);
+    mLogout.add(miLogout);
 
-        mbMainMenu.add(mLogout);
+    mbMainMenu.add(mLogout);
 
-        setJMenuBar(mbMainMenu);
+    setJMenuBar(mbMainMenu);
 
-        pack();
-        setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
+    pack();
+    setLocationRelativeTo(null);
+  } // </editor-fold>//GEN-END:initComponents
 
-    public abstract void miLogoutMouseClicked(MouseEvent evt);
-
+  public abstract void miLogoutMouseClicked(MouseEvent evt);
 }

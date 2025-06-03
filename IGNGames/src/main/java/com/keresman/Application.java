@@ -9,17 +9,17 @@ import javax.swing.UIManager;
 
 public class Application {
 
-    public static void main(String args[]) {
-        setLookAndFeel();
-        EventQueue.invokeLater(() -> new IGNGamesWelcome().setVisible(true));
-    }
+  public static void main(String args[]) {
+    setLookAndFeel();
+    EventQueue.invokeLater(() -> new IGNGamesWelcome().setVisible(true));
+  }
 
-    private static void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(new FlatMacDarkLaf());
-        } catch (Exception ex) {
-            Logger.getLogger(IGNGamesWelcomeDesigner.class.getName())
-                    .log(java.util.logging.Level.SEVERE, null, ex);
-        }
+  private static void setLookAndFeel() {
+    try {
+      UIManager.setLookAndFeel(new FlatMacDarkLaf());
+    } catch (Exception ex) {
+      Logger.getLogger(IGNGamesWelcomeDesigner.class.getName())
+          .log(java.util.logging.Level.SEVERE, null, ex);
     }
+  }
 }
