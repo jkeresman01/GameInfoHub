@@ -39,7 +39,7 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Container class="javax.swing.JPanel" name="pnlPlaceholder">
+    <Container class="javax.swing.JPanel" name="pnlContainer">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="18" green="18" red="18" type="rgb"/>

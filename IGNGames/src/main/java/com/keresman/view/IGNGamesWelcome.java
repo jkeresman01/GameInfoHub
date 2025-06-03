@@ -10,11 +10,10 @@ public class IGNGamesWelcome extends JFrame {
   private static final String REGISTER = "Register";
   private static final String LOGIN = "Login";
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  protected javax.swing.JLabel lblWelcomImg;
-  protected javax.swing.JTabbedPane tpLoginRegister;
-
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    protected javax.swing.JLabel lblWelcomeImg;
+    protected javax.swing.JTabbedPane tpLoginRegister;
+    // End of variables declaration//GEN-END:variables
 
   public IGNGamesWelcome() {
     initComponents();
@@ -22,34 +21,33 @@ public class IGNGamesWelcome extends JFrame {
   }
 
   @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    tpLoginRegister = new javax.swing.JTabbedPane();
-    lblWelcomImg = new javax.swing.JLabel();
+        tpLoginRegister = new javax.swing.JTabbedPane();
+        lblWelcomeImg = new javax.swing.JLabel();
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setTitle("IGN Games");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("IGN Games");
 
-    tpLoginRegister.setBackground(new java.awt.Color(24, 24, 24));
-    tpLoginRegister.setForeground(new java.awt.Color(255, 255, 255));
-    tpLoginRegister.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-    tpLoginRegister.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
-    tpLoginRegister.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-    tpLoginRegister.setMinimumSize(new java.awt.Dimension(200, 10));
-    tpLoginRegister.setPreferredSize(new java.awt.Dimension(400, 760));
-    getContentPane().add(tpLoginRegister, java.awt.BorderLayout.LINE_START);
+        tpLoginRegister.setBackground(new java.awt.Color(24, 24, 24));
+        tpLoginRegister.setForeground(new java.awt.Color(255, 255, 255));
+        tpLoginRegister.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tpLoginRegister.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
+        tpLoginRegister.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tpLoginRegister.setMinimumSize(new java.awt.Dimension(200, 10));
+        tpLoginRegister.setPreferredSize(new java.awt.Dimension(400, 760));
+        getContentPane().add(tpLoginRegister, java.awt.BorderLayout.LINE_START);
 
-    lblWelcomImg.setIcon(
-        new javax.swing.ImageIcon(getClass().getResource("/assets/welcome_11.jpg"))); // NOI18N
-    lblWelcomImg.setMaximumSize(new java.awt.Dimension(1081, 780));
-    lblWelcomImg.setMinimumSize(new java.awt.Dimension(1081, 780));
-    lblWelcomImg.setPreferredSize(new java.awt.Dimension(1081, 780));
-    getContentPane().add(lblWelcomImg, java.awt.BorderLayout.CENTER);
+        lblWelcomeImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/welcome_11.jpg"))); // NOI18N
+        lblWelcomeImg.setMaximumSize(new java.awt.Dimension(1081, 780));
+        lblWelcomeImg.setMinimumSize(new java.awt.Dimension(1081, 780));
+        lblWelcomeImg.setPreferredSize(new java.awt.Dimension(1081, 780));
+        getContentPane().add(lblWelcomeImg, java.awt.BorderLayout.CENTER);
 
-    pack();
-    setLocationRelativeTo(null);
-  } // </editor-fold>//GEN-END:initComponents
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
 
   private void init() {
     initUI();
