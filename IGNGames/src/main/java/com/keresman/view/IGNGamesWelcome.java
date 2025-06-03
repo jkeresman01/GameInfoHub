@@ -1,81 +1,52 @@
 package com.keresman.view;
 
+import com.keresman.view.designer.IGNGamesWelcomeDesigner;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import javax.swing.JFrame;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-public class IGNGamesWelcome extends JFrame {
+public class IGNGamesWelcome extends IGNGamesWelcomeDesigner {
 
-  private static final String REGISTER = "Register";
-  private static final String LOGIN = "Login";
+    private static final String REGISTER = "Register";
+    private static final String LOGIN = "Login";
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JLabel lblWelcomeImg;
-    protected javax.swing.JTabbedPane tpLoginRegister;
-    // End of variables declaration//GEN-END:variables
+    public IGNGamesWelcome() {
+        super();
+        init();
+    }
 
-  public IGNGamesWelcome() {
-    initComponents();
-    init();
-  }
+    private void init() {
+        initUI();
+        initPanels();
+    }
 
-  @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initPanels() {
+        tpLoginRegister.add(LOGIN, new Login());
+        tpLoginRegister.add(REGISTER, new Register());
+    }
 
-        tpLoginRegister = new javax.swing.JTabbedPane();
-        lblWelcomeImg = new javax.swing.JLabel();
+    private void initUI() {
+        tpLoginRegister.setUI(new BasicTabbedPaneUI() {
+            @Override
+            protected int calculateTabWidth(
+                    int tabPlacement,
+                    int tabIndex,
+                    FontMetrics metrics) {
+                return tabPane.getWidth() / tabPane.getTabCount();
+            }
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("IGN Games");
-
-        tpLoginRegister.setBackground(new java.awt.Color(24, 24, 24));
-        tpLoginRegister.setForeground(new java.awt.Color(255, 255, 255));
-        tpLoginRegister.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        tpLoginRegister.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
-        tpLoginRegister.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tpLoginRegister.setMinimumSize(new java.awt.Dimension(200, 10));
-        tpLoginRegister.setPreferredSize(new java.awt.Dimension(400, 760));
-        getContentPane().add(tpLoginRegister, java.awt.BorderLayout.LINE_START);
-
-        lblWelcomeImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/welcome_11.jpg"))); // NOI18N
-        lblWelcomeImg.setMaximumSize(new java.awt.Dimension(1081, 780));
-        lblWelcomeImg.setMinimumSize(new java.awt.Dimension(1081, 780));
-        lblWelcomeImg.setPreferredSize(new java.awt.Dimension(1081, 780));
-        getContentPane().add(lblWelcomeImg, java.awt.BorderLayout.CENTER);
-
-        pack();
-        setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
-
-  private void init() {
-    initUI();
-    initPanels();
-  }
-
-  private void initPanels() {
-    tpLoginRegister.add(LOGIN, new LoginPanel());
-    tpLoginRegister.add(REGISTER, new RegisterPanel());
-  }
-
-  private void initUI() {
-    tpLoginRegister.setUI(
-        new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-          @Override
-          protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-            return tabPane.getWidth() / tabPane.getTabCount();
-          }
-
-          @Override
-          protected void paintFocusIndicator(
-              Graphics g,
-              int tabPlacement,
-              Rectangle[] rects,
-              int tabIndex,
-              Rectangle iconRect,
-              Rectangle textRect,
-              boolean isSelected) {}
+            @Override
+            protected void paintFocusIndicator(
+                    Graphics g,
+                    int tabPlacement,
+                    Rectangle[] rects,
+                    int tabIndex,
+                    Rectangle iconRect,
+                    Rectangle textRect,
+                    boolean isSelected) {
+            }
         });
-  }
+    }
+
 }

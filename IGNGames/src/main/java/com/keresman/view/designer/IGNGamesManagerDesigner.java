@@ -1,33 +1,30 @@
-package com.keresman.view;
+package com.keresman.view.designer;
 
 import com.keresman.session.SessionManager;
+import com.keresman.view.AdminPanel;
+import com.keresman.view.EditGamesPanel;
+import com.keresman.view.FavouritesPanel;
+import com.keresman.view.GamesPanel;
+import com.keresman.view.ProfilePanel;
+import com.keresman.view.UploadGamesPanel;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
-public class IGNGamesFeedManager extends JFrame {
-
-    private static final String PROFILE = "Profile";
-    private static final String FAVOURITES = "Favourites";
-    private static final String UPLOAD_GAMES = "Upload Games";
-    private static final String EDIT_GAMES = "Edit Games";
-    private static final String VIEW_GAMES = "View Games";
-    private static final String ADMIN = "Admin";
+public abstract class IGNGamesManagerDesigner extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu mAbout;
-    private javax.swing.JMenu mHelp;
-    private javax.swing.JMenu mLogout;
-    private javax.swing.JMenuBar mbMainMenu;
-    private javax.swing.JMenu miAbout;
-    private javax.swing.JMenu miHelp;
-    private javax.swing.JMenu miLogout;
-    private javax.swing.JTabbedPane tpMain;
+    protected javax.swing.JMenu mAbout;
+    protected javax.swing.JMenu mHelp;
+    protected javax.swing.JMenu mLogout;
+    protected javax.swing.JMenuBar mbMainMenu;
+    protected javax.swing.JMenu miAbout;
+    protected javax.swing.JMenu miHelp;
+    protected javax.swing.JMenu miLogout;
+    protected javax.swing.JTabbedPane tpMain;
     // End of variables declaration//GEN-END:variables
 
-    public IGNGamesFeedManager() {
+    public IGNGamesManagerDesigner() {
         initComponents();
-        initPanels();
     }
 
     @SuppressWarnings("unchecked")
@@ -86,21 +83,6 @@ public class IGNGamesFeedManager extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void miLogoutMouseClicked(MouseEvent evt) { // GEN-FIRST:event_miLogoutMouseClicked
-        SessionManager.getInstance().clear();
-        dispose();
-        SwingUtilities.invokeLater(() -> new IGNGamesWelcome().setVisible(true));
-    } // GEN-LAST:event_miLogoutMouseClicked
+    public abstract void miLogoutMouseClicked(MouseEvent evt);
 
-    private void initPanels() {
-        if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
-            tpMain.add(ADMIN, new AdminPanel());
-        }
-
-        tpMain.add(VIEW_GAMES, new GamesPanel());
-        tpMain.add(EDIT_GAMES, new EditGamesPanel());
-        tpMain.add(UPLOAD_GAMES, new UploadGamesPanel());
-        tpMain.add(FAVOURITES, new FavouritesPanel());
-        tpMain.add(PROFILE, new ProfilePanel());
-    }
 }
