@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 public class UserTableModel extends AbstractTableModel {
 
   private static final String[] COLUMS = {
-    "id", "first name", "last name", "username", "gender", "email", "path"
+    "id", "first name", "last name", "username", "gender", "email", "Active", "path"
   };
 
   private List<User> users;
@@ -42,9 +42,11 @@ public class UserTableModel extends AbstractTableModel {
       case 5:
         return users.get(rowIndex).getEmail();
       case 6:
+        return users.get(rowIndex).isActive() ? "YES" : "NO";
+      case 7:
         return users.get(rowIndex).getPicturePath();
       default:
-        throw new AssertionError();
+        throw new RuntimeException("No such column");
     }
   }
 
@@ -56,5 +58,14 @@ public class UserTableModel extends AbstractTableModel {
   @Override
   public String getColumnName(int column) {
     return COLUMS[column];
+  }
+
+  @Override
+  public Class<?> getColumnClass(int columnIndex) {
+    if (columnIndex == 0) {
+      return Integer.class;
+    }
+
+    return super.getColumnClass(columnIndex);
   }
 }

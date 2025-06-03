@@ -5,9 +5,11 @@ import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
+import java.awt.event.ActionEvent;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -327,8 +329,7 @@ public class ProfilePanel extends JPanel {
     add(pnlContainer, java.awt.BorderLayout.CENTER);
   } // </editor-fold>//GEN-END:initComponents
 
-  private void btnUpdateProfileActionPerformed(
-      java.awt.event.ActionEvent evt) { // GEN-FIRST:event_btnUpdateProfileActionPerformed
+  private void btnUpdateProfileActionPerformed(ActionEvent evt) {
 
     if (!isFormValid()) {
       MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
@@ -354,7 +355,7 @@ public class ProfilePanel extends JPanel {
     } catch (Exception ex) {
       Logger.getLogger(ProfilePanel.class.getName()).log(Level.SEVERE, null, ex);
     }
-  } // GEN-LAST:event_btnUpdateProfileActionPerformed
+  }
 
   private void init() {
     try {
@@ -399,6 +400,9 @@ public class ProfilePanel extends JPanel {
     tfLastName.setText(user.getLastName());
     tfEmail.setText(user.getEmail());
     tfUsername.setText(user.getUsername());
+    
+    
+    lblProfileImage.setIcon(new ImageIcon(getClass().getResource("/assets/male_default_picture.jpg")));
   }
 
   private void initRepository() throws Exception {

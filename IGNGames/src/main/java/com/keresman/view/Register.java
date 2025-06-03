@@ -97,8 +97,8 @@ public class Register extends RegisterDesigner {
 
     String username = tfUsername.getText();
     String email = tfEmail.getText();
-    String password = Arrays.toString(tfPassword.getPassword());
-    String cfmPassword = Arrays.toString(tfCfmPassword.getPassword());
+    String password = new String(tfPassword.getPassword());
+    String cfmPassword = new String(tfCfmPassword.getPassword());
 
     try {
       if (userRepository.existsByUsername(username)) {
@@ -124,14 +124,16 @@ public class Register extends RegisterDesigner {
       Logger.getLogger(RegisterDesigner.class.getName()).log(Level.SEVERE, null, ex);
     }
 
+    
     User user =
         new User(
             username,
             BCryptUtils.hashPassword(password),
             tfFirstName.getText(),
             tfLastName.getText(),
-            tfEmail.getText());
-
+            tfEmail.getText(),
+            "assets/male_default_picture.jpg");
+    
     try {
       userRepository.save(user);
       MessageUtils.showInformationMessage(
