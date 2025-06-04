@@ -1,7 +1,8 @@
 package com.keresman.model;
 
-public final class Platform {
+public class Platform {
 
-  private int platformId;
-  private String name;
+    private int id;
+    private String name;
+    
 }

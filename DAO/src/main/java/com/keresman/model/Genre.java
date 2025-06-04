@@ -1,7 +1,7 @@
 package com.keresman.model;
 
-public final class Genre {
+public class Genre {
 
-  private int genreId;
-  private String name;
+    private int id;
+    private String name;
 }
