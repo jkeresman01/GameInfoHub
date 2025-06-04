@@ -3,7 +3,7 @@ package com.keresman.view.designer;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
-public abstract class LoginDesigner extends JPanel {
+public abstract class LoginPanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnLogin;
@@ -15,7 +15,7 @@ public abstract class LoginDesigner extends JPanel {
     protected javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
 
-  protected LoginDesigner() {
+  protected LoginPanelDesigner() {
     initComponents();
   }
 

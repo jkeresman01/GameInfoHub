@@ -4,7 +4,7 @@ import com.keresman.model.Gender;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
-public abstract class RegisterDesigner extends JPanel {
+public abstract class RegisterPanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnRegister;
@@ -26,7 +26,7 @@ public abstract class RegisterDesigner extends JPanel {
     protected javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
 
-  protected RegisterDesigner() {
+  protected RegisterPanelDesigner() {
     initComponents();
   }
 

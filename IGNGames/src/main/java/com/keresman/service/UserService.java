@@ -14,7 +14,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ValidationResult<Void> updateUserById(int id, UserUpdateReq updateProfileReq) {
+    public ValidationResult<Void> updateUserById(int id, UserUpdateReq userUpdateReq) {
         try {
             Optional<User> optUser = userRepository.findById(id);
             
@@ -26,31 +26,31 @@ public class UserService {
             
             boolean hasUpdates = false;
 
-            if (updateProfileReq.firstName() != null
-                    && !updateProfileReq.firstName().isBlank()
-                    && !updateProfileReq.firstName().equals(user.getFirstName())) {
-                user.setFirstName(updateProfileReq.firstName());
+            if (userUpdateReq.firstName() != null
+                    && !userUpdateReq.firstName().isBlank()
+                    && !userUpdateReq.firstName().equals(user.getFirstName())) {
+                user.setFirstName(userUpdateReq.firstName());
                 hasUpdates = true;
             }
 
-            if (updateProfileReq.lastName() != null
-                    && !updateProfileReq.lastName().isBlank()
-                    && !updateProfileReq.lastName().equals(user.getLastName())) {
-                user.setLastName(updateProfileReq.lastName());
+            if (userUpdateReq.lastName() != null
+                    && !userUpdateReq.lastName().isBlank()
+                    && !userUpdateReq.lastName().equals(user.getLastName())) {
+                user.setLastName(userUpdateReq.lastName());
                 hasUpdates = true;
             }
 
-            if (updateProfileReq.username() != null
-                    && !updateProfileReq.username().isBlank()
-                    && !updateProfileReq.username().equals(user.getUsername())) {
-                user.setUsername(updateProfileReq.username());
+            if (userUpdateReq.username() != null
+                    && !userUpdateReq.username().isBlank()
+                    && !userUpdateReq.username().equals(user.getUsername())) {
+                user.setUsername(userUpdateReq.username());
                 hasUpdates = true;
             }
 
-            if (updateProfileReq.email() != null
-                    && !updateProfileReq.email().isBlank()
-                    && !updateProfileReq.email().equals(user.getEmail())) {
-                user.setEmail(updateProfileReq.email());
+            if (userUpdateReq.email() != null
+                    && !userUpdateReq.email().isBlank()
+                    && !userUpdateReq.email().equals(user.getEmail())) {
+                user.setEmail(userUpdateReq.email());
                 hasUpdates = true;
             }
 

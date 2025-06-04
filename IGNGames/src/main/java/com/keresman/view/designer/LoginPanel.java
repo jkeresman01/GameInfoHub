@@ -1,4 +1,4 @@
-package com.keresman.view;
+package com.keresman.view.designer;
 
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
@@ -9,7 +9,8 @@ import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.ValidationResult;
 import com.keresman.validator.login.UserLoginValidator;
-import com.keresman.view.designer.LoginDesigner;
+import com.keresman.view.GameManager;
+import com.keresman.view.designer.LoginPanelDesigner;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.util.Map;
@@ -17,12 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class Login extends LoginDesigner {
+public class LoginPanel extends LoginPanelDesigner {
 
     private Map<JTextField, JLabel> fieldsWithErrorLabels;
     private UserLoginService userLoginService;
 
-    public Login() {
+    public LoginPanel() {
         super();
         init();
     }
@@ -107,7 +108,7 @@ public class Login extends LoginDesigner {
                 window.dispose();
             }
 
-            new GamesReviewsManager().setVisible(true);
+            new GameManager().setVisible(true);
         };
 
         SwingUtilities.invokeLater(showMainForm);

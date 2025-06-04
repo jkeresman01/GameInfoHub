@@ -8,7 +8,7 @@ import com.keresman.service.UserRegistrationService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.ValidationResult;
 import com.keresman.validator.register.UserRegistrationValidator;
-import com.keresman.view.designer.RegisterDesigner;
+import com.keresman.view.designer.RegisterPanelDesigner;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,14 +19,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-public class Register extends RegisterDesigner {
+public class RegisterPanel extends RegisterPanelDesigner {
 
     private static final int LOGIN_PAGE_INDEX = 0;
 
     private UserRegistrationService registrationService;
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
-    public Register() {
+    public RegisterPanel() {
         super();
         init();
     }
@@ -38,7 +38,7 @@ public class Register extends RegisterDesigner {
             hideErrors();
             initRegistrationService();
         } catch (Exception ex) {
-            Logger.getLogger(RegisterDesigner.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegisterPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
             MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
             System.exit(1);
         }

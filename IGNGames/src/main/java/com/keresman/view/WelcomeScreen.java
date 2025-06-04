@@ -1,17 +1,18 @@
 package com.keresman.view;
 
-import com.keresman.view.designer.IGNGamesWelcomeDesigner;
+import com.keresman.view.designer.LoginPanel;
+import com.keresman.view.designer.WelcomeScreenDesigner;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-public class GameReviewsWelcomeScreen extends IGNGamesWelcomeDesigner {
+public class WelcomeScreen extends WelcomeScreenDesigner {
 
   private static final String REGISTER = "Register";
   private static final String LOGIN = "Login";
 
-  public GameReviewsWelcomeScreen() {
+  public WelcomeScreen() {
     super();
     init();
   }
@@ -22,8 +23,8 @@ public class GameReviewsWelcomeScreen extends IGNGamesWelcomeDesigner {
   }
 
   private void initPanels() {
-    tpLoginRegister.add(LOGIN, new Login());
-    tpLoginRegister.add(REGISTER, new Register());
+    tpLoginRegister.add(LOGIN, new LoginPanel());
+    tpLoginRegister.add(REGISTER, new RegisterPanel());
   }
 
   private void initUI() {
