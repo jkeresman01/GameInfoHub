@@ -95,8 +95,9 @@ public class Register extends RegisterDesigner {
         }
 
         MessageUtils.showInformationMessage("Registration successful", "You have successfully registered, go to login page now!!");
-        clearForm();
-        switchToLoginPage();
+
+        clearRegisterForm();
+        redirectToLoginPage();
     }
 
     private boolean isFormValid() {
@@ -108,13 +109,13 @@ public class Register extends RegisterDesigner {
         return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
     }
 
-    private void clearForm() {
+    private void clearRegisterForm() {
         hideErrors();
 
         fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
     }
 
-    private void switchToLoginPage() {
+    private void redirectToLoginPage() {
         JTabbedPane tabs = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
         if (tabs != null) {
             tabs.setSelectedIndex(LOGIN_PAGE_INDEX);

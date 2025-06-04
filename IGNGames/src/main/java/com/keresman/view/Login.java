@@ -3,112 +3,115 @@ package com.keresman.view;
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
+import com.keresman.payload.UserLoginReq;
+import com.keresman.service.UserLoginService;
 import com.keresman.session.SessionManager;
-import com.keresman.utilities.BCryptUtils;
 import com.keresman.utilities.MessageUtils;
+import com.keresman.validator.ValidationResult;
+import com.keresman.validator.login.UserLoginValidator;
 import com.keresman.view.designer.LoginDesigner;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class Login extends LoginDesigner {
 
-  private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
-  private UserRepository userRepository;
+    private Map<JTextField, JLabel> fieldsWithErrorLabels;
+    private UserLoginService userLoginService;
 
-  public Login() {
-    super();
-    init();
-  }
-
-  private void init() {
-    try {
-      initValidation();
-      hideErrors();
-      initRepository();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
-      MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
-      System.exit(1);
-    }
-  }
-
-  private void initValidation() {
-    validationsFieldsWithErrorLabels =
-        Map.ofEntries(
-            Map.entry(tfUsername, lblErrorUsername), Map.entry(tfPassword, lblErrorPassword));
-  }
-
-  private boolean isFormValid() {
-    hideErrors();
-
-    validationsFieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-
-    return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-  }
-
-  private void initRepository() throws Exception {
-    userRepository = RepositoryFactory.getInstance(UserRepository.class);
-  }
-
-  private void hideErrors() {
-    validationsFieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
-  }
-
-  @Override
-  public void btnLoginActionPerformed(ActionEvent evt) {
-    if (!isFormValid()) {
-      MessageUtils.showWarningMessage("WARNING", "You forgot to fill soemthing, please try again!");
-      return;
+    public Login() {
+        super();
+        init();
     }
 
-    String username = tfUsername.getText().trim();
-
-    try {
-      if (!userRepository.existsByUsername(username)) {
-        MessageUtils.showErrorMessage("ERROR", "No user with username: %s".formatted(username));
-        return;
-      }
-
-      loginUserWithUsername(username);
-    } catch (Exception ex) {
-      Logger.getLogger(LoginDesigner.class.getName()).log(Level.SEVERE, null, ex);
+    private void init() {
+        try {
+            initValidation();
+            hideErrors();
+            initUserLoginService();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+            System.exit(1);
+        }
     }
-  }
 
-  private void loginUserWithUsername(String username) throws Exception {
-    String password = new String(tfPassword.getPassword());
-
-    User user = userRepository.findByUsername(username).get();
-
-    if (BCryptUtils.veriftyPassword(password, user.getPasswordHash())) {
-      loginUser(user);
-    } else {
-      MessageUtils.showErrorMessage("Ivalid password", "Ivalid password, try again!!");
+    private void initValidation() {
+        fieldsWithErrorLabels
+                = Map.ofEntries(
+                        Map.entry(tfUsername, lblErrorUsername), Map.entry(tfPassword, lblErrorPassword));
     }
-  }
 
-  private void loginUser(User user) {
-    SessionManager.getInstance().setCurrentUser(user);
+    private void hideErrors() {
+        fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+    }
 
-    Runnable showMainForm =
-        () -> {
-          Window window = SwingUtilities.getWindowAncestor(this);
+    private void initUserLoginService() throws Exception {
+        UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
+        UserLoginValidator userLoginValidator = new UserLoginValidator(userRepository);
 
-          if (window != null) {
-            window.dispose();
-          }
+        userLoginService = new UserLoginService(userRepository, userLoginValidator);
+    }
 
-          new GamesReviewsManager().setVisible(true);
-        };
+    @Override
+    public void btnLoginActionPerformed(ActionEvent evt) {
+        if (!isFormValid()) {
+            MessageUtils.showWarningMessage("WARNING", "You forgot to fill soemthing, please try again!");
+            return;
+        }
 
-    SwingUtilities.invokeLater(showMainForm);
-  }
+        String username = tfUsername.getText().trim();
+        String password = new String(tfPassword.getPassword());
+
+        var userLoginReq = new UserLoginReq(username, password);
+
+        ValidationResult<User> result = userLoginService.login(userLoginReq);
+
+        if (!result.isSuccess()) {
+            MessageUtils.showErrorMessage("Login Failed", result.getMessage());
+            return;
+        }
+
+        User loggedInUser = result.getData().get();
+        SessionManager.getInstance().setCurrentUser(loggedInUser);
+        
+        clearLoginForm();
+        openMainApplicationWindow();
+    }
+
+    private boolean isFormValid() {
+        hideErrors();
+
+        fieldsWithErrorLabels.forEach(
+                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+
+        return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+    }
+
+    private void clearLoginForm() {
+        hideErrors();
+
+        fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
+    }
+
+    private void openMainApplicationWindow() {
+
+        Runnable showMainForm
+                = () -> {
+                    Window window = SwingUtilities.getWindowAncestor(this);
+
+                    if (window != null) {
+                        window.dispose();
+                    }
+
+                    new GamesReviewsManager().setVisible(true);
+                };
+
+        SwingUtilities.invokeLater(showMainForm);
+    }
+
 }
