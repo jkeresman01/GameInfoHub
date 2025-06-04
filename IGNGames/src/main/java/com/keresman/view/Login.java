@@ -78,7 +78,7 @@ public class Login extends LoginDesigner {
 
         User loggedInUser = result.getData().get();
         SessionManager.getInstance().setCurrentUser(loggedInUser);
-        
+
         clearLoginForm();
         openMainApplicationWindow();
     }
@@ -100,18 +100,16 @@ public class Login extends LoginDesigner {
 
     private void openMainApplicationWindow() {
 
-        Runnable showMainForm
-                = () -> {
-                    Window window = SwingUtilities.getWindowAncestor(this);
+        Runnable showMainForm = () -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
 
-                    if (window != null) {
-                        window.dispose();
-                    }
+            if (window != null) {
+                window.dispose();
+            }
 
-                    new GamesReviewsManager().setVisible(true);
-                };
+            new GamesReviewsManager().setVisible(true);
+        };
 
         SwingUtilities.invokeLater(showMainForm);
     }
-
 }
