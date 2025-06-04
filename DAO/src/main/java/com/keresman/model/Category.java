@@ -16,10 +16,23 @@ public class Category implements Comparable<Category> {
     public Category(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" + "id=" + id + ", name=" + name + '}';
+    }
     
     @Override
     public int compareTo(Category o) {
         return this.name.compareToIgnoreCase(o.name);
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -3,19 +3,24 @@ package com.keresman.parser.rss;
 import com.keresman.factory.ParserFactory;
 import com.keresman.factory.URLConnectionFactory;
 import com.keresman.model.Article;
+import com.keresman.model.Category;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class ReviewsParser {
+public class ArticleParser {
 
 //    private static final String RSS_URL = "https://www.gameinformer.com/reviews.xml";
 //    private static final String RSS_URL = "https://www.pcgamesn.com/mainrss.xml";
@@ -24,7 +29,7 @@ public class ReviewsParser {
     private static final String EXT = ".jpg";
     private static final String DIR = "assets";
 
-    private ReviewsParser() {
+    private ArticleParser() {
     }
 
     public static List<Article> parse() throws Exception {
@@ -37,7 +42,7 @@ public class ReviewsParser {
 
             Optional<TagType> tagType = Optional.empty();
 
-            Article review = null;
+            Article article = null;
             StartElement startElement = null;
 
             while (xMLEventReader.hasNext()) {
@@ -50,22 +55,30 @@ public class ReviewsParser {
                         tagType = TagType.from(qualifiedName);
 
                         if (tagType.isPresent() && tagType.get().equals(TagType.ITEM)) {
-                            review = new Article();
-                            reviews.add(review);
+                            article = new Article();
+                            reviews.add(article);
                         }
                         break;
                     case XMLStreamConstants.CHARACTERS:
                         Characters characters = xmlEvent.asCharacters();
                         String data = characters.getData().trim();
 
-                        if (tagType.isPresent() && review != null && !data.isEmpty()) {
+                        if (tagType.isPresent() && article != null && !data.isEmpty()) {
                             switch (tagType.get()) {
-                                case TITLE -> review.setTitle(data);
-                                case LINK -> review.setLink(data);
-                                case DESCRIPTION -> review.setDescription(data);
-                                case PUB_DATE -> review.setPubDate(data);
-                                case CREATOR -> review.setCreator(data);
-                                case CATEGORY -> review.getCategories().add(data);
+                                case TITLE ->
+                                    article.setTitle(data);
+                                case LINK ->
+                                    article.setLink(data);
+                                case DESCRIPTION ->
+                                    article.setDescription(data);
+                                case PUB_DATE ->
+                                    article.setPubDate(LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME));
+                                case CREATOR ->
+                                    article.setCreator(data);
+                                case CATEGORY ->
+                                    article.addCategory(new Category(data));
+                                case CONTENT ->
+                                    handleContent(article, startElement);
                             }
                         }
                         break;
@@ -75,6 +88,14 @@ public class ReviewsParser {
         }
 
         return reviews;
+    }
+
+    private static void handleContent(Article article, StartElement startElement) {
+        Attribute urlAttribute = startElement.getAttributeByName(new QName("url"));
+        if (urlAttribute != null) {
+            article.setImageUrl(urlAttribute.getValue());
+        }
+         
     }
 
     private enum TagType {

@@ -1,5 +1,6 @@
 package com.keresman.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +10,16 @@ public final class Article {
     private String title;
     private String link;
     private String description;
-    private String pubDate;
+    private LocalDateTime pubDate;
     private String creator;
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
+    private List<Game> games = new ArrayList<>();
     private String imageUrl;
 
     public Article() {
     }
 
-    public Article(String title, String link, String description, String pubDate, String creator, String imageUrl) {
+    public Article(String title, String link, String description, LocalDateTime pubDate, String creator, String imageUrl) {
         this.title = title;
         this.link = link;
         this.description = description;
@@ -26,7 +28,7 @@ public final class Article {
         this.imageUrl = imageUrl;
     }
 
-    public Article(int reviewId, String title, String link, String description, String pubDate, String creator, String imageUrl) {
+    public Article(int reviewId, String title, String link, String description, LocalDateTime pubDate, String creator, String imageUrl) {
         this.reviewId = reviewId;
         this.title = title;
         this.link = link;
@@ -41,6 +43,10 @@ public final class Article {
         return "Review{" + "reviewId=" + reviewId + ", title=" + title + ", link=" + link + ", description=" + description + ", pubDate=" + pubDate + ", creator=" + creator + ", categories=" + categories + ", imageUrl=" + imageUrl + '}';
     }
 
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+    
     public int getReviewId() {
         return reviewId;
     }
@@ -73,14 +79,14 @@ public final class Article {
         this.description = description;
     }
 
-    public String getPubDate() {
+    public LocalDateTime getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(String pubDate) {
+    public void setPubDate(LocalDateTime pubDate) {
         this.pubDate = pubDate;
     }
-
+    
     public String getCreator() {
         return creator;
     }
@@ -104,8 +110,4 @@ public final class Article {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-    
-    
-    
 }

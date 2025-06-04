@@ -3,12 +3,13 @@ package com.keresman.view;
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
+import com.keresman.payload.UserUpdateReq;
+import com.keresman.service.UserService;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
+import com.keresman.validator.ValidationResult;
 import java.awt.event.ActionEvent;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,8 +17,8 @@ import javax.swing.JTextField;
 
 public class ProfilePanel extends JPanel {
 
-  private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
-  private UserRepository userRepository;
+    private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
+    private UserService userService;
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton btnUpdateProfile;
@@ -36,13 +37,12 @@ public class ProfilePanel extends JPanel {
   private javax.swing.JTextField tfUsername;
 
   // End of variables declaration//GEN-END:variables
+    public ProfilePanel() {
+        initComponents();
+        init();
+    }
 
-  public ProfilePanel() {
-    initComponents();
-    init();
-  }
-
-  @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
@@ -329,83 +329,86 @@ public class ProfilePanel extends JPanel {
     add(pnlContainer, java.awt.BorderLayout.CENTER);
   } // </editor-fold>//GEN-END:initComponents
 
-  private void btnUpdateProfileActionPerformed(ActionEvent evt) {
+    private void btnUpdateProfileActionPerformed(ActionEvent evt) {
 
-    if (!isFormValid()) {
-      MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
-      return;
+        if (!isFormValid()) {
+            MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
+            return;
+        }
+
+        String firstName = tfFirstName.getText().trim();
+        String lastName = tfLastName.getText().trim();
+        String username = tfUsername.getText().trim();
+        String email = tfEmail.getText().trim();
+
+        User user = SessionManager.getInstance().getCurrentUser();
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setEmail(email);
+
+        var userUpdateReq = new UserUpdateReq(username, email, firstName, lastName);
+
+        ValidationResult<Void> userUpdateResult = userService.updateUserById(user.getUserId(), userUpdateReq);
+
+        if (!userUpdateResult.isSuccess()) {
+            MessageUtils.showErrorMessage("Update failed", userUpdateResult.getMessage());
+            return;
+        }
+
+        MessageUtils.showInformationMessage("Update Successful", "Profile updated successfully!");
     }
 
-    String firstName = tfFirstName.getText().trim();
-    String lastName = tfLastName.getText().trim();
-    String username = tfUsername.getText().trim();
-    String email = tfEmail.getText().trim();
-
-    User user = SessionManager.getInstance().getCurrentUser();
-
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
-    user.setUsername(username);
-    user.setEmail(email);
-
-    try {
-      userRepository.updateById(user.getUserId(), user);
-      MessageUtils.showInformationMessage(
-          "Update success", "Profile has been successfully updated!");
-    } catch (Exception ex) {
-      Logger.getLogger(ProfilePanel.class.getName()).log(Level.SEVERE, null, ex);
+    private void init() {
+        try {
+            initValidation();
+            hideErrors();
+            fillForm();
+            initUserService();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+            System.exit(1);
+        }
     }
-  }
 
-  private void init() {
-    try {
-      initRepository();
-      initValidation();
-      hideErrors();
-      fillForm();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
-      MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
-      System.exit(1);
+    private void initValidation() {
+        validationsFieldsWithErrorLabels
+                = Map.ofEntries(
+                        Map.entry(tfUsername, lblErrorUsername),
+                        Map.entry(tfFirstName, lblErrorFirstName),
+                        Map.entry(tfLastName, lblErrorLastName),
+                        Map.entry(tfEmail, lblErrorEmail));
     }
-  }
 
-  private void initValidation() {
-    validationsFieldsWithErrorLabels =
-        Map.ofEntries(
-            Map.entry(tfUsername, lblErrorUsername),
-            Map.entry(tfFirstName, lblErrorFirstName),
-            Map.entry(tfLastName, lblErrorLastName),
-            Map.entry(tfEmail, lblErrorEmail));
-  }
+    private void hideErrors() {
+        validationsFieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+    }
 
-  private void hideErrors() {
-    validationsFieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
-  }
+    private boolean isFormValid() {
+        hideErrors();
 
-  private boolean isFormValid() {
-    hideErrors();
+        validationsFieldsWithErrorLabels.forEach(
+                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
 
-    validationsFieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+        return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+    }
 
-    return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-  }
+    private void fillForm() {
+        User user = SessionManager.getInstance().getCurrentUser();
 
-  private void fillForm() {
-    User user = SessionManager.getInstance().getCurrentUser();
+        tfFirstName.setText(user.getFirstName());
+        tfLastName.setText(user.getLastName());
+        tfEmail.setText(user.getEmail());
+        tfUsername.setText(user.getUsername());
 
-    tfFirstName.setText(user.getFirstName());
-    tfLastName.setText(user.getLastName());
-    tfEmail.setText(user.getEmail());
-    tfUsername.setText(user.getUsername());
-    
-    
-    lblProfileImage.setIcon(new ImageIcon(getClass().getResource("/assets/male_default_picture.jpg")));
-  }
+        lblProfileImage.setIcon(new ImageIcon(getClass().getResource("/assets/male_default_picture.jpg")));
+    }
 
-  private void initRepository() throws Exception {
-    userRepository = RepositoryFactory.getInstance(UserRepository.class);
-  }
+    private void initUserService() throws Exception {
+        var userRepository = RepositoryFactory.getInstance(UserRepository.class);
+        userService = new UserService(userRepository);
+    }
 }
