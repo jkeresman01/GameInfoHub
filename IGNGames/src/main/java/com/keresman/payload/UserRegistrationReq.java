@@ -1,6 +1,6 @@
-package com.keresman.dto;
+package com.keresman.payload;
 
-public record UserRegistrationDTO(
+public record UserRegistrationReq(
         String username,
         String email,
         String password,

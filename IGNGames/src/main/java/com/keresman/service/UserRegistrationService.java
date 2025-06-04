@@ -1,7 +1,7 @@
 package com.keresman.service;
 
 import com.keresman.dao.UserRepository;
-import com.keresman.dto.UserRegistrationDTO;
+import com.keresman.payload.UserRegistrationReq;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
 import com.keresman.validator.ValidationResult;
@@ -14,14 +14,14 @@ public class UserRegistrationService {
     private static final Logger LOGGER = Logger.getLogger(UserRegistrationService.class.getName());
 
     private final UserRepository userRepository;
-    private final Validator<UserRegistrationDTO> validator;
+    private final Validator<UserRegistrationReq> validator;
 
-    public UserRegistrationService(UserRepository userRepository, Validator<UserRegistrationDTO> validator) {
+    public UserRegistrationService(UserRepository userRepository, Validator<UserRegistrationReq> validator) {
         this.userRepository = userRepository;
         this.validator = validator;
     }
 
-    public ValidationResult register(UserRegistrationDTO userRegistrationDTO) {
+    public ValidationResult register(UserRegistrationReq userRegistrationDTO) {
         ValidationResult validationResult = validator.validate(userRegistrationDTO);
 
         if (!validationResult.isSuccess()) {
@@ -31,13 +31,13 @@ public class UserRegistrationService {
         return registerUser(userRegistrationDTO);
     }
 
-    private ValidationResult registerUser(UserRegistrationDTO userRegistrationDTO) {
+    private ValidationResult registerUser(UserRegistrationReq userRegistrationReq) {
         User user = new User(
-                userRegistrationDTO.username(),
-                BCryptUtils.hashPassword(userRegistrationDTO.password()),
-                userRegistrationDTO.firstName(),
-                userRegistrationDTO.lastName(),
-                userRegistrationDTO.email(),
+                userRegistrationReq.username(),
+                BCryptUtils.hashPassword(userRegistrationReq.password()),
+                userRegistrationReq.firstName(),
+                userRegistrationReq.lastName(),
+                userRegistrationReq.email(),
                 "assets/male_default_picture.jpg"
         );
 

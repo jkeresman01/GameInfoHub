@@ -2,7 +2,7 @@ package com.keresman.view;
 
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
-import com.keresman.dto.UserRegistrationDTO;
+import com.keresman.payload.UserRegistrationReq;
 import com.keresman.model.Gender;
 import com.keresman.service.UserRegistrationService;
 import com.keresman.utilities.MessageUtils;
@@ -77,7 +77,7 @@ public class Register extends RegisterDesigner {
             return;
         }
 
-        UserRegistrationDTO dto = new UserRegistrationDTO(
+        UserRegistrationReq registerReq = new UserRegistrationReq(
                 tfUsername.getText(),
                 tfEmail.getText(),
                 new String(tfPassword.getPassword()),
@@ -86,7 +86,7 @@ public class Register extends RegisterDesigner {
                 tfLastName.getText()
         );
 
-        ValidationResult validationResult = registrationService.register(dto);
+        ValidationResult validationResult = registrationService.register(registerReq);
 
         if (!validationResult.isSuccess()) {
             MessageUtils.showErrorMessage("Registration failed", validationResult.getMessage());

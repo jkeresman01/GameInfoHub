@@ -106,7 +106,7 @@ public class Login extends LoginDesigner {
             window.dispose();
           }
 
-          new IGNGamesManager().setVisible(true);
+          new GamesReviewsManager().setVisible(true);
         };
 
     SwingUtilities.invokeLater(showMainForm);

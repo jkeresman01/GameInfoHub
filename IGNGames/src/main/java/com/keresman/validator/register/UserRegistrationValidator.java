@@ -1,14 +1,14 @@
 package com.keresman.validator.register;
 
 import com.keresman.dao.UserRepository;
-import com.keresman.dto.UserRegistrationDTO;
+import com.keresman.payload.UserRegistrationReq;
 import com.keresman.service.UserRegistrationService;
 import com.keresman.validator.ValidationResult;
 import com.keresman.validator.Validator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserRegistrationValidator implements Validator<UserRegistrationDTO>{
+public class UserRegistrationValidator implements Validator<UserRegistrationReq>{
 
     private static final Logger LOGGER = Logger.getLogger(UserRegistrationService.class.getName());
 
@@ -19,7 +19,7 @@ public class UserRegistrationValidator implements Validator<UserRegistrationDTO>
     }
 
     @Override
-    public ValidationResult validate(UserRegistrationDTO userRegistrationReq) {
+    public ValidationResult validate(UserRegistrationReq userRegistrationReq) {
         if (isEmpty(userRegistrationReq.username())
                 || isEmpty(userRegistrationReq.email())
                 || isEmpty(userRegistrationReq.password())
