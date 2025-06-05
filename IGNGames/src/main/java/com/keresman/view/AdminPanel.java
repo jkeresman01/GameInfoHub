@@ -29,7 +29,9 @@ public class AdminPanel extends AdminPanelDesigner {
             initTable();
         } catch (Exception e) {
             e.printStackTrace();
-            MessageUtils.showErrorMessage("ERROR", "Failed to initialize the form!");
+            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+            System.exit(1);
         }
     }
 
