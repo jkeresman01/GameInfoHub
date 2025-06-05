@@ -107,7 +107,7 @@ public final class User implements Comparable<User> {
         return this.username.compareToIgnoreCase(o.username);
     }
 
-    public int getUserId() {
+    public int getId() {
         return userId;
     }
 

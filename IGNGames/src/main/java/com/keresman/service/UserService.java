@@ -83,7 +83,7 @@ public class UserService {
                 return Result.error("No changes detected.");
             }
 
-            userRepository.updateById(user.getUserId(), user);
+            userRepository.updateById(user.getId(), user);
             return Result.success();
 
         } catch (Exception e) {

@@ -30,7 +30,7 @@ public class UserTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return users.get(rowIndex).getUserId();
+                return users.get(rowIndex).getId();
             case 1:
                 return users.get(rowIndex).getFirstName();
             case 2:

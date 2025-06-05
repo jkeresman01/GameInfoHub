@@ -24,9 +24,9 @@ public class GameManager extends GameManagerDesigner {
             tpMain.add(ADMIN, new AdminPanel());
         }
 
-        tpMain.add(DEVELOPERS, new DevelopersPanel());
         tpMain.add(GAMES, new GamesPanel());
         tpMain.add(ARTICLES, new ArticlesPanel());
+        tpMain.add(DEVELOPERS, new DevelopersPanel());
         tpMain.add(FAVOURITES, new FavouritesPanel());
         tpMain.add(PROFILE, new ProfilePanel());
     }
