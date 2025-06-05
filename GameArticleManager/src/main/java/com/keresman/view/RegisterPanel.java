@@ -77,13 +77,20 @@ public class RegisterPanel extends RegisterPanelDesigner {
             return;
         }
 
-        UserRegistrationReq registerReq = new UserRegistrationReq(
-                tfUsername.getText(),
-                tfEmail.getText(),
-                new String(tfPassword.getPassword()),
-                new String(tfCfmPassword.getPassword()),
-                tfFirstName.getText(),
-                tfLastName.getText()
+        String username = tfUsername.getText().trim();
+        String firstName = tfFirstName.getText().trim();
+        String lastName = tfLastName.getText().trim();
+        String email = tfEmail.getText().trim();
+        String password = String.valueOf(tfPassword.getPassword());
+        String cfmPassword = String.valueOf(tfCfmPassword.getPassword());
+
+        var registerReq = new UserRegistrationReq(
+                username,
+                email,
+                password,
+                cfmPassword,
+                lastName,
+                firstName
         );
 
         Result validationResult = registrationService.register(registerReq);

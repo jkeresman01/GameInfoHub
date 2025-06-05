@@ -48,12 +48,6 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
     }
 
-    private void clearArticleForm() {
-        hideErrors();
-
-        fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
-    }
-
     private void hideErrors() {
         fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
     }

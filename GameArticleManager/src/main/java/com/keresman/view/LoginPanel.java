@@ -66,7 +66,7 @@ public class LoginPanel extends LoginPanelDesigner {
         }
 
         String username = tfUsername.getText().trim();
-        String password = new String(tfPassword.getPassword());
+        String password = String.valueOf(tfPassword.getPassword());
 
         var userLoginReq = new UserLoginReq(username, password);
 
@@ -107,7 +107,7 @@ public class LoginPanel extends LoginPanelDesigner {
                 window.dispose();
             }
 
-            new ArticleGameManager().setVisible(true);
+            new GameArticleManager().setVisible(true);
         };
 
         SwingUtilities.invokeLater(showMainForm);

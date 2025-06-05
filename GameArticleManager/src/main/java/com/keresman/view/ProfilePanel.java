@@ -40,12 +40,11 @@ public class ProfilePanel extends ProfilePanelDesigner {
     }
 
     private void initValidation() {
-        validationsFieldsWithErrorLabels
-                = Map.ofEntries(
-                        Map.entry(tfUsername, lblErrorUsername),
-                        Map.entry(tfFirstName, lblErrorFirstName),
-                        Map.entry(tfLastName, lblErrorLastName),
-                        Map.entry(tfEmail, lblErrorEmail));
+        validationsFieldsWithErrorLabels = Map.ofEntries(
+                Map.entry(tfUsername, lblErrorUsername),
+                Map.entry(tfFirstName, lblErrorFirstName),
+                Map.entry(tfLastName, lblErrorLastName),
+                Map.entry(tfEmail, lblErrorEmail));
     }
 
     private void hideErrors() {

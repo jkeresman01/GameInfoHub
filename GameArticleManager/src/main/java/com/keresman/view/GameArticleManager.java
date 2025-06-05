@@ -1,11 +1,11 @@
 package com.keresman.view;
 
 import com.keresman.session.SessionManager;
-import com.keresman.view.designer.GameManagerDesigner;
+import com.keresman.view.designer.GameArticleManagerDesigner;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
-public class ArticleGameManager extends GameManagerDesigner {
+public class GameArticleManager extends GameArticleManagerDesigner {
 
     private static final String PROFILE = "Profile";
     private static final String FAVOURITES = "Favourites";
@@ -14,7 +14,7 @@ public class ArticleGameManager extends GameManagerDesigner {
     private static final String ARTICLES = "Articles";
     private static final String ADMIN = "Admin";
 
-    public ArticleGameManager() {
+    public GameArticleManager() {
         super();
         initPanels();
     }
