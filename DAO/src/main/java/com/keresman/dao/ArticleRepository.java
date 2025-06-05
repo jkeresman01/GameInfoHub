@@ -6,15 +6,29 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-  int save(Article review) throws Exception;
+    int save(Article article) throws Exception;
 
-  void updateById(int id, Article review) throws Exception;
+    void updateById(int id, Article updated) throws Exception;
 
-  void deleteById(int id) throws Exception;
+    void deleteById(int id) throws Exception;
 
-  Optional<Article> findById(int id) throws Exception;
+    Optional<Article> findById(int id) throws Exception;
 
-  List<Article> findByGameId(int gameId) throws Exception;
+    List<Article> findAll() throws Exception;
 
-  List<Article> findAll() throws Exception;
+    List<Article> findByTitle(String title) throws Exception;
+
+    List<Article> findByCategoryName(String categoryName) throws Exception;
+
+    List<Article> findByGameId(int gameId) throws Exception;
+
+    boolean existsByLink(String link) throws Exception;
+
+    void addCategoryToArticle(int articleId, int categoryId) throws Exception;
+
+    void removeCategoryFromArticle(int articleId, int categoryId) throws Exception;
+
+    void addGameToArticle(int articleId, int gameId) throws Exception;
+
+    void removeGameFromArticle(int articleId, int gameId) throws Exception;
 }

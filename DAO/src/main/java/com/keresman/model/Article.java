@@ -6,12 +6,11 @@ import java.util.List;
 
 public final class Article {
 
-    private int reviewId;
+    private int articleId;
     private String title;
     private String link;
     private String description;
-    private LocalDateTime pubDate;
-    private String creator;
+    private LocalDateTime publishedDateTime;
     private List<Category> categories = new ArrayList<>();
     private List<Game> games = new ArrayList<>();
     private String picturePath;
@@ -19,40 +18,55 @@ public final class Article {
     public Article() {
     }
 
-    public Article(String title, String link, String description, LocalDateTime pubDate, String creator, String imageUrl) {
+    public Article(
+            String title,
+            String link,
+            String description,
+            LocalDateTime publishedDateTime,
+            String picturePath
+    ) {
         this.title = title;
         this.link = link;
         this.description = description;
-        this.pubDate = pubDate;
-        this.creator = creator;
-        this.picturePath = imageUrl;
+        this.publishedDateTime = publishedDateTime;
+        this.picturePath = picturePath;
     }
 
-    public Article(int reviewId, String title, String link, String description, LocalDateTime pubDate, String creator, String imageUrl) {
-        this.reviewId = reviewId;
+    public Article(
+            int articleId,
+            String title,
+            String link,
+            String description,
+            LocalDateTime publishedDateTime,
+            String picturePath
+    ) {
+        this.articleId = articleId;
         this.title = title;
         this.link = link;
         this.description = description;
-        this.pubDate = pubDate;
-        this.creator = creator;
-        this.picturePath = imageUrl;
+        this.publishedDateTime = publishedDateTime;
+        this.picturePath = picturePath;
     }
 
     @Override
     public String toString() {
-        return "Article{" + "title=" + title + ", categories=" + categories + '}';
+        return "Article{" + "title=" + title + ", games=" + games + '}';
     }
-    
+
     public void addCategory(Category category) {
         categories.add(category);
     }
-    
-    public int getReviewId() {
-        return reviewId;
+
+    public void addGame(Game game) {
+        games.add(game);
     }
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
+    public int getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -79,20 +93,12 @@ public final class Article {
         this.description = description;
     }
 
-    public LocalDateTime getPubDate() {
-        return pubDate;
+    public LocalDateTime getPublishedDateTime() {
+        return publishedDateTime;
     }
 
-    public void setPubDate(LocalDateTime pubDate) {
-        this.pubDate = pubDate;
-    }
-    
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setPublishedDateTime(LocalDateTime publishedDateTime) {
+        this.publishedDateTime = publishedDateTime;
     }
 
     public List<Category> getCategories() {
@@ -103,6 +109,14 @@ public final class Article {
         this.categories = categories;
     }
 
+    public List<Game> getGames() {
+        return new ArrayList<>(games);
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
     public String getPicturePath() {
         return picturePath;
     }
@@ -110,4 +124,5 @@ public final class Article {
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
+
 }

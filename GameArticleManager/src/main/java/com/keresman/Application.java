@@ -11,17 +11,15 @@ public class Application {
         SwingUtils.setLookAndFeel(new FlatMacDarkLaf());
         EventQueue.invokeLater(()-> new WelcomeScreen().setVisible(true));
     }
-//        List<Article> results = ArticleParser.parse();
+//        List<Article> results = GameArticleParser.parse();
 //        results.stream()
 //                .limit(10)
 //                .forEach(System.out::println);
-//    }
-//
-//        results.stream()
+////        results.stream()
 //                .map(review -> review.getCategories())
 //                .distinct()
 //                .forEach(System.out::println);
-//        
+//
 //        results.stream()
 //                .forEach(review -> {
 //
@@ -32,6 +30,7 @@ public class Application {
 //
 //                    List<String> extractGameName = GameUtils.extractGameNames(categories);
 //                    extractGameName.forEach(System.out::println);
-//                });
+//                }
+//                );
 //    }
 }

@@ -1,6 +1,7 @@
 package com.keresman.utilities;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class GameUtils {
@@ -64,10 +65,8 @@ public class GameUtils {
         "Yakuza 0"
     );
 
-    public static List<String> extractGameNames(List<String> categories) {
-        return categories.stream()
-                .filter(GameUtils::isWhitelistedGameTitle)
-                .toList();
+    public static Optional<String> extractGameName(String data) {
+        return isWhitelistedGameTitle(data) ? Optional.of(data) : Optional.empty();
     }
 
     private static boolean isWhitelistedGameTitle(String entry) {

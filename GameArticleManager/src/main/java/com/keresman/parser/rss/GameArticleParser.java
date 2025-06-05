@@ -4,6 +4,8 @@ import com.keresman.factory.ParserFactory;
 import com.keresman.factory.URLConnectionFactory;
 import com.keresman.model.Article;
 import com.keresman.model.Category;
+import com.keresman.model.Game;
+import com.keresman.utilities.GameUtils;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
@@ -72,11 +74,14 @@ public class GameArticleParser {
                                 case DESCRIPTION ->
                                     article.setDescription(data);
                                 case PUB_DATE ->
-                                    article.setPubDate(LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME));
-                                case CREATOR ->
-                                    article.setCreator(data);
-                                case CATEGORY ->
+                                    article.setPublishedDateTime(LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME));
+                                case CATEGORY -> {
                                     article.addCategory(new Category(data));
+                                    Optional<String> extractGameName = GameUtils.extractGameName(data);
+                                    if (extractGameName.isPresent()) {
+                                        article.addGame(new Game(extractGameName.get()));
+                                    }
+                                }
                                 case CONTENT ->
                                     handleContent(article, startElement);
                             }
@@ -95,7 +100,7 @@ public class GameArticleParser {
         if (urlAttribute != null) {
             article.setPicturePath(urlAttribute.getValue());
         }
-         
+
     }
 
     private enum TagType {
