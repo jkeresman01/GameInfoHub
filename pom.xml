@@ -8,7 +8,7 @@
     <modules>
         <module>Utilitites</module>
         <module>DAO</module>
-        <module>ArticleGameManager</module>
+        <module>GameArticleManager</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

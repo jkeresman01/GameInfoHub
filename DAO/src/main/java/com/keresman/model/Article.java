@@ -14,7 +14,7 @@ public final class Article {
     private String creator;
     private List<Category> categories = new ArrayList<>();
     private List<Game> games = new ArrayList<>();
-    private String imageUrl;
+    private String picturePath;
 
     public Article() {
     }
@@ -25,7 +25,7 @@ public final class Article {
         this.description = description;
         this.pubDate = pubDate;
         this.creator = creator;
-        this.imageUrl = imageUrl;
+        this.picturePath = imageUrl;
     }
 
     public Article(int reviewId, String title, String link, String description, LocalDateTime pubDate, String creator, String imageUrl) {
@@ -35,14 +35,14 @@ public final class Article {
         this.description = description;
         this.pubDate = pubDate;
         this.creator = creator;
-        this.imageUrl = imageUrl;
+        this.picturePath = imageUrl;
     }
 
     @Override
     public String toString() {
-        return "Review{" + "reviewId=" + reviewId + ", title=" + title + ", link=" + link + ", description=" + description + ", pubDate=" + pubDate + ", creator=" + creator + ", categories=" + categories + ", imageUrl=" + imageUrl + '}';
+        return "Article{" + "title=" + title + ", categories=" + categories + '}';
     }
-
+    
     public void addCategory(Category category) {
         categories.add(category);
     }
@@ -103,11 +103,11 @@ public final class Article {
         this.categories = categories;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPicturePath() {
+        return picturePath;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

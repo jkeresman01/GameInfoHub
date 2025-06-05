@@ -93,7 +93,7 @@ public class GameArticleParser {
     private static void handleContent(Article article, StartElement startElement) {
         Attribute urlAttribute = startElement.getAttributeByName(new QName("url"));
         if (urlAttribute != null) {
-            article.setImageUrl(urlAttribute.getValue());
+            article.setPicturePath(urlAttribute.getValue());
         }
          
     }

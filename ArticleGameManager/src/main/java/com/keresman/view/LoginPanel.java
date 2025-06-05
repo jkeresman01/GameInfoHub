@@ -42,9 +42,9 @@ public class LoginPanel extends LoginPanelDesigner {
     }
 
     private void initValidation() {
-        fieldsWithErrorLabels
-                = Map.ofEntries(
-                        Map.entry(tfUsername, lblErrorUsername), Map.entry(tfPassword, lblErrorPassword));
+        fieldsWithErrorLabels = Map.ofEntries(
+                Map.entry(tfUsername, lblErrorUsername),
+                Map.entry(tfPassword, lblErrorPassword));
     }
 
     private void hideErrors() {
@@ -100,7 +100,6 @@ public class LoginPanel extends LoginPanelDesigner {
     }
 
     private void openMainApplicationWindow() {
-
         Runnable showMainForm = () -> {
             Window window = SwingUtilities.getWindowAncestor(this);
 

@@ -46,14 +46,13 @@ public class RegisterPanel extends RegisterPanelDesigner {
     }
 
     private void initValidation() {
-        fieldsWithErrorLabels
-                = Map.ofEntries(
-                        Map.entry(tfLastName, lblErrorLastName),
-                        Map.entry(tfFirstName, lblErrorFirstName),
-                        Map.entry(tfUsername, lblErrorUsername),
-                        Map.entry(tfPassword, lblErrorPassword),
-                        Map.entry(tfCfmPassword, lblErrorCfmPassword),
-                        Map.entry(tfEmail, lblErrorEmail));
+        fieldsWithErrorLabels = Map.ofEntries(
+                Map.entry(tfLastName, lblErrorLastName),
+                Map.entry(tfFirstName, lblErrorFirstName),
+                Map.entry(tfUsername, lblErrorUsername),
+                Map.entry(tfPassword, lblErrorPassword),
+                Map.entry(tfCfmPassword, lblErrorCfmPassword),
+                Map.entry(tfEmail, lblErrorEmail));
     }
 
     private void initGenders() {
