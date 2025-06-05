@@ -5,7 +5,7 @@ import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.service.UserService;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.view.designer.AdminPanelDesigner;
 import com.keresman.view.model.UserTableModel;
 import java.awt.event.MouseEvent;
@@ -43,7 +43,7 @@ public class AdminPanel extends AdminPanelDesigner {
         tblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblUsers.setAutoCreateRowSorter(true);
 
-        ValidationResult<List<User>> result = userService.getAllUsers();
+        Result<List<User>> result = userService.getAllUsers();
 
         if (!result.isSuccess()) {
             MessageUtils.showErrorMessage("Error", result.getMessage());
@@ -59,7 +59,7 @@ public class AdminPanel extends AdminPanelDesigner {
         int selectedRow = tblUsers.getSelectedRow();
         selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
 
-        ValidationResult<User> result = userService.getUserById(selectedUserId);
+        Result<User> result = userService.getUserById(selectedUserId);
 
         if (!result.isSuccess()) {
             MessageUtils.showErrorMessage("Error", result.getMessage());

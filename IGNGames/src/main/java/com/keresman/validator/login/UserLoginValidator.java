@@ -2,7 +2,7 @@ package com.keresman.validator.login;
 
 import com.keresman.dao.UserRepository;
 import com.keresman.payload.UserLoginReq;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,21 +17,21 @@ public class UserLoginValidator implements Validator<UserLoginReq> {
     }
 
     @Override
-    public ValidationResult validate(UserLoginReq userLoginReq) {
+    public Result validate(UserLoginReq userLoginReq) {
         if (isEmpty(userLoginReq.username()) || isEmpty(userLoginReq.password())) {
-            return ValidationResult.error("Username and password are required.");
+            return Result.error("Username and password are required.");
         }
 
         try {
             if (!userRepository.existsByUsername(userLoginReq.username())) {
-                return ValidationResult.error("No user found with username: %s".formatted(userLoginReq.username()));
+                return Result.error("No user found with username: %s".formatted(userLoginReq.username()));
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error during login validation", e);
-            return ValidationResult.error("Unexpected error during validation.");
+            return Result.error("Unexpected error during validation.");
         }
 
-        return ValidationResult.success();
+        return Result.success();
     }
     
     private boolean isEmpty(String s) {

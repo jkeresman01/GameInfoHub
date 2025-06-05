@@ -7,7 +7,7 @@ import com.keresman.payload.UserLoginReq;
 import com.keresman.service.UserLoginService;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.validator.login.UserLoginValidator;
 import com.keresman.view.GameManager;
 import com.keresman.view.designer.LoginPanelDesigner;
@@ -70,7 +70,7 @@ public class LoginPanel extends LoginPanelDesigner {
 
         var userLoginReq = new UserLoginReq(username, password);
 
-        ValidationResult<User> result = userLoginService.login(userLoginReq);
+        Result<User> result = userLoginService.login(userLoginReq);
 
         if (!result.isSuccess()) {
             MessageUtils.showErrorMessage("Login Failed", result.getMessage());

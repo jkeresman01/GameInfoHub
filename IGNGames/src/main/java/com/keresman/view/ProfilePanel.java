@@ -8,7 +8,7 @@ import com.keresman.payload.UserUpdateReq;
 import com.keresman.service.UserService;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 import javax.swing.ImageIcon;
@@ -99,7 +99,7 @@ public class ProfilePanel extends ProfilePanelDesigner {
 
         var userUpdateReq = new UserUpdateReq(username, email, firstName, lastName);
 
-        ValidationResult<Void> userUpdateResult = userService.updateUserById(user.getUserId(), userUpdateReq);
+        Result<Void> userUpdateResult = userService.updateUserById(user.getUserId(), userUpdateReq);
 
         if (!userUpdateResult.isSuccess()) {
             MessageUtils.showErrorMessage("Update failed", userUpdateResult.getMessage());

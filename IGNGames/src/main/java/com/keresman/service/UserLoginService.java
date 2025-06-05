@@ -4,7 +4,7 @@ import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.payload.UserLoginReq;
 import com.keresman.utilities.BCryptUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -22,8 +22,8 @@ public class UserLoginService {
         this.validator = validator;
     }
 
-    public ValidationResult login(UserLoginReq userLoginReq) {
-        ValidationResult validation = validator.validate(userLoginReq);
+    public Result login(UserLoginReq userLoginReq) {
+        Result validation = validator.validate(userLoginReq);
 
         if (!validation.isSuccess()) {
             return validation;
@@ -32,23 +32,23 @@ public class UserLoginService {
         return loginUser(userLoginReq);
     }
 
-    private ValidationResult loginUser(UserLoginReq userLoginReq) {
+    private Result loginUser(UserLoginReq userLoginReq) {
         try {
             Optional<User> optionalUser = userRepository.findByUsername(userLoginReq.username());
 
             if (optionalUser.isEmpty()) {
-                return ValidationResult.error("User not found.");
+                return Result.error("User not found.");
             }
 
             User user = optionalUser.get();
             if (!BCryptUtils.veriftyPassword(userLoginReq.password(), user.getPasswordHash())) {
-                return ValidationResult.error("Invalid password.");
+                return Result.error("Invalid password.");
             }
 
-            return ValidationResult.success(user);
+            return Result.success(user);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Login error", e);
-            return ValidationResult.error("Login failed. Please try again.");
+            return Result.error("Login failed. Please try again.");
         }
     }
 }

@@ -4,7 +4,7 @@ import com.keresman.dao.UserRepository;
 import com.keresman.payload.UserRegistrationReq;
 import com.keresman.model.User;
 import com.keresman.utilities.BCryptUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +21,8 @@ public class UserRegistrationService {
         this.validator = validator;
     }
 
-    public ValidationResult register(UserRegistrationReq userRegistrationDTO) {
-        ValidationResult validationResult = validator.validate(userRegistrationDTO);
+    public Result register(UserRegistrationReq userRegistrationDTO) {
+        Result validationResult = validator.validate(userRegistrationDTO);
 
         if (!validationResult.isSuccess()) {
             return validationResult;
@@ -31,7 +31,7 @@ public class UserRegistrationService {
         return registerUser(userRegistrationDTO);
     }
 
-    private ValidationResult registerUser(UserRegistrationReq userRegistrationReq) {
+    private Result registerUser(UserRegistrationReq userRegistrationReq) {
         User user = new User(
                 userRegistrationReq.username(),
                 BCryptUtils.hashPassword(userRegistrationReq.password()),
@@ -43,10 +43,10 @@ public class UserRegistrationService {
 
         try {
             userRepository.save(user);
-            return ValidationResult.success();
+            return Result.success();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error saving user", e);
-            return ValidationResult.error("Registration failed. Please try again later.");
+            return Result.error("Registration failed. Please try again later.");
         }
     }
 }

@@ -6,7 +6,7 @@ import com.keresman.payload.UserRegistrationReq;
 import com.keresman.model.Gender;
 import com.keresman.service.UserRegistrationService;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import com.keresman.validator.register.UserRegistrationValidator;
 import com.keresman.view.designer.RegisterPanelDesigner;
 import java.awt.event.ActionEvent;
@@ -86,7 +86,7 @@ public class RegisterPanel extends RegisterPanelDesigner {
                 tfLastName.getText()
         );
 
-        ValidationResult validationResult = registrationService.register(registerReq);
+        Result validationResult = registrationService.register(registerReq);
 
         if (!validationResult.isSuccess()) {
             MessageUtils.showErrorMessage("Registration failed", validationResult.getMessage());

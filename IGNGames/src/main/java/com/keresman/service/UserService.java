@@ -3,7 +3,7 @@ package com.keresman.service;
 import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
 import com.keresman.payload.UserUpdateReq;
-import com.keresman.validator.ValidationResult;
+import com.keresman.validator.Result;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,31 +15,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ValidationResult<List<User>> getAllUsers() {
+    public Result<List<User>> getAllUsers() {
         try {
             List<User> users = userRepository.findAll();
-            return ValidationResult.success(users);
+            return Result.success(users);
         } catch (Exception e) {
-            return ValidationResult.error("Failed to fetch users.");
+            return Result.error("Failed to fetch users.");
         }
     }
 
-    public ValidationResult<User> getUserById(int userId) {
+    public Result<User> getUserById(int userId) {
         try {
             Optional<User> user = userRepository.findById(userId);
-            return user.map(ValidationResult::success)
-                    .orElseGet(() -> ValidationResult.error("User with ID [%d] not found.".formatted(userId)));
+            return user.map(Result::success)
+                    .orElseGet(() -> Result.error("User with ID [%d] not found.".formatted(userId)));
         } catch (Exception e) {
-            return ValidationResult.error("Error fetching user with ID [%d].".formatted(userId));
+            return Result.error("Error fetching user with ID [%d].".formatted(userId));
         }
     }
 
-    public ValidationResult<Void> updateUserById(int id, UserUpdateReq userUpdateReq) {
+    public Result<Void> updateUserById(int id, UserUpdateReq userUpdateReq) {
         try {
             Optional<User> optUser = userRepository.findById(id);
 
             if (optUser.isEmpty()) {
-                return ValidationResult.error("Can't update the user with id: %s".formatted(id));
+                return Result.error("Can't update the user with id: %s".formatted(id));
             }
 
             User user = optUser.get();
@@ -80,14 +80,14 @@ public class UserService {
 //                hasUpdates = true;
 //            }
             if (!hasUpdates) {
-                return ValidationResult.error("No changes detected.");
+                return Result.error("No changes detected.");
             }
 
             userRepository.updateById(user.getUserId(), user);
-            return ValidationResult.success();
+            return Result.success();
 
         } catch (Exception e) {
-            return ValidationResult.error("Failed to update user profile.");
+            return Result.error("Failed to update user profile.");
         }
     }
 }
