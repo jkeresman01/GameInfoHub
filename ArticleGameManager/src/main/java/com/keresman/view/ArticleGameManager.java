@@ -5,7 +5,7 @@ import com.keresman.view.designer.GameManagerDesigner;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
-public class GameManager extends GameManagerDesigner {
+public class ArticleGameManager extends GameManagerDesigner {
 
     private static final String PROFILE = "Profile";
     private static final String FAVOURITES = "Favourites";
@@ -14,7 +14,7 @@ public class GameManager extends GameManagerDesigner {
     private static final String ARTICLES = "Articles";
     private static final String ADMIN = "Admin";
 
-    public GameManager() {
+    public ArticleGameManager() {
         super();
         initPanels();
     }

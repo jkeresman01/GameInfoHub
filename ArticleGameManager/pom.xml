@@ -6,7 +6,7 @@
         <artifactId>IGNGamesRSSFeed</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>IGNGames</artifactId>
+    <artifactId>ArticleGameManager</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -61,4 +61,5 @@
         <maven.compiler.target>20</maven.compiler.target>
         <exec.mainClass>com.keresman.Application</exec.mainClass>
     </properties>
+    <name>ArticleGameManager</name>
 </project>

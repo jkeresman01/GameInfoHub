@@ -7,8 +7,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>Utilitites</module>
-        <module>IGNGames</module>
         <module>DAO</module>
+        <module>ArticleGameManager</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

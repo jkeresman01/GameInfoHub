@@ -1,4 +1,4 @@
-package com.keresman.view.designer;
+package com.keresman.view;
 
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
@@ -8,8 +8,8 @@ import com.keresman.service.UserLoginService;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
+import com.keresman.validator.Validator;
 import com.keresman.validator.login.UserLoginValidator;
-import com.keresman.view.GameManager;
 import com.keresman.view.designer.LoginPanelDesigner;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -53,7 +53,7 @@ public class LoginPanel extends LoginPanelDesigner {
 
     private void initUserLoginService() throws Exception {
         UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-        UserLoginValidator userLoginValidator = new UserLoginValidator(userRepository);
+        Validator<UserLoginReq> userLoginValidator = new UserLoginValidator(userRepository);
 
         userLoginService = new UserLoginService(userRepository, userLoginValidator);
     }
@@ -108,7 +108,7 @@ public class LoginPanel extends LoginPanelDesigner {
                 window.dispose();
             }
 
-            new GameManager().setVisible(true);
+            new ArticleGameManager().setVisible(true);
         };
 
         SwingUtilities.invokeLater(showMainForm);

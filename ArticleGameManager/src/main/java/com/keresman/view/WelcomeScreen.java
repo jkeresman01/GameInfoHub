@@ -1,6 +1,5 @@
 package com.keresman.view;
 
-import com.keresman.view.designer.LoginPanel;
 import com.keresman.view.designer.WelcomeScreenDesigner;
 import java.awt.FontMetrics;
 import java.awt.Graphics;

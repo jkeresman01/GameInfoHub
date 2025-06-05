@@ -7,6 +7,7 @@ import com.keresman.model.Gender;
 import com.keresman.service.UserRegistrationService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
+import com.keresman.validator.Validator;
 import com.keresman.validator.register.UserRegistrationValidator;
 import com.keresman.view.designer.RegisterPanelDesigner;
 import java.awt.event.ActionEvent;
@@ -65,7 +66,7 @@ public class RegisterPanel extends RegisterPanelDesigner {
 
     private void initRegistrationService() throws Exception {
         UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-        UserRegistrationValidator userRegistrationValidator = new UserRegistrationValidator(userRepository);
+        Validator<UserRegistrationReq> userRegistrationValidator = new UserRegistrationValidator(userRepository);
 
         registrationService = new UserRegistrationService(userRepository, userRegistrationValidator);
     }

@@ -20,7 +20,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class ArticleParser {
+public class GameArticleParser {
 
 //    private static final String RSS_URL = "https://www.gameinformer.com/reviews.xml";
 //    private static final String RSS_URL = "https://www.pcgamesn.com/mainrss.xml";
@@ -29,7 +29,7 @@ public class ArticleParser {
     private static final String EXT = ".jpg";
     private static final String DIR = "assets";
 
-    private ArticleParser() {
+    private GameArticleParser() {
     }
 
     public static List<Article> parse() throws Exception {
