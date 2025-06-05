@@ -9,6 +9,7 @@ public abstract class GameManagerDesigner extends JFrame {
     protected javax.swing.JMenu mAbout;
     protected javax.swing.JMenu mHelp;
     protected javax.swing.JMenu mLogout;
+    private javax.swing.JMenu mLookAndFeel;
     protected javax.swing.JMenuBar mbMainMenu;
     protected javax.swing.JMenu miAbout;
     protected javax.swing.JMenu miHelp;
@@ -32,9 +33,10 @@ public abstract class GameManagerDesigner extends JFrame {
         miHelp = new javax.swing.JMenu();
         mLogout = new javax.swing.JMenu();
         miLogout = new javax.swing.JMenu();
+        mLookAndFeel = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("IGN Games");
+        setTitle("Game Articles");
 
         tpMain.setBackground(new java.awt.Color(24, 24, 24));
         tpMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -69,6 +71,9 @@ public abstract class GameManagerDesigner extends JFrame {
         mLogout.add(miLogout);
 
         mbMainMenu.add(mLogout);
+
+        mLookAndFeel.setText("Look and Feel");
+        mbMainMenu.add(mLookAndFeel);
 
         setJMenuBar(mbMainMenu);
 

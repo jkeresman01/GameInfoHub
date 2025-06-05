@@ -3,18 +3,18 @@ package com.keresman.view;
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
 import com.keresman.model.User;
+import com.keresman.service.UserService;
 import com.keresman.utilities.MessageUtils;
+import com.keresman.validator.ValidationResult;
 import com.keresman.view.designer.AdminPanelDesigner;
 import com.keresman.view.model.UserTableModel;
 import java.awt.event.MouseEvent;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.ListSelectionModel;
 
 public class AdminPanel extends AdminPanelDesigner {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private UserTableModel userTableModel;
     private int selectedUserId;
 
@@ -25,7 +25,7 @@ public class AdminPanel extends AdminPanelDesigner {
 
     private void init() {
         try {
-            initRepository();
+            initUserService();
             initTable();
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,8 +33,9 @@ public class AdminPanel extends AdminPanelDesigner {
         }
     }
 
-    private void initRepository() throws Exception {
-        userRepository = RepositoryFactory.getInstance(UserRepository.class);
+    private void initUserService() throws Exception {
+        UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
+        userService = new UserService(userRepository);
     }
 
     private void initTable() throws Exception {
@@ -42,7 +43,14 @@ public class AdminPanel extends AdminPanelDesigner {
         tblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblUsers.setAutoCreateRowSorter(true);
 
-        userTableModel = new UserTableModel(userRepository.findAll());
+        ValidationResult<List<User>> result = userService.getAllUsers();
+
+        if (!result.isSuccess()) {
+            MessageUtils.showErrorMessage("Error", result.getMessage());
+            return;
+        }
+
+        userTableModel = new UserTableModel(result.getData().get());
         tblUsers.setModel(userTableModel);
     }
 
@@ -51,16 +59,15 @@ public class AdminPanel extends AdminPanelDesigner {
         int selectedRow = tblUsers.getSelectedRow();
         selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
 
-        try {
-            Optional<User> optUser = userRepository.findById(selectedUserId);
+        ValidationResult<User> result = userService.getUserById(selectedUserId);
 
-            if (optUser.isPresent()) {
-                lblUsername.setText(optUser.get().getUsername());
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(AdminPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
+        if (!result.isSuccess()) {
+            MessageUtils.showErrorMessage("Error", result.getMessage());
+            return;
         }
+
+        User user = result.getData().get();
+        lblUsername.setText(user.getUsername());
     }
 
 }

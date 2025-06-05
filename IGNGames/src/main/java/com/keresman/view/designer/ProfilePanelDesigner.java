@@ -7,11 +7,12 @@ public abstract class ProfilePanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnUpdateProfile;
-    protected javax.swing.JTextField lblEditProfile;
+    protected javax.swing.JTextField lblEditProfile1;
     protected javax.swing.JLabel lblErrorEmail;
     protected javax.swing.JLabel lblErrorFirstName;
     protected javax.swing.JLabel lblErrorLastName;
     protected javax.swing.JLabel lblErrorUsername;
+    protected javax.swing.JTextField lblFavourites;
     protected javax.swing.JLabel lblProfileImage;
     protected javax.swing.JLabel lblmage;
     protected javax.swing.JPanel pnlContainer;
@@ -31,7 +32,7 @@ public abstract class ProfilePanelDesigner extends JPanel {
 
         lblmage = new javax.swing.JLabel();
         pnlContainer = new javax.swing.JPanel();
-        lblEditProfile = new javax.swing.JTextField();
+        lblFavourites = new javax.swing.JTextField();
         btnUpdateProfile = new javax.swing.JButton();
         tfUsername = new javax.swing.JTextField();
         tfFirstName = new javax.swing.JTextField();
@@ -42,6 +43,7 @@ public abstract class ProfilePanelDesigner extends JPanel {
         lblErrorLastName = new javax.swing.JLabel();
         lblErrorUsername = new javax.swing.JLabel();
         lblErrorEmail = new javax.swing.JLabel();
+        lblEditProfile1 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(36, 36, 36));
         setLayout(new java.awt.BorderLayout());
@@ -52,13 +54,14 @@ public abstract class ProfilePanelDesigner extends JPanel {
         add(lblmage, java.awt.BorderLayout.LINE_END);
 
         pnlContainer.setBackground(new java.awt.Color(24, 24, 24));
+        pnlContainer.setMinimumSize(new java.awt.Dimension(800, 600));
         pnlContainer.setPreferredSize(new java.awt.Dimension(800, 800));
 
-        lblEditProfile.setBackground(new java.awt.Color(24, 24, 24));
-        lblEditProfile.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        lblEditProfile.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        lblEditProfile.setText("Edit profile");
-        lblEditProfile.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
+        lblFavourites.setBackground(new java.awt.Color(24, 24, 24));
+        lblFavourites.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblFavourites.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        lblFavourites.setText("Favourites");
+        lblFavourites.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
 
         btnUpdateProfile.setBackground(new java.awt.Color(102, 102, 255));
         btnUpdateProfile.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
@@ -105,68 +108,81 @@ public abstract class ProfilePanelDesigner extends JPanel {
         lblErrorEmail.setForeground(new java.awt.Color(255, 51, 51));
         lblErrorEmail.setText("X");
 
+        lblEditProfile1.setBackground(new java.awt.Color(24, 24, 24));
+        lblEditProfile1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblEditProfile1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        lblEditProfile1.setText("Edit profile");
+        lblEditProfile1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
+
         javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
         pnlContainer.setLayout(pnlContainerLayout);
         pnlContainerLayout.setHorizontalGroup(
             pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addComponent(lblEditProfile)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(lblProfileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(192, 192, 192)
+                .addGap(66, 66, 66)
+                .addComponent(lblFavourites, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                .addComponent(lblEditProfile1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContainerLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
                         .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblErrorUsername)
-                            .addComponent(lblErrorEmail)
-                            .addComponent(lblErrorLastName)
-                            .addComponent(lblErrorFirstName)))
-                    .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(407, Short.MAX_VALUE))
-            .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addGap(442, 442, 442)
-                .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(pnlContainerLayout.createSequentialGroup()
+                                .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblErrorUsername))
+                            .addGroup(pnlContainerLayout.createSequentialGroup()
+                                .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblErrorEmail))
+                            .addGroup(pnlContainerLayout.createSequentialGroup()
+                                .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblErrorLastName))
+                            .addGroup(pnlContainerLayout.createSequentialGroup()
+                                .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblErrorFirstName)))
+                        .addGap(58, 58, 58))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                        .addComponent(lblProfileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                        .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137))))
         );
         pnlContainerLayout.setVerticalGroup(
             pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
-                .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContainerLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(lblEditProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlContainerLayout.createSequentialGroup()
-                                .addGap(218, 218, 218)
-                                .addComponent(lblErrorFirstName))
-                            .addGroup(pnlContainerLayout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(pnlContainerLayout.createSequentialGroup()
-                        .addGap(190, 190, 190)
-                        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblProfileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(43, 43, 43)
+                .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEditProfile1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFavourites, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addComponent(lblProfileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblErrorFirstName)
+                    .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblErrorLastName)
-                    .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addComponent(lblErrorUsername)
+                    .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblErrorUsername)
+                    .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblErrorEmail))
-                .addGap(35, 35, 35)
+                    .addGroup(pnlContainerLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(lblErrorEmail)))
+                .addGap(37, 37, 37)
                 .addComponent(btnUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addGap(61, 61, 61))
         );
 
         add(pnlContainer, java.awt.BorderLayout.CENTER);
