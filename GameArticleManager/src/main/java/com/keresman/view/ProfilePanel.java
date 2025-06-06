@@ -91,9 +91,9 @@ public class ProfilePanel extends ProfilePanelDesigner {
         String username = tfUsername.getText().trim();
         String email = tfEmail.getText().trim();
 
-        var userUpdateReq = new UserUpdateReq(userId, username, email, firstName, lastName);
+        var userUpdateReq = new UserUpdateReq(user.getId(), username, email, firstName, lastName);
 
-        Result<Void> userUpdateResult = userService.updateUser(user.getId(), userUpdateReq);
+        Result<Void> userUpdateResult = userService.updateUser(userUpdateReq);
 
         if (!userUpdateResult.isSuccess()) {
             MessageUtils.showErrorMessage("Update failed", userUpdateResult.getMessage());

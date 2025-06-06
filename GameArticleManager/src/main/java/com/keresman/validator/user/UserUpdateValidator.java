@@ -7,7 +7,6 @@ import com.keresman.service.UserRegistrationService;
 import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserUpdateValidator implements Validator<UserUpdateReq> {

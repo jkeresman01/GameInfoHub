@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -38,13 +38,13 @@ public class UserService {
 
     public Result<Void> updateUser(UserUpdateReq userUpdateReq) {
         Validator<UserUpdateReq> userValidator = new UserUpdateValidator(userRepository);
-        
+
         Result<User> validationResult = userValidator.validate(userUpdateReq);
-        
+
         if (!validationResult.isSuccess()) {
             return Result.error(validationResult.getMessage());
         }
-        
+
         try {
             User updatedUser = validationResult.getData().get();
             userRepository.updateById(userUpdateReq.userId(), updatedUser);
@@ -52,6 +52,6 @@ public class UserService {
         } catch (Exception e) {
             return Result.error("Failed to update user with ID: [%d]".formatted(userUpdateReq.userId()));
         }
-        
+
     }
 }

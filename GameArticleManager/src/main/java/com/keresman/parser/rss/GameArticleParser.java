@@ -24,8 +24,6 @@ import javax.xml.stream.events.XMLEvent;
 
 public class GameArticleParser {
 
-//    private static final String RSS_URL = "https://www.gameinformer.com/reviews.xml";
-//    private static final String RSS_URL = "https://www.pcgamesn.com/mainrss.xml";
     private static final String RSS_URL = "https://www.vg247.com/feed";
     private static final String ATTRIBUTE_URL = "url";
     private static final String EXT = ".jpg";

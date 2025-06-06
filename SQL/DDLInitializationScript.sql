@@ -1,4 +1,5 @@
 CREATE DATABASE [GameArticles]
+GO
 USE [GameArticles]
 GO
 /****** Object:  Table [dbo].[Article]    Script Date: 6/6/2025 2:22:48 AM ******/
@@ -558,3 +559,10 @@ BEGIN
 END;
 GO
 
+INSERT INTO [Role] (RoleName) VALUES('Administrator'), ('User')
+SELECT * FROM [User]
+SELECT * FROM [Role]
+
+UPDATE [User] 
+SET RoleID = 1
+WHERE UserID = 2
