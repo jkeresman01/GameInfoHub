@@ -1,22 +1,28 @@
 package com.keresman.view;
 
+import com.keresman.dao.ArticleRepository;
 import com.keresman.dao.RepositoryFactory;
 import com.keresman.dao.UserRepository;
+import com.keresman.model.Article;
 import com.keresman.model.User;
+import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.service.UserService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.AdminPanelDesigner;
 import com.keresman.view.model.UserTableModel;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 
 public class AdminPanel extends AdminPanelDesigner {
 
+    private int selectedUserId;
     private UserService userService;
     private UserTableModel userTableModel;
-    private int selectedUserId;
 
     public AdminPanel() {
         super();
@@ -70,6 +76,21 @@ public class AdminPanel extends AdminPanelDesigner {
 
         User user = result.getData().get();
         lblUsername.setText(user.getUsername());
+    }
+
+    @Override
+    public void btnLoadDbActionPerformed(ActionEvent evt) {
+        try {
+            ArticleRepository articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+            List<Article> articles = articleRepository.findAll();
+
+            if (articles.isEmpty()) {
+                articles = GameArticleParser.parse();
+                articleRepository.saveAll(articles);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

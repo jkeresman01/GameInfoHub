@@ -168,7 +168,7 @@ public final class User implements Comparable<User> {
     }
 
     public boolean isAdmin() {
-        return this.role == Role.ADMIN;
+        return this.role == Role.ADMINISTRATOR;
     }
 
     public Role getRole() {

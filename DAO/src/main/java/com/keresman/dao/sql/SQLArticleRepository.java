@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 
 public class SQLArticleRepository implements ArticleRepository {
 
-    private static final String ARTICLE_ID = "ReviewId";
+    private static final String ARTICLE_ID = "ArticleId";
     private static final String TITLE = "Title";
     private static final String LINK = "Link";
     private static final String DESCRIPTION = "Description";
@@ -59,6 +59,24 @@ public class SQLArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void saveAll(List<Article> articles) throws Exception {
+        DataSource ds = DataSourceSingleton.getInstance();
+        try (Connection con = ds.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ARTICLE)) {
+
+            for (Article article : articles) {
+                stmt.setString(TITLE, article.getTitle());
+                stmt.setString(LINK, article.getLink());
+                stmt.setString(DESCRIPTION, article.getDescription());
+                stmt.setObject(PUB_DATE, article.getPublishedDateTime());
+                stmt.setString(PICTURE_PATH, article.getPicturePath());
+                stmt.registerOutParameter(ARTICLE_ID, Types.INTEGER);
+
+                stmt.executeUpdate();
+            }
+        }
+    }
+
+    @Override
     public void updateById(int id, Article article) throws Exception {
         DataSource ds = DataSourceSingleton.getInstance();
         try (Connection con = ds.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_ARTICLE)) {
@@ -76,8 +94,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(DELETE_ARTICLE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DELETE_ARTICLE)) {
             stmt.setInt(ARTICLE_ID, id);
             stmt.executeUpdate();
         }
@@ -85,8 +102,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
 
             stmt.setInt(ARTICLE_ID, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -101,9 +117,7 @@ public class SQLArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() throws Exception {
         List<Article> articles = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_ALL);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ALL); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 articles.add(articleRowMapper.map(rs));
@@ -115,8 +129,7 @@ public class SQLArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findByTitle(String title) throws Exception {
         List<Article> articles = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_TITLE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_TITLE)) {
 
             stmt.setString(TITLE, title);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -131,8 +144,7 @@ public class SQLArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findByCategoryName(String categoryName) throws Exception {
         List<Article> articles = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_CATEGORY)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_CATEGORY)) {
 
             stmt.setString("CategoryName", categoryName);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -147,8 +159,7 @@ public class SQLArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findByGameId(int gameId) throws Exception {
         List<Article> articles = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_GAME)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_GAME)) {
 
             stmt.setInt("GameId", gameId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -162,8 +173,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public boolean existsByLink(String link) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(EXISTS_BY_LINK)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(EXISTS_BY_LINK)) {
 
             stmt.setString(LINK, link);
             stmt.registerOutParameter(EXISTS, Types.BIT);
@@ -174,8 +184,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public void addCategoryToArticle(int articleId, int categoryId) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(ADD_CATEGORY)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(ADD_CATEGORY)) {
 
             stmt.setInt("ArticleId", articleId);
             stmt.setInt("CategoryId", categoryId);
@@ -185,8 +194,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public void removeCategoryFromArticle(int articleId, int categoryId) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(REMOVE_CATEGORY)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(REMOVE_CATEGORY)) {
 
             stmt.setInt("ArticleId", articleId);
             stmt.setInt("CategoryId", categoryId);
@@ -196,8 +204,7 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public void addGameToArticle(int articleId, int gameId) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(ADD_GAME)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(ADD_GAME)) {
 
             stmt.setInt("ArticleId", articleId);
             stmt.setInt("GameId", gameId);
@@ -207,12 +214,12 @@ public class SQLArticleRepository implements ArticleRepository {
 
     @Override
     public void removeGameFromArticle(int articleId, int gameId) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(REMOVE_GAME)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(REMOVE_GAME)) {
 
             stmt.setInt("ArticleId", articleId);
             stmt.setInt("GameId", gameId);
             stmt.executeUpdate();
         }
     }
+
 }

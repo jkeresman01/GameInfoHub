@@ -68,7 +68,7 @@ public class ProfilePanel extends ProfilePanelDesigner {
         tfEmail.setText(user.getEmail());
         tfUsername.setText(user.getUsername());
 
-        lblProfileImage.setIcon(new ImageIcon(getClass().getResource("/assets/male_default_picture.jpg")));
+        lblProfileImage.setIcon(new ImageIcon(getClass().getResource(user.getPicturePath())));
     }
 
     private void initUserService() throws Exception {

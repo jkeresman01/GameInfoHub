@@ -1,7 +1,7 @@
 package com.keresman.model;
 
 public enum Role {
-  ADMIN,
+  ADMINISTRATOR,
   USER;
 
   public static Role from(String roleName) {

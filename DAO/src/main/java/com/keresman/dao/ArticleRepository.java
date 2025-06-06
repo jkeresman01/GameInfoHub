@@ -8,6 +8,8 @@ public interface ArticleRepository {
 
     int save(Article article) throws Exception;
 
+    void saveAll(List<Article> articles) throws Exception;
+
     void updateById(int id, Article updated) throws Exception;
 
     void deleteById(int id) throws Exception;

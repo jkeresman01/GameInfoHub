@@ -1,5 +1,6 @@
 package com.keresman.view.designer;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
@@ -97,6 +98,7 @@ public abstract class AdminPanelDesigner extends JPanel {
         taStatistics.setBackground(new java.awt.Color(204, 204, 255));
         taStatistics.setColumns(20);
         taStatistics.setForeground(new java.awt.Color(24, 24, 24));
+        taStatistics.setLineWrap(true);
         taStatistics.setRows(5);
         spStatistics.setViewportView(taStatistics);
 
@@ -116,6 +118,11 @@ public abstract class AdminPanelDesigner extends JPanel {
         btnLoadDb.setFont(new java.awt.Font("Tw Cen MT", 1, 14)); // NOI18N
         btnLoadDb.setForeground(new java.awt.Color(255, 255, 255));
         btnLoadDb.setText("LOAD DB");
+        btnLoadDb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadDbActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -180,6 +187,8 @@ public abstract class AdminPanelDesigner extends JPanel {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void btnLoadDbActionPerformed(ActionEvent evt);
 
     public abstract void tblUsersMouseClicked(MouseEvent evt);
 }

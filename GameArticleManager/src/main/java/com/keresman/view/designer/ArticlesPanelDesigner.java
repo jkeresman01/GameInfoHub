@@ -3,6 +3,7 @@ package com.keresman.view.designer;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import javax.swing.event.AncestorEvent;
 
 public abstract class ArticlesPanelDesigner extends JPanel {
 
@@ -62,6 +63,16 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblErrorPubDate = new javax.swing.JLabel();
         lblTitle = new javax.swing.JLabel();
 
+        addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                formAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         pnlPlaceholder.setBackground(new java.awt.Color(24, 24, 24));
 
         lblmage.setBackground(new java.awt.Color(24, 24, 24));
@@ -79,6 +90,11 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblArticles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblArticlesMouseClicked(evt);
+            }
+        });
         spGamesTable.setViewportView(tblArticles);
 
         lblImage.setBackground(new java.awt.Color(44, 44, 44));
@@ -108,6 +124,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
 
         taDescription.setBackground(new java.awt.Color(44, 44, 44));
         taDescription.setColumns(20);
+        taDescription.setLineWrap(true);
         taDescription.setRows(5);
         jScrollPane1.setViewportView(taDescription);
 
@@ -283,6 +300,10 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                     .addGap(0, 8, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void tblArticlesMouseClicked(MouseEvent evt);
+
+    public abstract void formAncestorAdded(AncestorEvent evt);
 
     public abstract void btnAddActionPerformed(ActionEvent evt);
 

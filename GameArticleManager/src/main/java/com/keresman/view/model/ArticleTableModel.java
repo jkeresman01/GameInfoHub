@@ -1,24 +1,24 @@
 package com.keresman.view.model;
 
-import com.keresman.model.User;
+import com.keresman.model.Article;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-public class UserTableModel extends AbstractTableModel {
+public class ArticleTableModel extends AbstractTableModel{
 
     private static final String[] COLUMS = {
-        "Id", "First name", "Last name", "Username", "Gender", "Email", "Active"
+        "Id", "Title", "Link", "Published date", "Picture Path"
     };
 
-    private List<User> users;
+    private List<Article> articles;
 
-    public UserTableModel(List<User> users) {
-        setUsers(users);
+    public ArticleTableModel(List<Article> articles) {
+        setAricles(articles);
     }
 
     @Override
     public int getRowCount() {
-        return users.size();
+        return articles.size();
     }
 
     @Override
@@ -28,22 +28,20 @@ public class UserTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        User user = users.get(rowIndex);
+        Article article = articles.get(rowIndex);
         
         return switch (columnIndex) {
-            case 0 -> user.getId();
-            case 1 -> user.getFirstName();
-            case 2 -> user.getLastName();
-            case 3 -> user.getUsername();
-            case 4 -> user.getGender();
-            case 5 -> user.getEmail();
-            case 6 -> user.isActive() ? "YES" : "NO";
+            case 0 -> article.getArticleId();
+            case 1 -> article.getTitle();
+            case 2 -> article.getLink();
+            case 3 -> article.getPublishedDateTime();
+            case 4 -> article.getPicturePath();
             default -> null;
         };
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setAricles(List<Article> articles) {
+        this.articles = articles;
         fireTableDataChanged();
     }
 
@@ -60,4 +58,5 @@ public class UserTableModel extends AbstractTableModel {
 
         return super.getColumnClass(columnIndex);
     }
+    
 }
