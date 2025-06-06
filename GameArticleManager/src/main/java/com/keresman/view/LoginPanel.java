@@ -9,7 +9,7 @@ import com.keresman.session.SessionManager;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
-import com.keresman.validator.login.UserLoginValidator;
+import com.keresman.validator.user.UserLoginValidator;
 import com.keresman.view.designer.LoginPanelDesigner;
 import java.awt.Window;
 import java.awt.event.ActionEvent;

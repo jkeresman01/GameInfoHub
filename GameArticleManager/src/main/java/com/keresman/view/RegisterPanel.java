@@ -8,7 +8,7 @@ import com.keresman.service.UserRegistrationService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.validator.Validator;
-import com.keresman.validator.register.UserRegistrationValidator;
+import com.keresman.validator.user.UserRegistrationValidator;
 import com.keresman.view.designer.RegisterPanelDesigner;
 import java.awt.event.ActionEvent;
 import java.util.Map;

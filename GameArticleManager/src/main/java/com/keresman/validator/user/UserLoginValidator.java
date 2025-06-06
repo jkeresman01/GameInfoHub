@@ -1,4 +1,4 @@
-package com.keresman.validator.login;
+package com.keresman.validator.user;
 
 import com.keresman.dao.UserRepository;
 import com.keresman.payload.UserLoginReq;

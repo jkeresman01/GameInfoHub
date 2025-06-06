@@ -1,3 +1,4 @@
+CREATE DATABASE [GameArticles]
 USE [GameArticles]
 GO
 /****** Object:  Table [dbo].[Article]    Script Date: 6/6/2025 2:22:48 AM ******/

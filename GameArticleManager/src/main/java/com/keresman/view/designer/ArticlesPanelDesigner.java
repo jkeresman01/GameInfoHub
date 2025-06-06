@@ -131,6 +131,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblPubDate.setFont(new java.awt.Font("Tw Cen MT", 1, 12)); // NOI18N
         lblPubDate.setText("Published date");
 
+        tfPubDate.setEditable(false);
         tfPubDate.setBackground(new java.awt.Color(44, 44, 44));
 
         tfTitle.setBackground(new java.awt.Color(44, 44, 44));
