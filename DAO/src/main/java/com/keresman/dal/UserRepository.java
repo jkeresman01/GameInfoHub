@@ -1,4 +1,4 @@
-package com.keresman.dao;
+package com.keresman.dal;
 
 import com.keresman.model.User;
 import java.util.List;

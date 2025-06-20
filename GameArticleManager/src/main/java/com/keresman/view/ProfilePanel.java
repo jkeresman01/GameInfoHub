@@ -1,8 +1,8 @@
 package com.keresman.view;
 
 import com.keresman.view.designer.ProfilePanelDesigner;
-import com.keresman.dao.RepositoryFactory;
-import com.keresman.dao.UserRepository;
+import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
 import com.keresman.model.User;
 import com.keresman.payload.UserUpdateReq;
 import com.keresman.service.UserService;

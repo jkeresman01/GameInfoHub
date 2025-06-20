@@ -1,7 +1,7 @@
 package com.keresman.view;
 
-import com.keresman.dao.ArticleRepository;
-import com.keresman.dao.RepositoryFactory;
+import com.keresman.dal.ArticleRepository;
+import com.keresman.dal.RepositoryFactory;
 import com.keresman.model.Article;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.ArticlesPanelDesigner;

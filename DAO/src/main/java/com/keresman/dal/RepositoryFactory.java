@@ -1,4 +1,4 @@
-package com.keresman.dao;
+package com.keresman.dal;
 
 import java.io.InputStream;
 import java.util.HashMap;

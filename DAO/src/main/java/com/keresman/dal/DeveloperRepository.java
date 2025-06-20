@@ -1,4 +1,4 @@
-package com.keresman.dao;
+package com.keresman.dal;
 
 public class DeveloperRepository {
     

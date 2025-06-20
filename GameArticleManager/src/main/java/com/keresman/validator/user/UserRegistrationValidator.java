@@ -1,6 +1,6 @@
 package com.keresman.validator.user;
 
-import com.keresman.dao.UserRepository;
+import com.keresman.dal.UserRepository;
 import com.keresman.payload.UserRegistrationReq;
 import com.keresman.service.UserRegistrationService;
 import com.keresman.validator.Result;

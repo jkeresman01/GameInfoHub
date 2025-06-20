@@ -1,7 +1,7 @@
 package com.keresman.view;
 
-import com.keresman.dao.RepositoryFactory;
-import com.keresman.dao.UserRepository;
+import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
 import com.keresman.payload.UserRegistrationReq;
 import com.keresman.model.Gender;
 import com.keresman.service.UserRegistrationService;

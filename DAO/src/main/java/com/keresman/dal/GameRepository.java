@@ -1,4 +1,4 @@
-package com.keresman.dao;
+package com.keresman.dal;
 
 import com.keresman.model.Game;
 import java.util.List;

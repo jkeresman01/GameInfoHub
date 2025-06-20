@@ -9,7 +9,7 @@ public class Application {
 
     public static void main(String args[]) throws Exception {
         SwingUtils.setLookAndFeel(new FlatMacDarkLaf());
-        EventQueue.invokeLater(()-> new WelcomeScreen().setVisible(true));
+        EventQueue.invokeLater(() -> new WelcomeScreen().setVisible(true));
     }
 //        List<Article> results = GameArticleParser.parse();
 //        results.stream()

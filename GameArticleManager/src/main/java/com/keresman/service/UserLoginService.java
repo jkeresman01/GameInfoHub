@@ -1,6 +1,6 @@
 package com.keresman.service;
 
-import com.keresman.dao.UserRepository;
+import com.keresman.dal.UserRepository;
 import com.keresman.model.User;
 import com.keresman.payload.UserLoginReq;
 import com.keresman.utilities.BCryptUtils;

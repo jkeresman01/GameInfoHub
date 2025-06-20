@@ -1,6 +1,6 @@
 package com.keresman.dao.sql;
 
-import com.keresman.dao.ArticleRepository;
+import com.keresman.dal.ArticleRepository;
 import com.keresman.mapper.ArticleRowMapper;
 import com.keresman.mapper.RowMapper;
 import com.keresman.model.Article;

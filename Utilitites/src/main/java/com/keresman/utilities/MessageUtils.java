@@ -9,15 +9,27 @@ public class MessageUtils {
   }
 
   public static void showInformationMessage(String title, String message) {
-    JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(
+            null, 
+            message, 
+            title, 
+            JOptionPane.INFORMATION_MESSAGE);
   }
 
   public static void showWarningMessage(String title, String message) {
-    JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    JOptionPane.showMessageDialog(
+            null, 
+            message, 
+            title, 
+            JOptionPane.WARNING_MESSAGE);
   }
 
   public static void showErrorMessage(String title, String message) {
-    JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(
+            null, 
+            message, 
+            title, 
+            JOptionPane.ERROR_MESSAGE);
   }
 
   public static boolean showConfirmDialog(String title, String message) {

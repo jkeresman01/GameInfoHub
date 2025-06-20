@@ -1,6 +1,6 @@
 package com.keresman.dao.sql;
 
-import com.keresman.dao.UserRepository;
+import com.keresman.dal.UserRepository;
 import com.keresman.mapper.UserRowMapper;
 import com.keresman.model.User;
 import java.sql.CallableStatement;
