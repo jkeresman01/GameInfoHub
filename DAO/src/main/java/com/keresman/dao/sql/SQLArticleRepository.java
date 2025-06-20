@@ -22,7 +22,9 @@ public class SQLArticleRepository implements ArticleRepository {
     private static final String PUB_DATE = "PubDate";
     private static final String PICTURE_PATH = "PicturePath";
     private static final String EXISTS = "Exists";
-
+    private static final String CATEGORY_ID = "CategoryId";
+    private static final String GAME_ID = "GameId";
+    
     private static final String CREATE_ARTICLE = "{ CALL uspCreateArticle (?,?,?,?,?,?) }";
     private static final String UPDATE_ARTICLE = "{ CALL uspUpdateArticleWithId (?,?,?,?,?,?) }";
     private static final String DELETE_ARTICLE = "{ CALL uspDeleteArticleWithId (?) }";
@@ -161,7 +163,7 @@ public class SQLArticleRepository implements ArticleRepository {
         List<Article> articles = new ArrayList<>();
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_GAME)) {
 
-            stmt.setInt("GameId", gameId);
+            stmt.setInt(GAME_ID, gameId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     articles.add(articleRowMapper.map(rs));
@@ -186,8 +188,8 @@ public class SQLArticleRepository implements ArticleRepository {
     public void addCategoryToArticle(int articleId, int categoryId) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(ADD_CATEGORY)) {
 
-            stmt.setInt("ArticleId", articleId);
-            stmt.setInt("CategoryId", categoryId);
+            stmt.setInt(ARTICLE_ID, articleId);
+            stmt.setInt(CATEGORY_ID, categoryId);
             stmt.executeUpdate();
         }
     }
@@ -196,8 +198,8 @@ public class SQLArticleRepository implements ArticleRepository {
     public void removeCategoryFromArticle(int articleId, int categoryId) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(REMOVE_CATEGORY)) {
 
-            stmt.setInt("ArticleId", articleId);
-            stmt.setInt("CategoryId", categoryId);
+            stmt.setInt(ARTICLE_ID, articleId);
+            stmt.setInt(CATEGORY_ID, categoryId);
             stmt.executeUpdate();
         }
     }
@@ -206,8 +208,8 @@ public class SQLArticleRepository implements ArticleRepository {
     public void addGameToArticle(int articleId, int gameId) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(ADD_GAME)) {
 
-            stmt.setInt("ArticleId", articleId);
-            stmt.setInt("GameId", gameId);
+            stmt.setInt(ARTICLE_ID, articleId);
+            stmt.setInt(GAME_ID, gameId);
             stmt.executeUpdate();
         }
     }
@@ -216,8 +218,8 @@ public class SQLArticleRepository implements ArticleRepository {
     public void removeGameFromArticle(int articleId, int gameId) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(REMOVE_GAME)) {
 
-            stmt.setInt("ArticleId", articleId);
-            stmt.setInt("GameId", gameId);
+            stmt.setInt(ARTICLE_ID, articleId);
+            stmt.setInt(GAME_ID, gameId);
             stmt.executeUpdate();
         }
     }

@@ -1,18 +1,47 @@
 package com.keresman.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement(name = "articles")
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class Article {
 
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE;
+
+    @XmlElement(name = "articleid")
     private int articleId;
+
+    @XmlElement(name = "title")
     private String title;
+
+    @XmlElement(name = "link")
     private String link;
+
+    @XmlElement(name = "description")
     private String description;
+
+    @XmlElement(name = "publisheddatetime")
+    @XmlJavaTypeAdapter(ArticlePublishedDateAdapter.class)
     private LocalDateTime publishedDateTime;
+
+    @XmlElementWrapper
+    @XmlElement(name = "category")
     private List<Category> categories = new ArrayList<>();
+
+    @XmlElementWrapper
+    @XmlElement(name = "game")
     private List<Game> games = new ArrayList<>();
+
+    @XmlElement(name = "picturePath")
     private String picturePath;
 
     public Article() {

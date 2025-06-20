@@ -20,6 +20,6 @@ public class ArticleRowMapper implements RowMapper<Article>{
     }
 
     private LocalDateTime toLocalDateTime(Timestamp ts) {
-        return ts != null ? ts.toLocalDateTime() : null;
+        return ts != null ? ts.toLocalDateTime(): null;
     }       
 }
