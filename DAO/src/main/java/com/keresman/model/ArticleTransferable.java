@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class ArticleTransferable implements Transferable {
 
-    public static final DataFlavor ARTICLE_FLAVOUR = new DataFlavor(Article.class, "Author");
+    public static final DataFlavor ARTICLE_FLAVOUR = new DataFlavor(Article.class, "Article");
     private static final DataFlavor[] SUPPORTED_FLAVORS = {ARTICLE_FLAVOUR};
 
     private final Article article;

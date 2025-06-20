@@ -10,21 +10,22 @@ public abstract class GameArticleManagerDesigner extends JFrame {
     protected javax.swing.JMenu mExport;
     protected javax.swing.JMenu mHelp;
     protected javax.swing.JMenu mLogout;
-    private javax.swing.JMenu mLookAndFeel;
+    protected javax.swing.JMenu mLookAndFeel;
+    protected javax.swing.JMenu mUserArchive;
     protected javax.swing.JMenuBar mbMainMenu;
     protected javax.swing.JMenu miAbout;
-    protected javax.swing.JMenu miExportJson;
-    private javax.swing.JMenu miExportXML;
+    protected javax.swing.JMenu miArticleArchive;
+    protected javax.swing.JMenu miGameArchive;
     protected javax.swing.JMenu miHelp;
     protected javax.swing.JMenu miLogout;
     protected javax.swing.JTabbedPane tpMain;
     // End of variables declaration//GEN-END:variables
 
-  public GameArticleManagerDesigner() {
-    initComponents();
-  }
+    public GameArticleManagerDesigner() {
+        initComponents();
+    }
 
-  @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -36,8 +37,9 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         miHelp = new javax.swing.JMenu();
         mLookAndFeel = new javax.swing.JMenu();
         mExport = new javax.swing.JMenu();
-        miExportXML = new javax.swing.JMenu();
-        miExportJson = new javax.swing.JMenu();
+        mUserArchive = new javax.swing.JMenu();
+        miGameArchive = new javax.swing.JMenu();
+        miArticleArchive = new javax.swing.JMenu();
         mLogout = new javax.swing.JMenu();
         miLogout = new javax.swing.JMenu();
 
@@ -74,21 +76,29 @@ public abstract class GameArticleManagerDesigner extends JFrame {
 
         mExport.setText("Export");
 
-        miExportXML.setText("XML export");
-        miExportXML.addMouseListener(new java.awt.event.MouseAdapter() {
+        mUserArchive.setText("User Archive");
+        mUserArchive.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                miExportXMLMouseClicked(evt);
+                mUserArchiveMouseClicked(evt);
             }
         });
-        mExport.add(miExportXML);
+        mExport.add(mUserArchive);
 
-        miExportJson.setText("JSON export");
-        miExportJson.addMouseListener(new java.awt.event.MouseAdapter() {
+        miGameArchive.setText("Game Archive");
+        miGameArchive.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                miExportJsonMouseClicked(evt);
+                miGameArchiveMouseClicked(evt);
             }
         });
-        mExport.add(miExportJson);
+        mExport.add(miGameArchive);
+
+        miArticleArchive.setText("Article Archive");
+        miArticleArchive.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                miArticleArchiveMouseClicked(evt);
+            }
+        });
+        mExport.add(miArticleArchive);
 
         mbMainMenu.add(mExport);
 
@@ -110,13 +120,11 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void miExportXMLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miExportXMLMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_miExportXMLMouseClicked
+    public abstract void mUserArchiveMouseClicked(MouseEvent evt);
 
-    private void miExportJsonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miExportJsonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_miExportJsonMouseClicked
+    public abstract void miGameArchiveMouseClicked(MouseEvent evt);
 
-  public abstract void miLogoutMouseClicked(MouseEvent evt);
+    public abstract void miArticleArchiveMouseClicked(MouseEvent evt);
+
+    public abstract void miLogoutMouseClicked(MouseEvent evt);
 }

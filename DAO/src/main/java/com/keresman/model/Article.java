@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "articles")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Article {
+public final class Article implements Comparable<Article>{
 
     public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE;
 
@@ -47,6 +47,12 @@ public final class Article {
     public Article() {
     }
 
+    public Article(int articleId, String title) {
+        this.articleId = articleId;
+        this.title = title;
+    }
+
+    
     public Article(
             String title,
             String link,
@@ -152,6 +158,11 @@ public final class Article {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    @Override
+    public int compareTo(Article o) {
+        return Integer.compare(articleId, o.articleId);
     }
 
 }

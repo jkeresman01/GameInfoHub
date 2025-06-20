@@ -1,11 +1,39 @@
 package com.keresman.view;
 
+import com.keresman.dal.ArticleRepository;
+import com.keresman.dal.GameRepository;
+import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
+import com.keresman.model.Article;
+import com.keresman.model.ArticleArchive;
+import com.keresman.model.Game;
+import com.keresman.model.GameArchive;
+import com.keresman.model.User;
+import com.keresman.model.UserArchive;
+import com.keresman.service.ArticleService;
+import com.keresman.service.GameService;
+import com.keresman.service.UserService;
 import com.keresman.session.SessionManager;
+import com.keresman.utilities.JAXBUtils;
+import com.keresman.utilities.MessageUtils;
+import com.keresman.validator.Result;
 import com.keresman.view.designer.GameArticleManagerDesigner;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.xml.bind.JAXBException;
 
 public class GameArticleManager extends GameArticleManagerDesigner {
+
+    private static final String USER_ARCHIVE_FILENAME = "src/main/resources/assets/archives/userarchive.xml";
+    private static final String ARTICLES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/articlesarchive.xml";
+    private static final String GAMES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/gamesarchive.xml";
 
     private static final String PROFILE = "Profile";
     private static final String FAVOURITES = "Favourites";
@@ -14,9 +42,27 @@ public class GameArticleManager extends GameArticleManagerDesigner {
     private static final String ARTICLES = "Articles";
     private static final String ADMIN = "Admin";
 
+    private UserService userService;
+    private GameService gameService;
+    private ArticleService articleService;
+
     public GameArticleManager() {
         super();
-        initPanels();
+        init();
+    }
+
+    private void init() {
+
+        try {
+            initPanels();
+            initServices();
+            handleLookAndFeel();
+        } catch (Exception ex) {
+            Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+            System.exit(1);
+        }
+
     }
 
     private void initPanels() {
@@ -31,10 +77,140 @@ public class GameArticleManager extends GameArticleManagerDesigner {
         tpMain.add(PROFILE, new ProfilePanel());
     }
 
+    private void initServices() throws Exception {
+        initUserService();
+        initGameService();
+        initArticleService();
+
+    }
+
+    private void initUserService() throws Exception {
+        UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
+        userService = new UserService(userRepository);
+    }
+
+    private void initGameService() throws Exception {
+        GameRepository gameRepostitory = RepositoryFactory.getInstance(GameRepository.class);
+        gameService = new GameService(gameRepostitory);
+    }
+
+    private void initArticleService() throws Exception {
+        ArticleRepository articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+        articleService = new ArticleService(articleRepository);
+    }
+
     @Override
     public void miLogoutMouseClicked(MouseEvent evt) {
         SessionManager.getInstance().clear();
         dispose();
         SwingUtilities.invokeLater(() -> new WelcomeScreen().setVisible(true));
     }
+
+    private void handleLookAndFeel() {
+        ButtonGroup bgLookFeel = new ButtonGroup();
+        Arrays.stream(UIManager.getInstalledLookAndFeels())
+                .forEach(lf -> addLookAndFeelOption(bgLookFeel, lf));
+    }
+
+    private void addLookAndFeelOption(ButtonGroup group, UIManager.LookAndFeelInfo lf) {
+        JRadioButtonMenuItem menuItem = createLookAndFeelMenuItem(lf);
+        group.add(menuItem);
+        mLookAndFeel.add(menuItem);
+    }
+
+    private JRadioButtonMenuItem createLookAndFeelMenuItem(UIManager.LookAndFeelInfo lf) {
+        JRadioButtonMenuItem mi = new JRadioButtonMenuItem(lf.getName());
+
+        if ("Nimbus".equals(lf.getName())) {
+            mi.setSelected(true);
+        }
+
+        mi.addActionListener(e -> applyLookAndFeel(lf.getClassName()));
+        return mi;
+    }
+
+    private void applyLookAndFeel(String className) {
+        try {
+            UIManager.setLookAndFeel(className);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception ex) {
+            Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void mUserArchiveMouseClicked(MouseEvent evt) {
+        new Thread(this::exportUserArchive).start();
+    }
+
+    private void exportUserArchive() {
+        Result<List<User>> result = userService.getAllUsers();
+
+        if (!result.isSuccess()) {
+            notifyError("Failed to export user archive");
+            return;
+        }
+
+        try {
+            JAXBUtils.save(new UserArchive(result.getData().get()), USER_ARCHIVE_FILENAME);
+            notifySuccess("User archive successfully exported!");
+        } catch (JAXBException ex) {
+            notifyError("Failed to export user archive:\n%s".formatted(ex.getMessage()));
+        }
+    }
+
+    @Override
+    public void miGameArchiveMouseClicked(MouseEvent evt) {
+        new Thread(this::exportGameArchive).start();
+    }
+
+    private void exportGameArchive() {
+        Result<List<Game>> result = gameService.getAllGames();
+
+        if (!result.isSuccess()) {
+            notifyError("Failed to export game archive");
+            return;
+        }
+
+        try {
+            JAXBUtils.save(new GameArchive(result.getData().get()), GAMES_ARCHIVE_FILENAME);
+            notifySuccess("Game archive successfully exported!");
+        } catch (JAXBException ex) {
+            notifyError("Failed to export game archive:\n%s".formatted(ex.getMessage()));
+        }
+    }
+
+    @Override
+    public void miArticleArchiveMouseClicked(MouseEvent evt) {
+        new Thread(this::exportArticleArchive).start();
+    }
+
+    private void exportArticleArchive() {
+        Result<List<Article>> result = articleService.getAllArticles();
+
+        if (!result.isSuccess()) {
+            notifyError("Failed to export article archive");
+            return;
+        }
+
+        try {
+            saveArticleArchive(result.getData().get());
+            notifySuccess("Article archive successfully exported!");
+        } catch (JAXBException ex) {
+            notifyError("Failed to export article archive:\n%s".formatted(ex.getMessage()));
+        }
+    }
+
+    private void saveArticleArchive(List<Article> articles) throws JAXBException {
+        JAXBUtils.save(new ArticleArchive(articles), ARTICLES_ARCHIVE_FILENAME);
+    }
+
+    private void notifySuccess(String message) {
+        SwingUtilities.invokeLater(() -> MessageUtils.showInformationMessage("INFO", message));
+    }
+
+    private void notifyError(String message) {
+        SwingUtilities.invokeLater(() -> MessageUtils.showErrorMessage("ERROR", message));
+    }
+
 }

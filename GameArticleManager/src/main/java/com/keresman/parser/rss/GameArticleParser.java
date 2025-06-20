@@ -6,6 +6,7 @@ import com.keresman.model.Article;
 import com.keresman.model.Category;
 import com.keresman.model.Game;
 import com.keresman.utilities.GameUtils;
+import com.keresman.utilities.HtmlUtils;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
@@ -70,27 +71,31 @@ public class GameArticleParser {
                                 case LINK ->
                                     article.setLink(data);
                                 case DESCRIPTION ->
-                                    article.setDescription(data);
+                                    article.setDescription(HtmlUtils.stripHtml(data));
                                 case PUB_DATE ->
                                     article.setPublishedDateTime(LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME));
-                                case CATEGORY -> {
-                                    article.addCategory(new Category(data));
-                                    Optional<String> extractGameName = GameUtils.extractGameName(data);
-                                    if (extractGameName.isPresent()) {
-                                        article.addGame(new Game(extractGameName.get()));
-                                    }
-                                }
+                                case CATEGORY ->
+                                    handleCategory(article, data);
                                 case CONTENT ->
                                     handleContent(article, startElement);
                             }
                         }
                         break;
                 }
-
             }
         }
 
         return reviews;
+    }
+
+    private static void handleCategory(Article article, String data) {
+        article.addCategory(new Category(data));
+        Optional<String> extractGameName = GameUtils.extractGameName(data);
+
+        if (extractGameName.isPresent()) {
+            article.addGame(new Game(extractGameName.get()));
+        }
+
     }
 
     private static void handleContent(Article article, StartElement startElement) {

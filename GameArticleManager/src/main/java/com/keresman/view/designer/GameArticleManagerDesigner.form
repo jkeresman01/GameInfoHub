@@ -55,6 +55,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Look and Feel"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+          </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mExport">
           <Properties>
@@ -64,23 +67,34 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
           </AuxValues>
           <SubComponents>
-            <Menu class="javax.swing.JMenu" name="miExportXML">
+            <Menu class="javax.swing.JMenu" name="mUserArchive">
               <Properties>
-                <Property name="text" type="java.lang.String" value="XML export"/>
+                <Property name="text" type="java.lang.String" value="User Archive"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="miExportXMLMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mUserArchiveMouseClicked"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
               </AuxValues>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="miExportJson">
+            <Menu class="javax.swing.JMenu" name="miGameArchive">
               <Properties>
-                <Property name="text" type="java.lang.String" value="JSON export"/>
+                <Property name="text" type="java.lang.String" value="Game Archive"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="miExportJsonMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="miGameArchiveMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="miArticleArchive">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Article Archive"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="miArticleArchiveMouseClicked"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>

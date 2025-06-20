@@ -3,7 +3,7 @@ package com.keresman.model;
 import java.time.LocalDateTime;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class ArticlePublishedDateAdapter extends XmlAdapter<String, LocalDateTime> {
+public class UserDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 
     @Override
     public LocalDateTime unmarshal(String text) throws Exception {

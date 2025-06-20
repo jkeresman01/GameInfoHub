@@ -24,7 +24,8 @@ public class SQLArticleRepository implements ArticleRepository {
     private static final String EXISTS = "Exists";
     private static final String CATEGORY_ID = "CategoryId";
     private static final String GAME_ID = "GameId";
-    
+    private static final String CATEGORY_NAME = "CategoryName";
+
     private static final String CREATE_ARTICLE = "{ CALL uspCreateArticle (?,?,?,?,?,?) }";
     private static final String UPDATE_ARTICLE = "{ CALL uspUpdateArticleWithId (?,?,?,?,?,?) }";
     private static final String DELETE_ARTICLE = "{ CALL uspDeleteArticleWithId (?) }";
@@ -148,7 +149,7 @@ public class SQLArticleRepository implements ArticleRepository {
         List<Article> articles = new ArrayList<>();
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_CATEGORY)) {
 
-            stmt.setString("CategoryName", categoryName);
+            stmt.setString(CATEGORY_NAME, categoryName);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     articles.add(articleRowMapper.map(rs));

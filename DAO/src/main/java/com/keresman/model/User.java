@@ -1,21 +1,56 @@
 package com.keresman.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement(name = "articlearchive")
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class User implements Comparable<User> {
 
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE;
+
+    @XmlElement(name = "userid")
     private int userId;
+
+    @XmlElement(name = "firstname")
     private String firstName;
+
+    @XmlElement(name = "lastname")
     private String lastName;
+
+    @XmlElement(name = "username")
     private String username;
+
+    @XmlElement(name = "passwordhash")
     private String passwordHash;
+
+    @XmlElement(name = "email")
     private String email;
+
+    @XmlElement(name = "role")
     private Role role;
+
+    @XmlElement(name = "gender")
     private Gender gender = Gender.OTHER;
+
+    @XmlElement(name = "picturepath")
     private String picturePath;
+
+    @XmlElement(name = "createdat")
+    @XmlJavaTypeAdapter(UserDateTimeAdapter.class)
     private LocalDateTime createdAt;
+
+    @XmlElement(name = "updatedat")
+    @XmlJavaTypeAdapter(UserDateTimeAdapter.class)
     private LocalDateTime updatedAt;
+
+    @XmlElement(name = "isactive")
     private boolean isActive;
 
     public User() {
@@ -63,18 +98,18 @@ public final class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return "User{" 
-                + "userId=" + userId 
-                + ", firstName=" + firstName 
+        return "User{"
+                + "userId=" + userId
+                + ", firstName=" + firstName
                 + ", lastName=" + lastName
-                + ", username=" + username 
+                + ", username=" + username
                 + ", passwordHash=" + passwordHash
                 + ", email=" + email
-                + ", role=" + role 
-                + ", gender=" + gender 
+                + ", role=" + role
+                + ", gender=" + gender
                 + ", picturePath=" + picturePath
-                + ", createdAt=" + createdAt 
-                + ", updatedAt=" + updatedAt 
+                + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt
                 + ", isActive=" + isActive + '}';
     }
 
@@ -104,7 +139,7 @@ public final class User implements Comparable<User> {
 
     @Override
     public int compareTo(User o) {
-        return this.username.compareToIgnoreCase(o.username);
+        return Integer.compare(userId, o.userId);
     }
 
     public int getId() {
