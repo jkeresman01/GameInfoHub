@@ -138,8 +138,8 @@ public abstract class ProfilePanelDesigner extends JPanel {
         lblFavouriteGames.setText("Games");
         lblFavouriteGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
 
-        lsFavGames.setBackground(new java.awt.Color(204, 204, 255));
-        lsFavGames.setForeground(new java.awt.Color(24, 24, 24));
+        lsFavGames.setBackground(new java.awt.Color(44, 44, 44));
+        lsFavGames.setForeground(new java.awt.Color(255, 255, 255));
         spFavGames.setViewportView(lsFavGames);
 
         lblFavouriteArticles.setBackground(new java.awt.Color(24, 24, 24));
@@ -148,8 +148,8 @@ public abstract class ProfilePanelDesigner extends JPanel {
         lblFavouriteArticles.setText("Articles");
         lblFavouriteArticles.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
 
-        lsFavArticles.setBackground(new java.awt.Color(204, 204, 255));
-        lsFavArticles.setForeground(new java.awt.Color(24, 24, 24));
+        lsFavArticles.setBackground(new java.awt.Color(44, 44, 44));
+        lsFavArticles.setForeground(new java.awt.Color(255, 255, 255));
         spFavArticles.setViewportView(lsFavArticles);
 
         lblFavouriteDevelopers.setBackground(new java.awt.Color(24, 24, 24));
@@ -158,8 +158,8 @@ public abstract class ProfilePanelDesigner extends JPanel {
         lblFavouriteDevelopers.setText("Developers");
         lblFavouriteDevelopers.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
 
-        lsFavDevelopers.setBackground(new java.awt.Color(204, 204, 255));
-        lsFavDevelopers.setForeground(new java.awt.Color(24, 24, 24));
+        lsFavDevelopers.setBackground(new java.awt.Color(44, 44, 44));
+        lsFavDevelopers.setForeground(new java.awt.Color(255, 255, 255));
         spFavDevelopers.setViewportView(lsFavDevelopers);
 
         javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);

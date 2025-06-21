@@ -67,7 +67,7 @@ public class GameArticleManager extends GameArticleManagerDesigner {
 
     private void initPanels() {
         if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
-            tpMain.add(ADMIN, new AdminPanel());
+            tpMain.add(ADMIN, new AdminPanelManager());
         }
 
         tpMain.add(GAMES, new GamesPanel());

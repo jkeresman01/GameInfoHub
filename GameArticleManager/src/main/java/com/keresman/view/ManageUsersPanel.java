@@ -9,7 +9,7 @@ import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.service.UserService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
-import com.keresman.view.designer.AdminPanelDesigner;
+import com.keresman.view.designer.ManageUsersPanelDesigner;
 import com.keresman.view.model.UserTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -18,13 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 
-public class AdminPanel extends AdminPanelDesigner {
+public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
     private int selectedUserId;
     private UserService userService;
     private UserTableModel userTableModel;
 
-    public AdminPanel() {
+    public ManageUsersPanel() {
         super();
         init();
     }
@@ -75,7 +75,11 @@ public class AdminPanel extends AdminPanelDesigner {
         }
 
         User user = result.getData().get();
-        lblUsername.setText(user.getUsername());
+        
+        tfUsername.setText(user.getUsername());
+        tfFirstName.setText(user.getFirstName());
+        tfLastName.setText(user.getLastName());
+        tfEmail.setText(user.getEmail());
     }
 
     @Override
@@ -89,7 +93,7 @@ public class AdminPanel extends AdminPanelDesigner {
                 articleRepository.saveAll(articles);
             }
         } catch (Exception ex) {
-            Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageUsersPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
