@@ -8,10 +8,11 @@ import javax.swing.event.AncestorEvent;
 public abstract class ArticlesPanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JButton brnComment;
     protected javax.swing.JButton btnAdd;
     protected javax.swing.JButton btnClear;
+    protected javax.swing.JButton btnComment;
     protected javax.swing.JButton btnDelete;
+    protected javax.swing.JButton btnReport;
     protected javax.swing.JButton btnUpdate;
     protected javax.swing.JScrollPane jScrollPane1;
     protected javax.swing.JLabel lblArticles;
@@ -65,7 +66,8 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblErrorPubDate = new javax.swing.JLabel();
         lblTitle = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
-        brnComment = new javax.swing.JButton();
+        btnReport = new javax.swing.JButton();
+        btnComment = new javax.swing.JButton();
 
         addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -198,13 +200,23 @@ public abstract class ArticlesPanelDesigner extends JPanel {
             }
         });
 
-        brnComment.setBackground(new java.awt.Color(204, 102, 255));
-        brnComment.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
-        brnComment.setForeground(new java.awt.Color(24, 24, 24));
-        brnComment.setText("| Comment |");
-        brnComment.addActionListener(new java.awt.event.ActionListener() {
+        btnReport.setBackground(new java.awt.Color(255, 102, 102));
+        btnReport.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(24, 24, 24));
+        btnReport.setText("X Report X");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                brnCommentActionPerformed(evt);
+                btnReportActionPerformed(evt);
+            }
+        });
+
+        btnComment.setBackground(new java.awt.Color(204, 102, 255));
+        btnComment.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
+        btnComment.setForeground(new java.awt.Color(24, 24, 24));
+        btnComment.setText("| Comment |");
+        btnComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCommentActionPerformed(evt);
             }
         });
 
@@ -233,13 +245,15 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                                                 .addComponent(lblErrorDesription, javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(lblErrorPubDate, javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addGroup(pnlPlaceholderLayout.createSequentialGroup()
-                                                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(54, 54, 54)
+                                                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                                                    .addGap(18, 18, 18)
                                                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                                                    .addGap(31, 31, 31)
                                                     .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(33, 33, 33)
-                                                    .addComponent(brnComment))
+                                                    .addGap(24, 24, 24)
+                                                    .addComponent(btnComment)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(btnReport))
                                                 .addComponent(jScrollPane1)
                                                 .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                     .addComponent(lblErrorTitle)
@@ -299,7 +313,8 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                             .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(brnComment, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnComment, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -335,13 +350,11 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClearActionPerformed
+    public abstract void btnClearActionPerformed(ActionEvent evt);
 
-    private void brnCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnCommentActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_brnCommentActionPerformed
+    public abstract void btnReportActionPerformed(ActionEvent evt);
+
+    public abstract void btnCommentActionPerformed(ActionEvent evt);
 
     public abstract void tblArticlesMouseClicked(MouseEvent evt);
 

@@ -3,10 +3,13 @@ package com.keresman.view;
 import com.keresman.dal.ArticleRepository;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.model.Article;
+import com.keresman.model.Comment;
+import com.keresman.model.CommentAddable;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.ArticlesPanelDesigner;
 import com.keresman.view.designer.RegisterPanelDesigner;
 import com.keresman.view.model.ArticleTableModel;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -14,12 +17,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.text.JTextComponent;
 
-public class ArticlesPanel extends ArticlesPanelDesigner {
+public class ArticlesPanel extends ArticlesPanelDesigner implements CommentAddable {
 
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
@@ -131,19 +136,41 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         ArticleRepository articleRepository;
         try {
             articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
-            
-            Optional<Article>optArticle = articleRepository.findById(selectedArticleId);
-            
+
+            Optional<Article> optArticle = articleRepository.findById(selectedArticleId);
+
             if (optArticle.isPresent()) {
                 tfTitle.setText(optArticle.get().getTitle());
                 tfLink.setText(optArticle.get().getLink());
                 taDescription.setText(optArticle.get().getDescription());
                 tfPubDate.setText(optArticle.get().getPublishedDateTime().toString());
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+    }
+
+    @Override
+    public void btnClearActionPerformed(ActionEvent evt) {
+        fieldsWithErrorLabels.keySet().forEach(tf -> tf.setText(""));
+    }
+
+    @Override
+    public void btnReportActionPerformed(ActionEvent evt) {
+        EventQueue.invokeLater(() -> {
+            ReportArticleDialog dialog = new ReportArticleDialog((JFrame)SwingUtilities.getWindowAncestor(this), true);
+            dialog.setVisible(true);
+        });
+    }
+
+    @Override
+    public void btnCommentActionPerformed(ActionEvent evt) {
 
     }
 }
