@@ -2,7 +2,6 @@ package com.keresman.view.designer;
 
 import com.keresman.model.Article;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 public abstract class UploadGameArticlesPanelDesigner extends JPanel {
@@ -88,6 +87,4 @@ public abstract class UploadGameArticlesPanelDesigner extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     public abstract void btnLoadDbActionPerformed(ActionEvent evt);
-
-    public abstract void tblUsersMouseClicked(MouseEvent evt);
 }

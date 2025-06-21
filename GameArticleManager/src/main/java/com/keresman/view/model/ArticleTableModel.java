@@ -13,7 +13,7 @@ public class ArticleTableModel extends AbstractTableModel{
     private List<Article> articles;
 
     public ArticleTableModel(List<Article> articles) {
-        setAricles(articles);
+        setArticles(articles);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ArticleTableModel extends AbstractTableModel{
         };
     }
 
-    public void setAricles(List<Article> articles) {
+    public void setArticles(List<Article> articles) {
         this.articles = articles;
         fireTableDataChanged();
     }

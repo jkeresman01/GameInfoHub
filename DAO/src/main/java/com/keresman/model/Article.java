@@ -13,9 +13,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "articles")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Article implements Comparable<Article>{
+public final class Article implements Comparable<Article> {
 
-    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE;
+    public static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @XmlElement(name = "articleid")
     private int articleId;
@@ -52,7 +52,6 @@ public final class Article implements Comparable<Article>{
         this.title = title;
     }
 
-    
     public Article(
             String title,
             String link,
@@ -85,7 +84,11 @@ public final class Article implements Comparable<Article>{
 
     @Override
     public String toString() {
-        return "Article{" + "title=" + title + ", games=" + games + '}';
+        String shortTitle = title != null && title.length() > 60
+                ? title.substring(0, 60) + "..."
+                : title;
+        
+        return "Article: " + shortTitle;
     }
 
     public void addCategory(Category category) {

@@ -1,21 +1,15 @@
 package com.keresman.view;
 
-import com.keresman.dal.ArticleRepository;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.dal.UserRepository;
-import com.keresman.model.Article;
 import com.keresman.model.User;
-import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.service.UserService;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.ManageUsersPanelDesigner;
 import com.keresman.view.model.UserTableModel;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 
 public class ManageUsersPanel extends ManageUsersPanelDesigner {
@@ -81,20 +75,4 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
         tfLastName.setText(user.getLastName());
         tfEmail.setText(user.getEmail());
     }
-
-    @Override
-    public void btnLoadDbActionPerformed(ActionEvent evt) {
-        try {
-            ArticleRepository articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
-            List<Article> articles = articleRepository.findAll();
-
-            if (articles.isEmpty()) {
-                articles = GameArticleParser.parse();
-                articleRepository.saveAll(articles);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ManageUsersPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

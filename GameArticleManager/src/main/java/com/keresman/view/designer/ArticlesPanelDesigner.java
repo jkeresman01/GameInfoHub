@@ -21,10 +21,10 @@ public abstract class ArticlesPanelDesigner extends JPanel {
     protected javax.swing.JLabel lblErrorLink;
     protected javax.swing.JLabel lblErrorPubDate;
     protected javax.swing.JLabel lblErrorTitle;
-    protected javax.swing.JLabel lblImage;
     protected javax.swing.JLabel lblLink;
     protected javax.swing.JLabel lblPubDate;
     protected javax.swing.JLabel lblTitle;
+    protected javax.swing.JLabel lblcon;
     protected javax.swing.JLabel lblmage;
     protected javax.swing.JPanel pnlPlaceholder;
     protected javax.swing.JScrollPane spGamesTable;
@@ -47,7 +47,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblmage = new javax.swing.JLabel();
         spGamesTable = new javax.swing.JScrollPane();
         tblArticles = new javax.swing.JTable();
-        lblImage = new javax.swing.JLabel();
+        lblcon = new javax.swing.JLabel();
         lblArticles = new javax.swing.JLabel();
         lblLink = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
@@ -103,15 +103,15 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         });
         spGamesTable.setViewportView(tblArticles);
 
-        lblImage.setBackground(new java.awt.Color(44, 44, 44));
-        lblImage.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
-        lblImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImage.setText("Click to select image");
-        lblImage.setOpaque(true);
-        lblImage.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblcon.setBackground(new java.awt.Color(44, 44, 44));
+        lblcon.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
+        lblcon.setForeground(new java.awt.Color(255, 255, 255));
+        lblcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblcon.setText("Click to select image");
+        lblcon.setOpaque(true);
+        lblcon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblImageMouseClicked(evt);
+                lblconMouseClicked(evt);
             }
         });
 
@@ -137,7 +137,6 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblPubDate.setFont(new java.awt.Font("Tw Cen MT", 1, 12)); // NOI18N
         lblPubDate.setText("Published date");
 
-        tfPubDate.setEditable(false);
         tfPubDate.setBackground(new java.awt.Color(44, 44, 44));
 
         tfTitle.setBackground(new java.awt.Color(44, 44, 44));
@@ -269,7 +268,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                                                 .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)))
-                                .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblcon, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(416, 416, 416))))
             .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlaceholderLayout.createSequentialGroup()
@@ -317,7 +316,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                             .addComponent(btnComment, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(29, 29, 29)
                 .addComponent(spGamesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47))
@@ -366,5 +365,5 @@ public abstract class ArticlesPanelDesigner extends JPanel {
 
     public abstract void btnDeleteActionPerformed(ActionEvent evt);
 
-    public abstract void lblImageMouseClicked(MouseEvent evt);
+    public abstract void lblconMouseClicked(MouseEvent evt);
 }

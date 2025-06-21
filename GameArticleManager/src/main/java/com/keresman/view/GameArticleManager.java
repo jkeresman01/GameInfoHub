@@ -6,8 +6,12 @@ import com.keresman.dal.RepositoryFactory;
 import com.keresman.dal.UserRepository;
 import com.keresman.model.Article;
 import com.keresman.model.ArticleArchive;
+import com.keresman.model.Comment;
+import com.keresman.model.CommentAddable;
 import com.keresman.model.Game;
 import com.keresman.model.GameArchive;
+import com.keresman.model.Report;
+import com.keresman.model.ReportAddable;
 import com.keresman.model.User;
 import com.keresman.model.UserArchive;
 import com.keresman.service.ArticleService;
@@ -29,7 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 
-public class GameArticleManager extends GameArticleManagerDesigner {
+public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable{
 
     private static final String USER_ARCHIVE_FILENAME = "src/main/resources/assets/archives/userarchive.xml";
     private static final String ARTICLES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/articlesarchive.xml";
@@ -213,4 +217,15 @@ public class GameArticleManager extends GameArticleManagerDesigner {
         SwingUtilities.invokeLater(() -> MessageUtils.showErrorMessage("ERROR", message));
     }
 
+    @Override
+    public void addComment(Comment comment) {
+        
+        dispose();
+    }
+
+    @Override
+    public void addReport(Report report) {
+        
+        dispose();
+    }
 }
