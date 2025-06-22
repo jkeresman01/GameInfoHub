@@ -35,13 +35,11 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     private static final String DIR = "assets" + File.separator + "articles";
 
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
-
     private Article selectedArticle;
-
     private String picturePath;
-    private int selectedArticleId;
     private ArticleRepository articleRepository;
     private ArticleTableModel articleTableModel;
+    private int selectedArticleId;
 
     public ArticlesPanel() {
         super();

@@ -1,6 +1,6 @@
 package com.keresman.model;
 
-public class Genre implements Comparable<Genre> {
+public final class Genre implements Comparable<Genre> {
 
     private int genreId;
     private String name;

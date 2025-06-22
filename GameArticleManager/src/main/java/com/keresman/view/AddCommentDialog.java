@@ -12,7 +12,6 @@ import javax.swing.text.JTextComponent;
 public class AddCommentDialog extends AddCommentDialogDesigner {
 
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
-
     private final CommentAddable commentAddable;
 
     public AddCommentDialog(Frame parent, boolean modal) {

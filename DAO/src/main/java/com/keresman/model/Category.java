@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "category")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Category implements Comparable<Category> {
+public final class Category implements Comparable<Category> {
 
     @XmlElement(name = "categoryId")
     private int categoryId;

@@ -82,7 +82,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
         initUserService();
         initGameService();
         initArticleService();
-
     }
 
     private void initUserService() throws Exception {

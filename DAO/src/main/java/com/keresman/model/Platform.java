@@ -1,6 +1,6 @@
 package com.keresman.model;
 
-public class Platform implements Comparable<Platform> {
+public final class Platform implements Comparable<Platform> {
 
     private int platformId;
     private String name;

@@ -1,6 +1,6 @@
 package com.keresman.model;
 
-public class Developer implements Comparable<Developer> {
+public final class Developer implements Comparable<Developer> {
 
     private int developerId;
     private String name;
