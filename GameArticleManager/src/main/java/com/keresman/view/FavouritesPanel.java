@@ -10,22 +10,20 @@ public class FavouritesPanel extends FavouritesPanelDesigner {
 
     private static final String FAVOURITE_ARTICLES = "Articles";
     private static final String FAVOURITE_GAMES = "Games";
-    private static final String FAVOURITE_DEVELOPERS = "Developers";
 
-    public FavouritesPanel() {
+    public FavouritesPanel() throws Exception {
         super();
         init();
     }
 
-    private void init() {
+    private void init() throws Exception {
         initUI();
         initPanels();
     }
 
-    private void initPanels() {
+    private void initPanels() throws Exception {
         tpFavourites.add(FAVOURITE_ARTICLES, new FavouriteArticlesPanel());
         tpFavourites.add(FAVOURITE_GAMES, new FavouriteGamesPanel());
-        tpFavourites.add(FAVOURITE_DEVELOPERS, new FavouriteDevelopersPanel());
     }
 
     private void initUI() {

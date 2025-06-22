@@ -5,8 +5,12 @@ import com.keresman.factory.URLConnectionFactory;
 import com.keresman.model.Article;
 import com.keresman.model.Category;
 import com.keresman.model.Game;
+import com.keresman.service.WikiDataService;
+import com.keresman.utilities.FileUtils;
 import com.keresman.utilities.GameUtils;
 import com.keresman.utilities.HtmlUtils;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
@@ -16,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.events.Attribute;
@@ -53,11 +60,18 @@ public class GameArticleParser {
                     case XMLStreamConstants.START_ELEMENT:
                         startElement = xmlEvent.asStartElement();
                         String qualifiedName = startElement.getName().getLocalPart();
-                        tagType = TagType.from(qualifiedName);
+                        String prefix = startElement.getName().getPrefix();
 
-                        if (tagType.isPresent() && tagType.get().equals(TagType.ITEM)) {
-                            article = new Article();
-                            reviews.add(article);
+                        if ("media".equals(prefix) && "content".equals(qualifiedName)) {
+                            // this is <media:content>
+                            handleContent(article, startElement);
+                        } else {
+                            tagType = TagType.from(qualifiedName);
+
+                            if (tagType.isPresent() && tagType.get().equals(TagType.ITEM)) {
+                                article = new Article();
+                                reviews.add(article);
+                            }
                         }
                         break;
                     case XMLStreamConstants.CHARACTERS:
@@ -90,25 +104,42 @@ public class GameArticleParser {
 
     private static void handleCategory(Article article, String data) {
         article.addCategory(new Category(data));
+
         Optional<String> extractGameName = GameUtils.extractGameName(data);
 
         if (extractGameName.isPresent()) {
-            article.addGame(new Game(extractGameName.get()));
+            Optional<Game> enrichedGame = WikiDataService.enrichGameInfo(data);
+            enrichedGame.ifPresent(article::addGame);
         }
-
     }
 
     private static void handleContent(Article article, StartElement startElement) {
-        Attribute urlAttribute = startElement.getAttributeByName(new QName("url"));
+        Attribute urlAttribute = startElement.getAttributeByName(new QName(ATTRIBUTE_URL));
         if (urlAttribute != null) {
-            article.setPicturePath(urlAttribute.getValue());
+            handlePicture(article, urlAttribute.getValue());
         }
+    }
 
+    private static void handlePicture(Article article, String pictureUrl) {
+        try {
+            String ext = pictureUrl.substring(pictureUrl.lastIndexOf("."));
+            if (ext.length() > 4) {
+                ext = EXT;
+            }
+            
+            String pictureName = UUID.randomUUID() + ext;
+            String localPicturePath = DIR + File.separator + pictureName;
+
+            FileUtils.copyFromUrl(pictureUrl, localPicturePath);
+            article.setPicturePath(localPicturePath);
+        } catch (IOException ex) {
+            Logger.getLogger(GameArticleParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private enum TagType {
         ITEM("item"),
-        CONTENT("content"),
+        CONTENT("media:content"),
         TITLE("title"),
         LINK("link"),
         DESCRIPTION("description"),

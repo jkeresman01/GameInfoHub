@@ -14,7 +14,12 @@ public class ArticleService {
     }
 
     public Result<List<Article>> getAllArticles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         try {
+            List<Article> articles = articleRepository.findAll();
+            return Result.success(articles);
+        } catch (Exception e) {
+            return Result.error("Failed to fetch users.");
+        }
     }
     
 }

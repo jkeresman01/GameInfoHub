@@ -8,6 +8,7 @@ import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.ManageUsersPanelDesigner;
 import com.keresman.view.model.UserTableModel;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.ListSelectionModel;
@@ -69,10 +70,35 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
         }
 
         User user = result.getData().get();
-        
+
         tfUsername.setText(user.getUsername());
         tfFirstName.setText(user.getFirstName());
         tfLastName.setText(user.getLastName());
         tfEmail.setText(user.getEmail());
+    }
+
+    private void refreshData() {
+        Result<List<User>> result = userService.getAllUsers();
+
+        if (!result.isSuccess()) {
+            MessageUtils.showErrorMessage("Error", result.getMessage());
+            return;
+        }
+
+        userTableModel = new UserTableModel(result.getData().get());
+        tblUsers.setModel(userTableModel);
+    }
+
+    @Override
+    public void btnActivateDeactiveProfileActionPerformed(ActionEvent evt) {
+        int selectedRow = tblUsers.getSelectedRow();
+        selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
+
+        Result<User> deactivateProfileResult = userService.deactivateProfileById(selectedUserId);
+
+        if (deactivateProfileResult.isSuccess()) {
+            MessageUtils.showInformationMessage("INFO", "User profile deactivated successfully!");
+            refreshData();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.keresman.view.designer;
 
 import com.keresman.model.Article;
+import java.awt.event.ComponentEvent;
 import javax.swing.JPanel;
 
 public abstract class FavouriteArticlesPanelDesigner extends JPanel {
@@ -25,6 +26,11 @@ public abstract class FavouriteArticlesPanelDesigner extends JPanel {
 
         setBackground(new java.awt.Color(24, 24, 24));
         setPreferredSize(new java.awt.Dimension(942, 800));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblFavouriteArticles.setBackground(new java.awt.Color(24, 24, 24));
         lblFavouriteArticles.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -126,6 +132,7 @@ public abstract class FavouriteArticlesPanelDesigner extends JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public abstract void formComponentShown(ComponentEvent evt);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JLabel lblArticles2;

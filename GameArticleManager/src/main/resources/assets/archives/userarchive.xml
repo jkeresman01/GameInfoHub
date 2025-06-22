@@ -2,87 +2,87 @@
 <articlearchive>
     <users>
         <user>
-            <userid>2</userid>
-            <firstname>Keresman</firstname>
-            <lastname>Josip</lastname>
-            <username>jk</username>
-            <passwordhash>$2a$12$b0qLR/9RXUOGgmv7qDm.U.uA8CSVKS2aqu/VDAjMYG4.Pwy.jEozK</passwordhash>
-            <email>jk@gmail.com</email>
+            <userid>11</userid>
+            <firstname>admin</firstname>
+            <lastname>admin</lastname>
+            <username>admin</username>
+            <passwordhash>$2a$12$keB0Kca7za8wg4.52QBPqersYJpWafYyxdVsBYOl/N9QgKNgQMy9W</passwordhash>
+            <email>admin</email>
             <role>ADMINISTRATOR</role>
             <gender>OTHER</gender>
             <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-06</createdat>
-            <updatedat>2025-06-06</updatedat>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
             <isactive>true</isactive>
         </user>
         <user>
-            <userid>3</userid>
+            <userid>12</userid>
             <firstname>Peric</firstname>
             <lastname>Pero</lastname>
             <username>pero</username>
-            <passwordhash>$2a$12$pBWNrm8kK3fjM2Ll.fNaNenapADiKTHHeU10cTgzFz2/peiiGIg.e</passwordhash>
+            <passwordhash>$2a$12$gcM3au0C7czdlMTU05QyfeDdRvc81lHit16R5KxUCG4fvQyl2/o2q</passwordhash>
             <email>pp@gmail.com</email>
             <role>USER</role>
             <gender>OTHER</gender>
             <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-20</createdat>
-            <updatedat>2025-06-20</updatedat>
-            <isactive>true</isactive>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
+            <isactive>false</isactive>
         </user>
         <user>
-            <userid>4</userid>
-            <firstname>Peric123</firstname>
-            <lastname>Pero</lastname>
-            <username>user</username>
-            <passwordhash>$2a$12$DjIH0elH8qmCgqm9EdHLC.Yb34vdn3nHxCxlFvPs8TACCWLlyqpzO</passwordhash>
-            <email>pero#133@gmail.com</email>
+            <userid>13</userid>
+            <firstname>Krmpotich</firstname>
+            <lastname>Milicah</lastname>
+            <username>Milicah</username>
+            <passwordhash>$2a$12$1kqVHIW8fW3hXGghpR2GZ.mwbp.0mEWCS3LZ6j2T.UBd5YjKvAP1y</passwordhash>
+            <email>mm@gmail.com</email>
             <role>USER</role>
             <gender>OTHER</gender>
             <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-20</createdat>
-            <updatedat>2025-06-20</updatedat>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
             <isactive>true</isactive>
         </user>
         <user>
-            <userid>5</userid>
-            <firstname>Peric2</firstname>
-            <lastname>Pero</lastname>
-            <username>123</username>
-            <passwordhash>$2a$12$a/jsNZFUOJvngxhQ2ynA7uXZ1uS7WWhEE.dZxEJr3enE0aSPiEy9K</passwordhash>
-            <email>123@gmail.com</email>
+            <userid>14</userid>
+            <firstname>marki</firstname>
+            <lastname>Marko</lastname>
+            <username>Marko</username>
+            <passwordhash>$2a$12$qecMUr6oUptCdjWzN36b2uPVYAH7D.vNSDXVrzEgUEVRfOY/TSEKW</passwordhash>
+            <email>mmm@fss@gmail.cm</email>
             <role>USER</role>
             <gender>OTHER</gender>
             <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-20</createdat>
-            <updatedat>2025-06-20</updatedat>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
             <isactive>true</isactive>
         </user>
         <user>
-            <userid>6</userid>
-            <firstname>admin</firstname>
-            <lastname>admin</lastname>
-            <username>admin</username>
-            <passwordhash>$2a$12$8kIl9YmoxiUW0.2fdpdnBeddNfAX2kRB0VBDnA65Fmfje5g7Zyd3.</passwordhash>
-            <email>a@a.com</email>
-            <role>ADMINISTRATOR</role>
-            <gender>OTHER</gender>
-            <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-20</createdat>
-            <updatedat>2025-06-20</updatedat>
-            <isactive>true</isactive>
-        </user>
-        <user>
-            <userid>7</userid>
-            <firstname>Brankic</firstname>
-            <lastname>Branko</lastname>
-            <username>branko</username>
-            <passwordhash>$2a$12$sWE30zJqLp32PDXG85FlVupebkbgC.LQ9yJ9viyS8B0Rlg5B0Xg/G</passwordhash>
-            <email>bb@gmail.com</email>
+            <userid>15</userid>
+            <firstname>miric</firstname>
+            <lastname>mirko</lastname>
+            <username>mirko</username>
+            <passwordhash>$2a$12$e50qzK0lBOiw9YPVIpFvk.GSmUWAdsjhktvx7rzMIziNlj6ZoH7DS</passwordhash>
+            <email>mmmm@gmail.com</email>
             <role>USER</role>
             <gender>OTHER</gender>
             <picturepath>/assets/male_default_picture.jpg</picturepath>
-            <createdat>2025-06-20</createdat>
-            <updatedat>2025-06-20</updatedat>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
+            <isactive>true</isactive>
+        </user>
+        <user>
+            <userid>16</userid>
+            <firstname>Peric</firstname>
+            <lastname>Pertar</lastname>
+            <username>petar</username>
+            <passwordhash>$2a$12$HzA2nsa3ttoZV9S2Zn3WQ.bzqyO5c0Reaqc9FCxtSgHMNXLgGQlm6</passwordhash>
+            <email>pp123@gmail.com</email>
+            <role>USER</role>
+            <gender>OTHER</gender>
+            <picturepath>/assets/male_default_picture.jpg</picturepath>
+            <createdat>2025-06-21</createdat>
+            <updatedat>2025-06-21</updatedat>
             <isactive>true</isactive>
         </user>
     </users>

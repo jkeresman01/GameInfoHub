@@ -13,6 +13,8 @@ public interface ArticleRepository {
     void updateById(int id, Article updated) throws Exception;
 
     void deleteById(int id) throws Exception;
+    
+    void deleteAll() throws Exception;
 
     Optional<Article> findById(int id) throws Exception;
 

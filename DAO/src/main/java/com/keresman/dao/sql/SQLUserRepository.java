@@ -34,6 +34,7 @@ public class SQLUserRepository implements UserRepository {
     private static final String EXISTS_BY_EMAIL = "{ CALL uspExistsUserWithEmail (?, ?) }";
     private static final String ACTIVATE_USER_BY_ID = "{ CALL uspActivateProfileForUserWithId(?) }";
     private static final String DEACTIVATE_USER_BY_ID = "{ CALL uspDeactivateProfileForUserWithId(?) }";
+    private static final String DELETE_ALL = "{ CALL uspDeleteAllUsers }";
 
     private final UserRowMapper userRowMapper = new UserRowMapper();
 
@@ -156,8 +157,7 @@ public class SQLUserRepository implements UserRepository {
 
     @Override
     public void activateById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-                CallableStatement stmt = con.prepareCall(ACTIVATE_USER_BY_ID)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(ACTIVATE_USER_BY_ID)) {
 
             stmt.setInt(USER_ID, id);
             stmt.executeUpdate();
@@ -166,10 +166,16 @@ public class SQLUserRepository implements UserRepository {
 
     @Override
     public void deactivateById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-                CallableStatement stmt = con.prepareCall(DEACTIVATE_USER_BY_ID)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DEACTIVATE_USER_BY_ID)) {
 
             stmt.setInt(USER_ID, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void deleteAll() throws Exception {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DELETE_ALL)) {
             stmt.executeUpdate();
         }
     }

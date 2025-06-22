@@ -32,9 +32,9 @@ import javax.swing.text.JTextComponent;
 
 public class ArticlesPanel extends ArticlesPanelDesigner {
 
-    private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
+    private static final String DIR = "assets" + File.separator + "articles";
 
-    private static final String DIR = "resources" + File.separator + "assets" + File.separator + "articles";
+    private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
     private Article selectedArticle;
 
@@ -134,8 +134,8 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         }
         try {
             if (!picturePath.equals(selectedArticle.getPicturePath())) {
-   
-             if (selectedArticle.getPicturePath() != null) {
+
+                if (selectedArticle.getPicturePath() != null) {
                     Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
                 }
 
@@ -248,7 +248,9 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
                 picturePath = optArticle.get().getPicturePath();
 
                 if (picturePath != null) {
-                    lblcon.setIcon(new javax.swing.ImageIcon(getClass().getResource(picturePath)));
+                    setIcon(lblcon, Paths.get(picturePath).toFile());
+                } else {
+                    lblcon.setIcon(null);
                 }
             }
 
@@ -260,6 +262,7 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     private void clearForm() {
         hideErrors();
         fieldsWithErrorLabels.keySet().forEach(tf -> tf.setText(""));
+        lblcon.setIcon(null);
         picturePath = null;
         selectedArticle = null;
     }

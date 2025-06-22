@@ -36,6 +36,7 @@ public class SQLArticleRepository implements ArticleRepository {
     private static final String SELECT_BY_CATEGORY = "{ CALL uspSelectArticlesByCategoryName (?) }";
     private static final String SELECT_BY_GAME = "{ CALL uspSelectArticlesByGameId (?) }";
     private static final String EXISTS_BY_LINK = "{ CALL uspExistsArticleWithLink (?, ?) }";
+    private static final String DELETE_ALL = "{ CALL uspDeleteAllArticles }";
 
     private static final String ADD_CATEGORY = "{ CALL uspAddCategoryToArticle (?, ?) }";
     private static final String REMOVE_CATEGORY = "{ CALL uspRemoveCategoryFromArticle (?, ?) }";
@@ -221,6 +222,13 @@ public class SQLArticleRepository implements ArticleRepository {
 
             stmt.setInt(ARTICLE_ID, articleId);
             stmt.setInt(GAME_ID, gameId);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void deleteAll() throws Exception {
+         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DELETE_ALL)) {
             stmt.executeUpdate();
         }
     }

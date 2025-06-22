@@ -1,5 +1,6 @@
 package com.keresman.view.designer;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
@@ -65,6 +66,11 @@ public abstract class ManageUsersPanelDesigner extends JPanel {
         btnActivateDeactiveProfile.setFont(new java.awt.Font("Tw Cen MT", 1, 14)); // NOI18N
         btnActivateDeactiveProfile.setForeground(new java.awt.Color(255, 255, 255));
         btnActivateDeactiveProfile.setText("DEACTIVATE PROFILE");
+        btnActivateDeactiveProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActivateDeactiveProfileActionPerformed(evt);
+            }
+        });
 
         tfFirstName.setBackground(new java.awt.Color(24, 24, 24));
         tfFirstName.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
@@ -141,6 +147,8 @@ public abstract class ManageUsersPanelDesigner extends JPanel {
                 .addGap(124, 124, 124))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void btnActivateDeactiveProfileActionPerformed(ActionEvent evt);
 
     public abstract void tblUsersMouseClicked(MouseEvent evt);
 }

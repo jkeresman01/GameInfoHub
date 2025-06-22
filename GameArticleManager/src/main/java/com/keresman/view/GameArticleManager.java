@@ -33,7 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 
-public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable{
+public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable {
 
     private static final String USER_ARCHIVE_FILENAME = "src/main/resources/assets/archives/userarchive.xml";
     private static final String ARTICLES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/articlesarchive.xml";
@@ -42,7 +42,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     private static final String PROFILE = "Profile";
     private static final String FAVOURITES = "Favourites";
     private static final String GAMES = "Games";
-    private static final String DEVELOPERS = "Developers";
     private static final String ARTICLES = "Articles";
     private static final String ADMIN = "Admin";
 
@@ -66,17 +65,15 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
             MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
             System.exit(1);
         }
-
     }
 
-    private void initPanels() {
+    private void initPanels() throws Exception {
         if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
             tpMain.add(ADMIN, new AdminPanelManager());
         }
 
         tpMain.add(GAMES, new GamesPanel());
         tpMain.add(ARTICLES, new ArticlesPanel());
-        tpMain.add(DEVELOPERS, new DevelopersPanel());
         tpMain.add(FAVOURITES, new FavouritesPanel());
         tpMain.add(PROFILE, new ProfilePanel());
     }
@@ -219,13 +216,21 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
 
     @Override
     public void addComment(Comment comment) {
-        
-        dispose();
+
     }
 
     @Override
     public void addReport(Report report) {
-        
-        dispose();
+
+    }
+
+    @Override
+    public void mHelpMouseClicked(MouseEvent evt) {
+        MessageUtils.showInformationMessage("HELP", "For any assitance you can contact us on: +385 099 00000000");
+    }
+
+    @Override
+    public void miAboutMouseClicked(MouseEvent evt) {
+        MessageUtils.showInformationMessage("INFO", "This desktop application build with Swing for 2nd Java Programming 1 course at university of Algebra");
     }
 }

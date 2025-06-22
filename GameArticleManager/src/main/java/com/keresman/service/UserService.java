@@ -36,7 +36,26 @@ public class UserService {
         }
     }
 
+    public Result<User> activateProfileById(int userId) {
+        try {
+            userRepository.activateById(userId);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error("Error fetching user with ID [%d].".formatted(userId));
+        }
+    }
+
+    public Result<User> deactivateProfileById(int userId) {
+        try {
+            userRepository.deactivateById(userId);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error("Error fetching user with ID [%d].".formatted(userId));
+        }
+    }
+
     public Result<Void> updateUser(UserUpdateReq userUpdateReq) {
+
         Validator<UserUpdateReq> userValidator = new UserUpdateValidator(userRepository);
 
         Result<User> validationResult = userValidator.validate(userUpdateReq);
@@ -52,6 +71,5 @@ public class UserService {
         } catch (Exception e) {
             return Result.error("Failed to update user with ID: [%d]".formatted(userUpdateReq.userId()));
         }
-
     }
 }

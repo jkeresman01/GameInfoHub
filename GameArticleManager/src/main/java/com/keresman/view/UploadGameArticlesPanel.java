@@ -2,6 +2,7 @@ package com.keresman.view;
 
 import com.keresman.dal.ArticleRepository;
 import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
 import com.keresman.model.Article;
 import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.utilities.MessageUtils;
@@ -16,6 +17,7 @@ import javax.swing.SwingUtilities;
 public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private ArticleRepository articleRepository;
+    private UserRepository userRepository;
     private DefaultListModel<Article> articlesModel;
 
     public UploadGameArticlesPanel() {
@@ -26,6 +28,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
     private void init() {
         try {
             articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+            userRepository = RepositoryFactory.getInstance(UserRepository.class);
             articlesModel = new DefaultListModel<>();
             loadModel();
         } catch (Exception ex) {
@@ -79,9 +82,19 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private void handleLoadError(Exception ex) {
         Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-        SwingUtilities.invokeLater(()
-                -> MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage())
-        );
+        SwingUtilities.invokeLater(
+                ()  -> MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage()));
+    }
+
+    @Override
+    public void btnDeleteAllActionPerformed(ActionEvent evt) {
+        try {
+            userRepository.deleteAll();
+            articleRepository.deleteAll();
+            loadModel();
+        } catch (Exception ex) {
+            Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

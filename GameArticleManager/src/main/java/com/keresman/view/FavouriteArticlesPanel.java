@@ -1,9 +1,12 @@
 package com.keresman.view;
 
+import com.keresman.dal.ArticleRepository;
+import com.keresman.dal.RepositoryFactory;
 import com.keresman.model.Article;
 import com.keresman.model.ArticleTransferable;
 import com.keresman.view.designer.FavouriteArticlesPanelDesigner;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ComponentEvent;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -14,21 +17,22 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 import static javax.swing.TransferHandler.MOVE;
 
-
 public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
-    
+
     private Set<Article> allArticles = new TreeSet<>();
     private Set<Article> favArticles = new TreeSet<>();
+    private ArticleRepository articleRepository;
     private final DefaultListModel<Article> allArticlesModel = new DefaultListModel<>();
     private final DefaultListModel<Article> favArticlesModel = new DefaultListModel<>();
 
-    public FavouriteArticlesPanel() {
+    public FavouriteArticlesPanel() throws Exception {
         super();
         init();
     }
 
-    private void init() {
+    private void init() throws Exception {
         initDragAndDrop();
+        initRepository();
         loadArticless();
         loadAllModels();
     }
@@ -55,10 +59,22 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
         lsFavouriteArticles.setTransferHandler(new FavouriteArticlessImportHandler());
     }
 
-    private void loadArticless() {
-        allArticles.add(new Article(1, "First Articles"));
-        allArticles.add(new Article(2, "Second Articles"));
-        allArticles.add(new Article(3, "Third Articles"));
+    private void initRepository() throws Exception {
+        articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+    }
+
+    private void loadArticless() throws Exception {
+        allArticles = new TreeSet<>(articleRepository.findAll());
+    }
+
+    @Override
+    public void formComponentShown(ComponentEvent evt) {
+        try {
+            loadArticless();
+            loadAllModels();
+        } catch (Exception ex) {
+            Logger.getLogger(FavouriteArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private abstract class AbstractExportTransferHandler extends TransferHandler {

@@ -24,6 +24,8 @@ hs_err_pid*
 replay_pid*
 /Utilitites/target/
 /IGNGames/target/
+/GameArticleManager/assets/
+/IGNGames/assets/
 /DAO/target/
 /ArticleGameManager/target/
 /GameArticleManager/target/

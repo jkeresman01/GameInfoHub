@@ -35,6 +35,11 @@ public abstract class UploadGameArticlesPanelDesigner extends JPanel {
         btnDeleteAll.setFont(new java.awt.Font("Tw Cen MT", 1, 14)); // NOI18N
         btnDeleteAll.setForeground(new java.awt.Color(255, 255, 255));
         btnDeleteAll.setText("DELETE ALL");
+        btnDeleteAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteAllActionPerformed(evt);
+            }
+        });
 
         btnLoadDb.setBackground(new java.awt.Color(153, 153, 255));
         btnLoadDb.setFont(new java.awt.Font("Tw Cen MT", 1, 14)); // NOI18N
@@ -85,6 +90,8 @@ public abstract class UploadGameArticlesPanelDesigner extends JPanel {
                 .addGap(52, 52, 52))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void btnDeleteAllActionPerformed(ActionEvent evt);
 
     public abstract void btnLoadDbActionPerformed(ActionEvent evt);
 }

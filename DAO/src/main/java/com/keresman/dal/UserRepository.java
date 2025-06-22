@@ -11,6 +11,8 @@ public interface UserRepository {
     void updateById(int id, User data) throws Exception;
 
     void deleteById(int id) throws Exception;
+    
+    void deleteAll() throws Exception;
 
     boolean existsByUsername(String username) throws Exception;
 

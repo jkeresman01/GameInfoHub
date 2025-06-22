@@ -60,11 +60,21 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         mAbout.setText("About");
 
         miAbout.setText("About");
+        miAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                miAboutMouseClicked(evt);
+            }
+        });
         mAbout.add(miAbout);
 
         mbMainMenu.add(mAbout);
 
         mHelp.setText("Help");
+        mHelp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mHelpMouseClicked(evt);
+            }
+        });
 
         miHelp.setText("Help");
         mHelp.add(miHelp);
@@ -119,6 +129,10 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void mHelpMouseClicked(MouseEvent evt);
+
+    public abstract void miAboutMouseClicked(MouseEvent evt);
 
     public abstract void mUserArchiveMouseClicked(MouseEvent evt);
 

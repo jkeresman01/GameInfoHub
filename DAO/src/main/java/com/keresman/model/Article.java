@@ -84,10 +84,10 @@ public final class Article implements Comparable<Article> {
 
     @Override
     public String toString() {
-        String shortTitle = title != null && title.length() > 60
-                ? title.substring(0, 60) + "..."
+        String shortTitle = title != null && title.length() > 20
+                ? title.substring(0, 20) + "..."
                 : title;
-        
+
         return "Article: " + shortTitle;
     }
 
