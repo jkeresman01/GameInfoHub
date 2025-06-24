@@ -1,4 +1,4 @@
-package com.keresman.dao.sql;
+package com.keresman.dal.sql;
 
 import com.keresman.dal.GameRepository;
 import com.keresman.model.Game;
