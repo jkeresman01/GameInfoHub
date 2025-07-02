@@ -22,6 +22,7 @@ import com.keresman.utilities.JAXBUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.GameArticleManagerDesigner;
+import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     }
 
     private void init() {
-
         try {
             initPanels();
             initServices();
