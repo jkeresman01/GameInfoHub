@@ -230,6 +230,9 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
 
     @Override
     public void miAboutMouseClicked(MouseEvent evt) {
-        MessageUtils.showInformationMessage("INFO", "This desktop application build with Swing for 2nd Java Programming 1 course at university of Algebra");
+        MessageUtils.showInformationMessage(
+                "About This Application",
+                "This desktop application was developed using Java Swing as part of the Java Programming 1 course at Algebra Bernays University."
+        );
     }
 }

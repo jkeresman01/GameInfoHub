@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game implements Comparable<Game> {
+public final class Game implements Comparable<Game> {
 
     private int gameId;
     private String name;

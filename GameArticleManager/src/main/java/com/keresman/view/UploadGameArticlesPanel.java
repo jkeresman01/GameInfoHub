@@ -57,6 +57,10 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
             if (articles.isEmpty()) {
                 articles = GameArticleParser.parse();
                 articleRepository.saveAll(articles);
+
+                for (Article article : articles) {
+                    article.getGames().forEach(System.out::println);
+                }
             }
 
             updateUIWithArticles(articles);
