@@ -10,7 +10,7 @@ public class ArticleRowMapper implements RowMapper<Article>{
     @Override
     public Article map(ResultSet rs) throws Exception {
         return new Article(
-            rs.getInt("ArticleId"),
+            rs.getInt("Id"),
             rs.getString("Title"),
             rs.getString("Link"),
             rs.getString("Description"),

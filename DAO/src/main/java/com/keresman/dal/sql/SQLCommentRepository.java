@@ -8,7 +8,7 @@ import java.util.Optional;
 public class SQLCommentRepository implements CommentRepostiory{
 
     @Override
-    public void save() throws Exception {
+    public void save(Comment comment) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -23,8 +23,18 @@ public class SQLCommentRepository implements CommentRepostiory{
     }
 
     @Override
+    public Optional<Comment> findByUserId(int id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
     public List<Comment> findAll() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
+    @Override
+    public void deleteAll() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

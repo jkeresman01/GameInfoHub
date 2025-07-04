@@ -10,7 +10,10 @@ public interface CategoryRepostitory {
 
     void updateById(int id, Category category) throws Exception;
 
-    Optional<Category> findById() throws Exception;
+    Optional<Category> findById(int id) throws Exception;
 
     List<Category> findAll() throws Exception;
+
+    void deleteAll() throws Exception;
+
 }

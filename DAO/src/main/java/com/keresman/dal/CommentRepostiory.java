@@ -12,5 +12,10 @@ public interface CommentRepostiory {
 
     Optional<Comment> findById() throws Exception;
 
+    Optional<Comment> findByUserId(int id) throws Exception;
+
     List<Comment> findAll() throws Exception;
+
+    void deleteAll() throws Exception;
+
 }

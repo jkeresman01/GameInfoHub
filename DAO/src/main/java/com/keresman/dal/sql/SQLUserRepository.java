@@ -20,11 +20,12 @@ public class SQLUserRepository implements UserRepository {
     private static final String PASSWORD_HASH = "PasswordHash";
     private static final String USERNAME = "Username";
     private static final String EMAIL = "Email";
+    private static final String GENDER = "Gender";
     private static final String PICTURE_PATH = "PicturePath";
 
     private static final String EXISTS = "Exists";
 
-    private static final String CREATE_USER = "{ CALL uspCreateUser (?,?,?,?,?,?,?) }";
+    private static final String CREATE_USER = "{ CALL uspCreateUser (?,?,?,?,?,?,?,?) }";
     private static final String UPDATE_USER = "{ CALL uspUpdateUserWithId (?,?,?,?,?,?,?) }";
     private static final String DELETE_USER = "{ CALL uspDeleteUserWithId (?) }";
     private static final String SELECT_USER_BY_ID = "{ CALL uspSelectUserWithId (?) }";
@@ -49,6 +50,7 @@ public class SQLUserRepository implements UserRepository {
             stmt.setString(PASSWORD_HASH, user.getPasswordHash());
             stmt.setString(EMAIL, user.getEmail());
             stmt.setString(PICTURE_PATH, user.getPicturePath());
+            stmt.setString(GENDER, user.getGender());
             stmt.registerOutParameter(USER_ID, Types.INTEGER);
 
             stmt.executeUpdate();

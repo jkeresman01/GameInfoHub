@@ -13,4 +13,7 @@ public interface GenreRepository {
     Optional<Genre> findById();
 
     List<Genre> findAll();
+
+    void deleteAll() throws Exception;
+
 }

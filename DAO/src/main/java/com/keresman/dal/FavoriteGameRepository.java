@@ -13,8 +13,11 @@ public interface FavoriteGameRepository {
     Optional<Game> findById(int id) throws Exception;
 
     Optional<Game> findByUserId(int id) throws Exception;
-    
+
     Optional<Game> findByGameId(int id) throws Exception;
 
     List<Game> findAll() throws Exception;
+
+    void deleteAll() throws Exception;
+
 }

@@ -13,4 +13,7 @@ public interface PlatformRepository {
     Optional<Platform> findById() throws Exception;
 
     List<Platform> findAll() throws Exception;
+
+    void deleteAll() throws Exception;
+
 }

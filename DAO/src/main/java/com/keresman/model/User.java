@@ -81,6 +81,7 @@ public final class User implements Comparable<User> {
             String lastName,
             String email,
             Role role,
+            Gender gender,
             Boolean isActive,
             String picturePath,
             LocalDateTime createdAt,
@@ -92,6 +93,7 @@ public final class User implements Comparable<User> {
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+        this.gender = gender;
         this.isActive = isActive;
         this.picturePath = picturePath;
         this.createdAt = createdAt;

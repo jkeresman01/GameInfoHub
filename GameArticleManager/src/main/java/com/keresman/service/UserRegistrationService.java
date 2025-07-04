@@ -38,7 +38,8 @@ public class UserRegistrationService {
                 userRegistrationReq.firstName(),
                 userRegistrationReq.lastName(),
                 userRegistrationReq.email(),
-                "/assets/male_default_picture.jpg"
+                "/assets/male_default_picture.jpg",
+                userRegistrationReq.gender()
         );
 
         try {

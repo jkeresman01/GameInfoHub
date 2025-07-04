@@ -13,4 +13,7 @@ public interface ReportRepository {
     Optional<Report> findById() throws Exception;
 
     List<Report> findAll() throws Exception;
+
+    void deleteAll() throws Exception;
+
 }

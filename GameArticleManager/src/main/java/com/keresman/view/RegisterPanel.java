@@ -83,6 +83,7 @@ public class RegisterPanel extends RegisterPanelDesigner {
         String email = tfEmail.getText().trim();
         String password = String.valueOf(tfPassword.getPassword());
         String cfmPassword = String.valueOf(tfCfmPassword.getPassword());
+        Gender gender  = (Gender) cbGender.getSelectedItem();
 
         var registerReq = new UserRegistrationReq(
                 username,
@@ -90,7 +91,8 @@ public class RegisterPanel extends RegisterPanelDesigner {
                 password,
                 cfmPassword,
                 lastName,
-                firstName
+                firstName,
+                gender
         );
 
         Result validationResult = registrationService.register(registerReq);
