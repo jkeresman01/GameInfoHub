@@ -29,3 +29,4 @@ replay_pid*
 /DAO/target/
 /ArticleGameManager/target/
 /GameArticleManager/target/
+GameArticleManager/src/main/resources/assets/archives/
