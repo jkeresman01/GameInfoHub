@@ -14,7 +14,7 @@ public class ArticleRowMapper implements RowMapper<Article>{
             rs.getString("Title"),
             rs.getString("Link"),
             rs.getString("Description"),
-            toLocalDateTime(rs.getTimestamp("PubDate")),
+            toLocalDateTime(rs.getTimestamp("PublishedDateTime")),
             rs.getString("PicturePath")
         );
     }

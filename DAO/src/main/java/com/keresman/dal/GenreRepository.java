@@ -6,9 +6,9 @@ import java.util.Optional;
 
 public interface GenreRepository {
 
-    void save();
+    void save(Genre genre);
 
-    void updateById();
+    void updateById(int id, Genre genre);
 
     Optional<Genre> findById();
 

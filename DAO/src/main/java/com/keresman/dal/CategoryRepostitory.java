@@ -6,11 +6,11 @@ import java.util.Optional;
 
 public interface CategoryRepostitory {
 
-    void save();
+    void save() throws Exception;
 
-    void updateById();
+    void updateById(int id, Category category) throws Exception;
 
-    Optional<Category> findById();
+    Optional<Category> findById() throws Exception;
 
-    List<Category> findAll();
+    List<Category> findAll() throws Exception;
 }

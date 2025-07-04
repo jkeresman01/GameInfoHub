@@ -16,11 +16,7 @@ public interface GameRepository {
 
   List<Game> findAll() throws Exception;
 
-  List<Game> findByDeveloperId(int developerId) throws Exception;
-
   List<Game> findByPlatformId(int platformId) throws Exception;
 
   List<Game> findByGenreId(int genreId) throws Exception;
-
-  boolean existsByTitle(String title) throws Exception;
 }

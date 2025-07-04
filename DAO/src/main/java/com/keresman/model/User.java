@@ -37,7 +37,7 @@ public final class User implements Comparable<User> {
     private Role role;
 
     @XmlElement(name = "gender")
-    private Gender gender = Gender.OTHER;
+    private Gender gender;
 
     @XmlElement(name = "picturepath")
     private String picturePath;
@@ -62,13 +62,15 @@ public final class User implements Comparable<User> {
             String firstName,
             String lastName,
             String email,
-            String picturePath) {
+            String picturePath,
+            Gender gender) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.picturePath = picturePath;
+        this.gender = gender;
     }
 
     public User(
