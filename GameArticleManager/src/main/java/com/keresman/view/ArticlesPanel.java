@@ -7,9 +7,11 @@ import com.keresman.utilities.FileUtils;
 import com.keresman.utilities.IconUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.ArticlesPanelDesigner;
-import com.keresman.view.designer.RegisterPanelDesigner;
 import com.keresman.view.model.ArticleTableModel;
-import java.awt.EventQueue;
+import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -23,12 +25,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.AncestorEvent;
-import javax.swing.text.JTextComponent;
 
 public class ArticlesPanel extends ArticlesPanelDesigner {
 
@@ -53,18 +49,23 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
             initRepository();
             initTable();
         } catch (Exception ex) {
-            Logger.getLogger(RegisterPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
-            MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-            System.exit(1);
+            handleInitializationError(ex);
         }
     }
 
+    private void handleInitializationError(Exception ex) {
+        Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+        System.exit(1);
+    }
+
     private void initValidation() {
-        fieldsWithErrorLabels = Map.ofEntries(
-                Map.entry(tfTitle, lblErrorTitle),
-                Map.entry(tfLink, lblErrorLink),
-                Map.entry(taDescription, lblErrorDesription),
-                Map.entry(tfPubDate, lblErrorPubDate));
+        fieldsWithErrorLabels = Map.of(
+                tfTitle, lblErrorTitle,
+                tfLink, lblErrorLink,
+                taDescription, lblErrorDesription,
+                tfPubDate, lblErrorPubDate
+        );
     }
 
     private void initTable() throws Exception {
@@ -73,22 +74,18 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         tblArticles.setAutoCreateRowSorter(true);
 
         List<Article> articles = articleRepository.findAll();
-
         articleTableModel = new ArticleTableModel(articles);
         tblArticles.setModel(articleTableModel);
     }
 
     private boolean isFormValid() {
         hideErrors();
-
-        fieldsWithErrorLabels.forEach(
-                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-
-        return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
+        fieldsWithErrorLabels.forEach((field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+        return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
     }
 
     private void hideErrors() {
-        fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+        fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
     }
 
     @Override
@@ -98,21 +95,27 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         }
 
         try {
-            Article article = new Article(
-                    tfTitle.getText().trim(),
-                    tfLink.getText().trim(),
-                    taDescription.getText().trim(),
-                    LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER),
-                    picturePath
-            );
+            Article article = createArticleFromForm();
             articleRepository.save(article);
-            articleTableModel.setArticles(articleRepository.findAll());
-
+            refreshArticleTable();
             clearForm();
         } catch (Exception ex) {
-            Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-            MessageUtils.showErrorMessage("Error", "Unable to create article!");
+            handleCrudError("create", ex);
         }
+    }
+
+    private Article createArticleFromForm() {
+        return new Article(
+                tfTitle.getText().trim(),
+                tfLink.getText().trim(),
+                taDescription.getText().trim(),
+                LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER),
+                picturePath
+        );
+    }
+
+    private void refreshArticleTable() throws Exception {
+        articleTableModel.setArticles(articleRepository.findAll());
     }
 
     @Override
@@ -130,30 +133,30 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         if (!isFormValid()) {
             return;
         }
+
         try {
-            if (!picturePath.equals(selectedArticle.getPicturePath())) {
-
-                if (selectedArticle.getPicturePath() != null) {
-                    Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
-                }
-
-                String localPicturePath = uploadPicture();
-                selectedArticle.setPicturePath(localPicturePath);
-            }
-
-            selectedArticle.setTitle(tfTitle.getText().trim());
-            selectedArticle.setLink(tfLink.getText().trim());
-            selectedArticle.setDescription(taDescription.getText().trim());
-            selectedArticle.setPublishedDateTime(LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER));
-
+            handlePictureUpdateIfNeeded();
+            updateSelectedArticleFromForm();
             articleRepository.updateById(selectedArticle.getArticleId(), selectedArticle);
-            articleTableModel.setArticles(articleRepository.findAll());
-
+            refreshArticleTable();
             clearForm();
         } catch (Exception ex) {
-            Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-            MessageUtils.showErrorMessage("Error", "Unable to update article!");
+            handleCrudError("update", ex);
         }
+    }
+
+    private void handlePictureUpdateIfNeeded() throws IOException {
+        if (!picturePath.equals(selectedArticle.getPicturePath())) {
+            Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
+            selectedArticle.setPicturePath(uploadPicture());
+        }
+    }
+
+    private void updateSelectedArticleFromForm() {
+        selectedArticle.setTitle(tfTitle.getText().trim());
+        selectedArticle.setLink(tfLink.getText().trim());
+        selectedArticle.setDescription(taDescription.getText().trim());
+        selectedArticle.setPublishedDateTime(LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER));
     }
 
     @Override
@@ -163,42 +166,38 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
             return;
         }
 
-        if (MessageUtils.showConfirmDialog(
-                "Delete article",
-                "Do you really want to delete article?")) {
+        if (MessageUtils.showConfirmDialog("Delete article", "Do you really want to delete article?")) {
             try {
-                if (selectedArticle.getPicturePath() != null) {
-                    Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
-                }
+                deleteArticlePictureIfExists();
                 articleRepository.deleteById(selectedArticle.getArticleId());
-                articleTableModel.setArticles(articleRepository.findAll());
-
+                refreshArticleTable();
                 clearForm();
             } catch (Exception ex) {
-                Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-                MessageUtils.showErrorMessage("Error", "Unable to delete article!");
+                handleCrudError("delete", ex);
             }
+        }
+    }
+
+    private void deleteArticlePictureIfExists() throws IOException {
+        if (selectedArticle.getPicturePath() != null) {
+            Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
         }
     }
 
     @Override
     public void lblconMouseClicked(MouseEvent evt) {
         Optional<File> file = FileUtils.uploadFile("Images", "jpg", "jpeg", "png");
-
-        if (file.isEmpty()) {
-            return;
-        }
-
-        picturePath = file.get().getAbsolutePath();
-        setIcon(lblcon, file.get());
+        file.ifPresent(f -> {
+            picturePath = f.getAbsolutePath();
+            setIcon(lblcon, f);
+        });
     }
 
     private void setIcon(JLabel label, File file) {
         try {
             label.setIcon(IconUtils.createIcon(file, label.getWidth(), label.getHeight()));
         } catch (IOException ex) {
-            Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-            MessageUtils.showErrorMessage("Error", "Unable to set icon!");
+            handleCrudError("set icon", ex);
         }
     }
 
@@ -206,7 +205,6 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
         String ext = picturePath.substring(picturePath.lastIndexOf("."));
         String pictureName = UUID.randomUUID() + ext;
         String localPicturePath = DIR + File.separator + pictureName;
-
         FileUtils.copy(picturePath, localPicturePath);
         return localPicturePath;
     }
@@ -217,15 +215,12 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     }
 
     private void refreshData() {
-        ArticleRepository articleRepository;
         try {
-            articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
             List<Article> articles = articleRepository.findAll();
             articleTableModel.setArticles(articles);
         } catch (Exception ex) {
-            Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            handleCrudError("refresh", ex);
         }
-
     }
 
     @Override
@@ -235,25 +230,25 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
         try {
             Optional<Article> optArticle = articleRepository.findById(selectedArticleId);
-
-            if (optArticle.isPresent()) {
-                tfTitle.setText(optArticle.get().getTitle());
-                tfLink.setText(optArticle.get().getLink());
-                taDescription.setText(optArticle.get().getDescription());
-                tfPubDate.setText(optArticle.get().getPublishedDateTime().toString());
-
-                selectedArticle = optArticle.get();
-                picturePath = optArticle.get().getPicturePath();
-
-                if (picturePath != null) {
-                    setIcon(lblcon, Paths.get(picturePath).toFile());
-                } else {
-                    lblcon.setIcon(null);
-                }
-            }
-
+            optArticle.ifPresent(this::populateFormFromArticle);
         } catch (Exception ex) {
-            Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            handleCrudError("select article", ex);
+        }
+    }
+
+    private void populateFormFromArticle(Article article) {
+        tfTitle.setText(article.getTitle());
+        tfLink.setText(article.getLink());
+        taDescription.setText(article.getDescription());
+        tfPubDate.setText(article.getPublishedDateTime().toString());
+
+        selectedArticle = article;
+        picturePath = article.getPicturePath();
+
+        if (picturePath != null) {
+            setIcon(lblcon, new File(picturePath));
+        } else {
+            lblcon.setIcon(null);
         }
     }
 
@@ -267,26 +262,25 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
     @Override
     public void btnClearActionPerformed(ActionEvent evt) {
-        fieldsWithErrorLabels.keySet().forEach(tf -> tf.setText(""));
+        clearForm();
     }
 
     @Override
     public void btnReportActionPerformed(ActionEvent evt) {
-        EventQueue.invokeLater(() -> {
-            ReportArticleDialog dialog = new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
-            dialog.setVisible(true);
-        });
+        EventQueue.invokeLater(() -> new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true));
     }
 
     @Override
     public void btnCommentActionPerformed(ActionEvent evt) {
-        EventQueue.invokeLater(() -> {
-            AddCommentDialog dialog = new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
-            dialog.setVisible(true);
-        });
+        EventQueue.invokeLater(() -> new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true));
     }
 
     private void initRepository() throws Exception {
         articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+    }
+
+    private void handleCrudError(String action, Exception ex) {
+        Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, "Unable to " + action + " article", ex);
+        MessageUtils.showErrorMessage("Error", "Unable to " + action + " article!");
     }
 }
