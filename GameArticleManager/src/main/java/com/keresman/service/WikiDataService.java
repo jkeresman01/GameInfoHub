@@ -9,6 +9,7 @@ import com.keresman.model.Game;
 import com.keresman.utilities.HttpUtils;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,12 +80,13 @@ public class WikiDataService {
             if (item.has(FIELD_PLATFORM)) {
                 game.addPlatform(new Platform(item.get(FIELD_PLATFORM).get("value").asText()));
             }
-//            if (item.has(FIELD_RELEASE_DATE)) {
-//                String dateString = item.get(FIELD_RELEASE_DATE).get("value").asText();
-//                game.setReleaseDate(LocalDate.parse(dateString.substring(0, 10)));
-//            }
+
+            if (item.has(FIELD_RELEASE_DATE)) {
+                String dateString = item.get(FIELD_RELEASE_DATE).get("value").asText();
+                game.setReleaseDate(LocalDate.parse(dateString.substring(0, 10)));
+            }
         }
 
         return Optional.of(game);
     }
-}    
+}
