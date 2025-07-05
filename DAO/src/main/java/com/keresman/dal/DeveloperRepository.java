@@ -11,9 +11,9 @@ public interface DeveloperRepository {
 
     void updateById(int id, Developer developer) throws Exception;
 
-    Optional<Category> findById(int id) throws Exception;
+    Optional<Developer> findById(int id) throws Exception;
 
-    List<Category> findAll() throws Exception;
+    List<Developer> findAll() throws Exception;
 
     void deleteAll() throws Exception;
 }
