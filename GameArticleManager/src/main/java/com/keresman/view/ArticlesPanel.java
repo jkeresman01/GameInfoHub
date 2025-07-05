@@ -268,6 +268,12 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     @Override
     public void btnReportActionPerformed(ActionEvent evt) {
         int selectedRow = tblArticles.getSelectedRow();
+
+        if (selectedRow == -1) {
+            MessageUtils.showWarningMessage("Warning", "Please select a game");
+            return;
+        }
+
         selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
 
         Optional<Article> optArticle = Optional.empty();

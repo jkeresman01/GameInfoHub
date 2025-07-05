@@ -27,7 +27,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
     private GenreRepository genreRepository;
     private PlatformRepository platformRepository;
     private CategoryRepostitory categoryRepository;
-
+    
     private DefaultListModel<Article> articlesModel = new DefaultListModel<>();
 
     public UploadGameArticlesPanel() {

@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -90,17 +91,67 @@ public class GamesPanel extends GamesPanelDesigner {
 
     @Override
     public void btnAddActionPerformed(ActionEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!isFormValid()) {
+            return;
+        }
+
+        try {
+            Game game = new Game();
+            game.setName(tfGameName.getText().trim());
+            game.setReleaseDate(LocalDate.parse(tfRelDate.getText().trim()));
+
+            gameRepository.save(game);
+            gameTableModel.setGames(gameRepository.findAll());
+            clearForm();
+        } catch (Exception ex) {
+            Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to add game", ex);
+            MessageUtils.showErrorMessage("Error", "Failed to add game.");
+        }
     }
 
     @Override
     public void btnDeleteActionPerformed(ActionEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (selectedGame == null) {
+            MessageUtils.showWarningMessage("Warning", "Please select a game to delete.");
+            return;
+        }
+
+        if (!MessageUtils.showConfirmDialog("Delete Game", "Are you sure you want to delete this game?")) {
+            return;
+        }
+
+        try {
+            gameRepository.deleteById(selectedGame.getGameId());
+            gameTableModel.setGames(gameRepository.findAll());
+            clearForm();
+        } catch (Exception ex) {
+            Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to delete game", ex);
+            MessageUtils.showErrorMessage("Error", "Failed to delete game.");
+        }
     }
 
     @Override
     public void btnUpdateActionPerformed(ActionEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (selectedGame == null) {
+            MessageUtils.showWarningMessage("Warning", "Please select a game to update.");
+            return;
+        }
+
+        if (!isFormValid()) {
+            return;
+        }
+
+        try {
+            selectedGame.setName(tfGameName.getText().trim());
+            selectedGame.setReleaseDate(LocalDate.parse(tfRelDate.getText().trim()));
+
+            gameRepository.updateById(selectedGame.getGameId(), selectedGame);
+            gameTableModel.setGames(gameRepository.findAll());
+            clearForm();
+        } catch (Exception ex) {
+            Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to update game", ex);
+            MessageUtils.showErrorMessage("Error", "Failed to update game.");
+        }
     }
 
     @Override
@@ -133,6 +184,18 @@ public class GamesPanel extends GamesPanelDesigner {
             Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Error loading game", ex);
             MessageUtils.showErrorMessage("Error", "Failed to load game data.");
         }
+    }
+
+    private void clearForm() {
+        tfGameName.setText("");
+        tfRelDate.setText("");
+        selectedGame = null;
+        selectedGameId = 0;
+
+        genreModel.clear();
+        developerModel.clear();
+        platformModel.clear();
+        commentModel.clear();
     }
 
     private void loadListModels() throws Exception {

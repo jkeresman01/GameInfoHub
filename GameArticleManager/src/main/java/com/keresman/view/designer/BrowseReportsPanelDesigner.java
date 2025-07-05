@@ -63,7 +63,7 @@ public abstract class BrowseReportsPanelDesigner extends JPanel {
 
         tfContent.setBackground(new java.awt.Color(24, 24, 24));
         tfContent.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
-        tfContent.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        tfContent.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Content", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
         lblTitle.setBackground(new java.awt.Color(24, 24, 24));
         lblTitle.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 28)); // NOI18N

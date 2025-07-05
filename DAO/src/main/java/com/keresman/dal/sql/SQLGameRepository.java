@@ -75,7 +75,7 @@ public class SQLGameRepository implements GameRepository {
     public void updateById(int id, Game game) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(UPDATE)) {
 
-            stmt.setInt(GAME_ID, id);
+            stmt.setInt(ID, id);
             stmt.setString(NAME, game.getName());
             stmt.setObject(RELEASE_DATE, game.getReleaseDate());
             stmt.executeUpdate();
