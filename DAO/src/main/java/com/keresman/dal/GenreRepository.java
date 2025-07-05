@@ -6,14 +6,13 @@ import java.util.Optional;
 
 public interface GenreRepository {
 
-    void save(Genre genre);
+    int save(Genre genre) throws Exception;
 
-    void updateById(int id, Genre genre);
+    void updateById(int id, Genre genre) throws Exception;
 
-    Optional<Genre> findById();
+    Optional<Genre> findById(int id) throws Exception;
 
-    List<Genre> findAll();
+    List<Genre> findAll() throws Exception;
 
     void deleteAll() throws Exception;
-
 }

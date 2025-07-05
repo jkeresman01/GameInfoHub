@@ -21,5 +21,4 @@ public interface GameRepository {
     List<Game> findByGenreId(int genreId) throws Exception;
 
     void deleteAll() throws Exception;
-
 }

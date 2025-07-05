@@ -1,6 +1,7 @@
 package com.keresman.dal.sql;
 
 import com.keresman.dal.UserRepository;
+import com.keresman.mapper.RowMapper;
 import com.keresman.mapper.UserRowMapper;
 import com.keresman.model.User;
 import java.sql.CallableStatement;
@@ -37,7 +38,7 @@ public class SQLUserRepository implements UserRepository {
     private static final String DEACTIVATE_USER_BY_ID = "{ CALL uspDeactivateProfileForUserWithId(?) }";
     private static final String DELETE_ALL = "{ CALL uspDeleteAllUsers }";
 
-    private final UserRowMapper userRowMapper = new UserRowMapper();
+    private final RowMapper<User> userRowMapper = new UserRowMapper();
 
     @Override
     public int save(User user) throws Exception {
