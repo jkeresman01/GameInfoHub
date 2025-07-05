@@ -10,7 +10,6 @@ import com.keresman.model.Comment;
 import com.keresman.model.CommentAddable;
 import com.keresman.model.Game;
 import com.keresman.model.Report;
-import com.keresman.model.ReportAddable;
 import com.keresman.model.User;
 import com.keresman.model.UserArchive;
 import com.keresman.service.ArticleService;
@@ -34,8 +33,9 @@ import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 import com.keresman.dal.CommentRepository;
 import java.io.File;
+import com.keresman.model.Reportable;
 
-public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable {
+public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, Reportable {
 
     private static final String ARCHIVE_BASE_PATH = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "assets" + File.separator + "archives";
     private static final String USER_ARCHIVE_FILENAME = ARCHIVE_BASE_PATH + File.separator + "userarchive.xml";
@@ -217,7 +217,7 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     }
 
     @Override
-    public void addReport(Report report, Article article) {
+    public void report(Report report, Article article) {
         int articleId = article.getArticleId();
         int userId = SessionManager.getInstance().getCurrentUser().getId();
         reportService.createReport(report, userId, articleId);

@@ -27,7 +27,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     private GenreRepository genreRepository;
     private PlatformRepository platformRepository;
     private CategoryRepostitory categoryRepository;
-    
+
     private DefaultListModel<Article> articlesModel = new DefaultListModel<>();
 
     public ManageGameArticlesPanel() {
