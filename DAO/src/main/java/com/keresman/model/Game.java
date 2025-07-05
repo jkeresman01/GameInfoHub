@@ -99,13 +99,7 @@ public final class Game implements Comparable<Game> {
 
     @Override
     public String toString() {
-        return "Game{"
-                + "name='" + name + '\''
-                + ", releaseDate=" + releaseDate
-                + ", genres=" + genres
-                + ", developers=" + developers
-                + ", platforms=" + platforms
-                + '}';
+        return this.name;
     }
 
     @Override

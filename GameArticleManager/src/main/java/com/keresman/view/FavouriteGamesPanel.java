@@ -1,7 +1,11 @@
 package com.keresman.view;
 
+import com.keresman.dal.FavoriteGamesRepository;
+import com.keresman.dal.GameRepository;
+import com.keresman.dal.RepositoryFactory;
 import com.keresman.model.Game;
 import com.keresman.model.GameTransferable;
+import com.keresman.session.SessionManager;
 import com.keresman.view.designer.FavouriteGamesPanelDesigner;
 import java.awt.datatransfer.Transferable;
 import java.util.Set;
@@ -18,46 +22,55 @@ public class FavouriteGamesPanel extends FavouriteGamesPanelDesigner {
 
     private Set<Game> allGames = new TreeSet<>();
     private Set<Game> favGames = new TreeSet<>();
+
+    private GameRepository gameRepository;
+    private FavoriteGamesRepository favoriteGamesRepository;
+
     private final DefaultListModel<Game> allGamesModel = new DefaultListModel<>();
     private final DefaultListModel<Game> favGamesModel = new DefaultListModel<>();
 
-    public FavouriteGamesPanel() {
+    public FavouriteGamesPanel() throws Exception {
         super();
         init();
     }
 
-    private void init() {
+    private void init() throws Exception {
+        initRepositories();
         initDragAndDrop();
-        loadGames();
+        loadGamesFromDb();
         loadAllModels();
+    }
+
+    private void initRepositories() throws Exception {
+        gameRepository = RepositoryFactory.getInstance(GameRepository.class);
+        favoriteGamesRepository = RepositoryFactory.getInstance(FavoriteGamesRepository.class);
     }
 
     private void initDragAndDrop() {
         initExportDnD();
         initImportDnd();
-
     }
 
     private void initExportDnD() {
         lsGames.setDragEnabled(true);
         lsGames.setTransferHandler(new AllGamesExportHandler());
-
-//        lsFavouriteGames.setDragEnabled(true);
-//        lsFavouriteGames.setTransferHandler(new FavouriteGamesExportHandler());
     }
 
     private void initImportDnd() {
-//        lsGames.setDropMode(DropMode.ON);
-//        lsGames.setTransferHandler(new AllGamesImportHandler());
-
         lsFavouriteGames.setDropMode(DropMode.ON);
         lsFavouriteGames.setTransferHandler(new FavouriteGamesImportHandler());
     }
 
-    private void loadGames() {
-        allGames.add(new Game(1, "First game"));
-        allGames.add(new Game(2, "Second game"));
-        allGames.add(new Game(3, "Third game"));
+    private void loadGamesFromDb() throws Exception {
+        allGames.clear();
+        favGames.clear();
+
+        Set<Game> all = new TreeSet<>(gameRepository.findAll());
+        Set<Game> fav = new TreeSet<>(favoriteGamesRepository.findAll());
+
+        favGames.addAll(fav);
+        allGames.addAll(all);
+        allGames.removeAll(favGames);
     }
 
     private abstract class AbstractExportTransferHandler extends TransferHandler {
@@ -128,6 +141,7 @@ public class FavouriteGamesPanel extends FavouriteGamesPanelDesigner {
                 Game game = (Game) support.getTransferable().getTransferData(GameTransferable.GAME_FLAVOUR);
                 if (favGames.add(game)) {
                     allGames.remove(game);
+                    favoriteGamesRepository.save(game, SessionManager.getInstance().getCurrentUser());  
                     loadFavGamesModel();
                     return true;
                 }

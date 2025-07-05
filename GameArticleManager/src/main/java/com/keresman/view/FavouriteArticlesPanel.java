@@ -1,9 +1,11 @@
 package com.keresman.view;
 
 import com.keresman.dal.ArticleRepository;
+import com.keresman.dal.FavouriteArticleRepostiory;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.model.Article;
 import com.keresman.model.ArticleTransferable;
+import com.keresman.session.SessionManager;
 import com.keresman.view.designer.FavouriteArticlesPanelDesigner;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ComponentEvent;
@@ -21,9 +23,12 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
 
     private Set<Article> allArticles = new TreeSet<>();
     private Set<Article> favArticles = new TreeSet<>();
-    private ArticleRepository articleRepository;
+
     private final DefaultListModel<Article> allArticlesModel = new DefaultListModel<>();
     private final DefaultListModel<Article> favArticlesModel = new DefaultListModel<>();
+
+    private ArticleRepository articleRepository;
+    private FavouriteArticleRepostiory favoriteArticleRepository;
 
     public FavouriteArticlesPanel() throws Exception {
         super();
@@ -32,7 +37,7 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
 
     private void init() throws Exception {
         initDragAndDrop();
-        initRepository();
+        initRepositories();
         loadArticless();
         loadAllModels();
     }
@@ -59,12 +64,9 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
         lsFavouriteArticles.setTransferHandler(new FavouriteArticlessImportHandler());
     }
 
-    private void initRepository() throws Exception {
+    private void initRepositories() throws Exception {
         articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
-    }
-
-    private void loadArticless() throws Exception {
-        allArticles = new TreeSet<>(articleRepository.findAll());
+        favoriteArticleRepository = RepositoryFactory.getInstance(FavouriteArticleRepostiory.class);
     }
 
     @Override
@@ -75,6 +77,15 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
         } catch (Exception ex) {
             Logger.getLogger(FavouriteArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void loadArticless() throws Exception {
+        var user = SessionManager.getInstance().getCurrentUser();
+
+        allArticles = new TreeSet<>(articleRepository.findAll());
+        favArticles = new TreeSet<>(favoriteArticleRepository.findByUserId(user.getId()));
+
+        allArticles.removeAll(favArticles);
     }
 
     private abstract class AbstractExportTransferHandler extends TransferHandler {
@@ -142,9 +153,10 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
         @Override
         public boolean importData(TransferHandler.TransferSupport support) {
             try {
-                Article Articles = (Article) support.getTransferable().getTransferData(ArticleTransferable.ARTICLE_FLAVOUR);
-                if (favArticles.add(Articles)) {
-                    allArticles.remove(Articles);
+                Article article = (Article) support.getTransferable().getTransferData(ArticleTransferable.ARTICLE_FLAVOUR);
+                if (favArticles.add(article)) {
+                    allArticles.remove(article);
+                    favoriteArticleRepository.save(article, SessionManager.getInstance().getCurrentUser());
                     loadFavArticlessModel();
                     return true;
                 }

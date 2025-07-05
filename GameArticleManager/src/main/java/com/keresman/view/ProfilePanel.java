@@ -1,8 +1,12 @@
 package com.keresman.view;
 
+import com.keresman.dal.FavoriteGamesRepository;
+import com.keresman.dal.FavouriteArticleRepostiory;
 import com.keresman.view.designer.ProfilePanelDesigner;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.dal.UserRepository;
+import com.keresman.model.Article;
+import com.keresman.model.Game;
 import com.keresman.model.User;
 import com.keresman.payload.UserUpdateReq;
 import com.keresman.service.UserService;
@@ -11,6 +15,7 @@ import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import java.awt.event.ActionEvent;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -19,6 +24,12 @@ public class ProfilePanel extends ProfilePanelDesigner {
 
     private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
     private UserService userService;
+
+    private FavoriteGamesRepository favoriteGamesRepository;
+    private FavouriteArticleRepostiory favouriteArticleRepostiory;
+
+    private DefaultListModel<Game> favGamesModel = new DefaultListModel<>();
+    private DefaultListModel<Article> favArticlesModel = new DefaultListModel<>();
 
     public ProfilePanel() {
         super();
@@ -29,14 +40,33 @@ public class ProfilePanel extends ProfilePanelDesigner {
         try {
             initValidation();
             hideErrors();
-            fillForm();
+            initRepositories();
             initUserService();
+            fillForm();
+            loadListModels();
         } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
             MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
             System.exit(1);
         }
+    }
+
+    private void initRepositories() throws Exception {
+        favoriteGamesRepository = RepositoryFactory.getInstance(FavoriteGamesRepository.class);
+        favouriteArticleRepostiory = RepositoryFactory.getInstance(FavouriteArticleRepostiory.class);
+    }
+
+    private void loadListModels() throws Exception {
+        User user = SessionManager.getInstance().getCurrentUser();
+
+        favGamesModel.clear();
+        favoriteGamesRepository.findByUserId(user.getId()).forEach(favGamesModel::addElement);
+        lsFavGames.setModel(favGamesModel);
+
+        favArticlesModel.clear();
+        favouriteArticleRepostiory.findByUserId(user.getId()).forEach(favArticlesModel::addElement);
+        lsFavArticles.setModel(favArticlesModel);
     }
 
     private void initValidation() {

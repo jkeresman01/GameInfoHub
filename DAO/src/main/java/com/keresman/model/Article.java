@@ -80,11 +80,11 @@ public final class Article implements Comparable<Article> {
 
     @Override
     public String toString() {
-        String shortTitle = title != null && title.length() > 20
-                ? title.substring(0, 20) + "..."
+        String shortTitle = title != null && title.length() > 35
+                ? title.substring(0, 35) + "..."
                 : title;
 
-        return "Article: " + shortTitle;
+        return shortTitle;
     }
 
     public void addCategory(Category category) {
