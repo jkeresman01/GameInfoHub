@@ -7,7 +7,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -33,12 +32,9 @@ public final class Article implements Comparable<Article> {
     @XmlJavaTypeAdapter(ArticlePublishedDateAdapter.class)
     private LocalDateTime publishedDateTime;
 
-    @XmlElementWrapper
-    @XmlElement(name = "category")
+ 
     private List<Category> categories = new ArrayList<>();
 
-    @XmlElementWrapper
-    @XmlElement(name = "game")
     private List<Game> games = new ArrayList<>();
 
     @XmlElement(name = "picturePath")

@@ -3,6 +3,7 @@ package com.keresman.view;
 import com.keresman.model.Comment;
 import com.keresman.model.CommentAddable;
 import com.keresman.model.Game;
+import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.AddCommentDialogDesigner;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -13,7 +14,7 @@ import javax.swing.text.JTextComponent;
 public class AddCommentDialog extends AddCommentDialogDesigner {
 
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
-    
+
     private final CommentAddable commentAddable;
     private final Game game;
 
@@ -45,11 +46,15 @@ public class AddCommentDialog extends AddCommentDialogDesigner {
         if (!isFormValid()) {
             return;
         }
-        
+
         String title = tfTitle.getText().trim();
         String content = tfContent.getText().trim();
-        
+
         commentAddable.addComment(new Comment(title, content), game);
+
+        MessageUtils.showInformationMessage("Comment", "Comment added.");
+
+        dispose();
     }
 
     private boolean isFormValid() {

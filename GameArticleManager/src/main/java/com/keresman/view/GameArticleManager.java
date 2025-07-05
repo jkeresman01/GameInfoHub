@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 import com.keresman.dal.CommentRepository;
+import com.keresman.dal.GameRepository;
 
 public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable {
 
@@ -86,6 +87,7 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
         initUserService();
         initReportService();
         initArticleService();
+        initGameService();
         initCommentService();
     }
 
@@ -97,13 +99,16 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
         articleService = new ArticleService(RepositoryFactory.getInstance(ArticleRepository.class));
     }
 
+    private void initGameService() throws Exception {
+        gameService = new GameService(RepositoryFactory.getInstance(GameRepository.class));
+    }
+
     private void initCommentService() throws Exception {
         commentService = new CommentService(RepositoryFactory.getInstance(CommentRepository.class));
     }
 
     private void initUserService() throws Exception {
-        UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-        userService = new UserService(userRepository);
+        userService = new UserService(RepositoryFactory.getInstance(UserRepository.class));
     }
 
     @Override

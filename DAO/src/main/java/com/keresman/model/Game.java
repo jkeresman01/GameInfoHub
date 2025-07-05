@@ -4,14 +4,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class Game implements Comparable<Game> {
 
+    @XmlElement(name = "gameId")
     private int gameId;
+
+    @XmlElement(name = "name")
     private String name;
+
     private LocalDate releaseDate;
+
+    @XmlElementWrapper
+    @XmlElement(name = "category")
     private List<Genre> genres = new ArrayList<>();
+
+    @XmlElementWrapper
+    @XmlElement(name = "category")
     private List<Developer> developers = new ArrayList<>();
+
+    @XmlElementWrapper
+    @XmlElement(name = "category")
     private List<Platform> platforms = new ArrayList<>();
 
     public Game() {

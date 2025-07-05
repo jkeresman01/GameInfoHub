@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public class SQLGameRepository implements GameRepository {
 
+    private static final String ID = "Id";
     private static final String GAME_ID = "GameId";
     private static final String NAME = "Name";
     private static final String RELEASE_DATE = "ReleaseDate";
@@ -96,7 +97,7 @@ public class SQLGameRepository implements GameRepository {
     public Optional<Game> findById(int id) throws Exception {
         try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
 
-            stmt.setInt(GAME_ID, id);
+            stmt.setInt(ID, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(gameRowMapper.map(rs));
