@@ -8,6 +8,7 @@ import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.BrowseReportsPanelDesigner;
 import com.keresman.view.model.ReportTableModel;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,7 +20,6 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
     private ReportService reportService;
     private ReportTableModel reportTableModel;
     private int selectedReportId;
-    private Report selectedReport;
 
     public BrowseReportsPanel() {
         super();
@@ -75,6 +75,18 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
             tfTitle.setText("");
             tfContent.setText("");
             MessageUtils.showErrorMessage("Error", reportById.getMessage());
+        }
+    }
+
+    @Override
+    public void formComponentShown(ComponentEvent evt) {
+        Result<List<Report>> allReports = reportService.getAllReports();
+
+        if (allReports.isSuccess()) {
+            reportTableModel = new ReportTableModel(allReports.getData().get());
+            tblReports.setModel(reportTableModel);
+        } else {
+            MessageUtils.showErrorMessage("Failed to Load Reports", allReports.getMessage());
         }
     }
 

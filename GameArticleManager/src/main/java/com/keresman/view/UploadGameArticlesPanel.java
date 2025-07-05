@@ -1,12 +1,12 @@
 package com.keresman.view;
 
-import com.keresman.dal.ArticleRepository;
-import com.keresman.dal.RepositoryFactory;
-import com.keresman.dal.UserRepository;
+import com.keresman.dal.*;
 import com.keresman.model.Article;
+import com.keresman.model.Game;
 import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.UploadGameArticlesPanelDesigner;
+
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,8 +17,18 @@ import javax.swing.SwingUtilities;
 public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private ArticleRepository articleRepository;
+    private GameRepository gameRepository;
     private UserRepository userRepository;
-    private DefaultListModel<Article> articlesModel;
+    private ReportRepository reportRepository;
+    private CommentRepository commentRepository;
+    private FavoriteGamesRepository favGamesRepository;
+    private FavouriteArticleRepostiory favArticleRepository;
+    private DeveloperRepository developerRepository;
+    private GenreRepository genreRepository;
+    private PlatformRepository platformRepository;
+    private CategoryRepostitory categoryRepository;
+
+    private DefaultListModel<Article> articlesModel = new DefaultListModel<>();
 
     public UploadGameArticlesPanel() {
         super();
@@ -27,15 +37,27 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private void init() {
         try {
-            articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
-            userRepository = RepositoryFactory.getInstance(UserRepository.class);
-            articlesModel = new DefaultListModel<>();
+            initRepositories();
             loadModel();
         } catch (Exception ex) {
             Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
             MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
             System.exit(1);
         }
+    }
+
+    private void initRepositories() throws Exception {
+        articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+        userRepository = RepositoryFactory.getInstance(UserRepository.class);
+        gameRepository = RepositoryFactory.getInstance(GameRepository.class);
+        commentRepository = RepositoryFactory.getInstance(CommentRepository.class);
+        reportRepository = RepositoryFactory.getInstance(ReportRepository.class);
+        favArticleRepository = RepositoryFactory.getInstance(FavouriteArticleRepostiory.class);
+        favGamesRepository = RepositoryFactory.getInstance(FavoriteGamesRepository.class);
+        developerRepository = RepositoryFactory.getInstance(DeveloperRepository.class);
+        genreRepository = RepositoryFactory.getInstance(GenreRepository.class);
+        platformRepository = RepositoryFactory.getInstance(PlatformRepository.class);
+        categoryRepository = RepositoryFactory.getInstance(CategoryRepostitory.class);
     }
 
     private void loadModel() throws Exception {
@@ -58,9 +80,13 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
                 articles = GameArticleParser.parse();
                 articleRepository.saveAll(articles);
 
-                for (Article article : articles) {
-                    article.getGames().forEach(System.out::println);
-                }
+                List<Game> uniqueGames = articles.stream()
+                        .flatMap(article -> article.getGames().stream())
+                        .distinct()
+                        .toList();
+
+                uniqueGames.forEach(System.out::println);
+                gameRepository.saveAll(uniqueGames);
             }
 
             updateUIWithArticles(articles);
@@ -75,7 +101,6 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private void updateUIWithArticles(List<Article> articles) {
         List<Article> finalArticles = articles;
-
         SwingUtilities.invokeLater(() -> {
             articlesModel.clear();
             finalArticles.forEach(articlesModel::addElement);
@@ -86,19 +111,30 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
 
     private void handleLoadError(Exception ex) {
         Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-        SwingUtilities.invokeLater(
-                ()  -> MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage()));
+        SwingUtilities.invokeLater(() -> MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage()));
     }
 
     @Override
     public void btnDeleteAllActionPerformed(ActionEvent evt) {
         try {
-            userRepository.deleteAll();
-            articleRepository.deleteAll();
+            deleteAll();
             loadModel();
         } catch (Exception ex) {
             Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private void deleteAll() throws Exception {
+        commentRepository.deleteAll();
+        reportRepository.deleteAll();
+        favGamesRepository.deleteAll();
+        favArticleRepository.deleteAll();
+        articleRepository.deleteAll();
+        gameRepository.deleteAll();
+        userRepository.deleteAll();
+        developerRepository.deleteAll();
+        genreRepository.deleteAll();
+        platformRepository.deleteAll();
+        categoryRepository.deleteAll();
+    }
 }

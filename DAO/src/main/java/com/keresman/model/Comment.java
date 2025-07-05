@@ -22,7 +22,7 @@ public final class Comment implements Comparable<Comment> {
 
     @Override
     public String toString() {
-        return "Comment{" + "commentId=" + commentId + ", title=" + title + ", content=" + content + '}';
+        return title + System.lineSeparator() + content;
     }
 
     public int getCommentId() {

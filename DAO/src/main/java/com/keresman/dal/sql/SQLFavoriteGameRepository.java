@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLFavoriteGamesRepository implements FavoriteGamesRepository {
+public class SQLFavoriteGameRepository implements FavoriteGamesRepository {
 
     private static final String USER_ID = "UserId";
     private static final String GAME_ID = "GameId";

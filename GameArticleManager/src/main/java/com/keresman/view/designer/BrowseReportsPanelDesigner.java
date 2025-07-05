@@ -1,5 +1,6 @@
 package com.keresman.view.designer;
 
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
@@ -29,6 +30,11 @@ public abstract class BrowseReportsPanelDesigner extends JPanel {
 
         setBackground(new java.awt.Color(24, 24, 24));
         setPreferredSize(new java.awt.Dimension(940, 802));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         spReportsTable.setBackground(new java.awt.Color(24, 24, 24));
 
@@ -100,6 +106,8 @@ public abstract class BrowseReportsPanelDesigner extends JPanel {
                 .addGap(124, 124, 124))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public abstract void formComponentShown(ComponentEvent evt);
 
     public abstract void tblReportsMouseClicked(MouseEvent evt);
 }

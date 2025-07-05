@@ -3,12 +3,12 @@ package com.keresman.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Game implements Comparable<Game> {
 
     private int gameId;
     private String name;
-
     private LocalDate releaseDate;
     private List<Genre> genres = new ArrayList<>();
     private List<Developer> developers = new ArrayList<>();
@@ -88,5 +88,27 @@ public final class Game implements Comparable<Game> {
                 + ", developers=" + developers
                 + ", platforms=" + platforms
                 + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Game other = (Game) obj;
+        return Objects.equals(this.name, other.name);
     }
 }

@@ -21,6 +21,7 @@ public class ReportService {
             return report.map(Result::success)
                     .orElseGet(() -> Result.error("Report with ID [%d] not found.".formatted(id)));
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error("Failed to fetch report with ID [%d].".formatted(id));
         }
     }

@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.sql.DataSource;
 
 public class SQLGameRepository implements GameRepository {
 
@@ -35,12 +34,15 @@ public class SQLGameRepository implements GameRepository {
     private static final String REMOVE_PLATFORMS = "{ CALL uspRemovePlatformsFromGame (?) }";
     private static final String REMOVE_DEVELOPERS = "{ CALL uspRemoveDevelopersFromGame (?) }";
 
+    private static final String REMOVE_ALL_GENRES = "{ CALL uspRemoveAllGameGenres }";
+    private static final String REMOVE_ALL_PLATFORMS = "{ CALL uspRemoveAllGamePlatforms }";
+    private static final String REMOVE_ALL_DEVELOPERS = "{ CALL uspRemoveAllGameDevelopers }";
+
     private final GameRowMapper gameRowMapper = new GameRowMapper();
 
     @Override
     public int save(Game game) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(CREATE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(CREATE)) {
 
             stmt.setString(NAME, game.getName());
             stmt.setObject(RELEASE_DATE, game.getReleaseDate());
@@ -54,9 +56,23 @@ public class SQLGameRepository implements GameRepository {
     }
 
     @Override
+    public void saveAll(List<Game> games) throws Exception {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(CREATE)) {
+            for (Game game : games) {
+                stmt.setString(NAME, game.getName());
+                stmt.setObject(RELEASE_DATE, game.getReleaseDate());
+                stmt.registerOutParameter(GAME_ID, Types.INTEGER);
+                stmt.executeUpdate();
+
+                int gameId = stmt.getInt(GAME_ID);
+                addLinks(con, game, gameId);
+            }
+        }
+    }
+
+    @Override
     public void updateById(int id, Game game) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(UPDATE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(UPDATE)) {
 
             stmt.setInt(GAME_ID, id);
             stmt.setString(NAME, game.getName());
@@ -70,8 +86,7 @@ public class SQLGameRepository implements GameRepository {
 
     @Override
     public void deleteById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(DELETE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DELETE)) {
             stmt.setInt(GAME_ID, id);
             stmt.executeUpdate();
         }
@@ -79,8 +94,7 @@ public class SQLGameRepository implements GameRepository {
 
     @Override
     public Optional<Game> findById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
 
             stmt.setInt(GAME_ID, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -95,9 +109,7 @@ public class SQLGameRepository implements GameRepository {
     @Override
     public List<Game> findAll() throws Exception {
         List<Game> games = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_ALL);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ALL); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 games.add(gameRowMapper.map(rs));
@@ -109,8 +121,7 @@ public class SQLGameRepository implements GameRepository {
     @Override
     public List<Game> findByPlatformId(int platformId) throws Exception {
         List<Game> games = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_PLATFORM)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_PLATFORM)) {
 
             stmt.setInt(PLATFORM_ID, platformId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -125,8 +136,7 @@ public class SQLGameRepository implements GameRepository {
     @Override
     public List<Game> findByGenreId(int genreId) throws Exception {
         List<Game> games = new ArrayList<>();
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(SELECT_BY_GENRE)) {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_GENRE)) {
 
             stmt.setInt(GENRE_ID, genreId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -140,9 +150,12 @@ public class SQLGameRepository implements GameRepository {
 
     @Override
     public void deleteAll() throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection();
-             CallableStatement stmt = con.prepareCall(DELETE_ALL)) {
-            stmt.executeUpdate();
+        try (Connection con = DataSourceSingleton.getInstance().getConnection()) {
+            clearAllLinks(con);
+
+            try (CallableStatement stmt = con.prepareCall(DELETE_ALL)) {
+                stmt.executeUpdate();
+            }
         }
     }
 
@@ -150,7 +163,7 @@ public class SQLGameRepository implements GameRepository {
         try (CallableStatement stmt = con.prepareCall(ADD_GENRE)) {
             for (var genre : game.getGenres()) {
                 stmt.setInt(1, gameId);
-                stmt.setInt(2, genre.getGenreId());
+                stmt.setString(2, genre.getName());
                 stmt.executeUpdate();
             }
         }
@@ -158,7 +171,7 @@ public class SQLGameRepository implements GameRepository {
         try (CallableStatement stmt = con.prepareCall(ADD_PLATFORM)) {
             for (var platform : game.getPlatforms()) {
                 stmt.setInt(1, gameId);
-                stmt.setInt(2, platform.getPlatformId());
+                stmt.setString(2, platform.getName());
                 stmt.executeUpdate();
             }
         }
@@ -166,7 +179,7 @@ public class SQLGameRepository implements GameRepository {
         try (CallableStatement stmt = con.prepareCall(ADD_DEVELOPER)) {
             for (var developer : game.getDevelopers()) {
                 stmt.setInt(1, gameId);
-                stmt.setInt(2, developer.getDeveloperId());
+                stmt.setString(2, developer.getName());
                 stmt.executeUpdate();
             }
         }
@@ -183,6 +196,18 @@ public class SQLGameRepository implements GameRepository {
         }
         try (CallableStatement stmt = con.prepareCall(REMOVE_DEVELOPERS)) {
             stmt.setInt(1, gameId);
+            stmt.executeUpdate();
+        }
+    }
+
+    private void clearAllLinks(Connection con) throws Exception {
+        try (CallableStatement stmt = con.prepareCall(REMOVE_ALL_GENRES)) {
+            stmt.executeUpdate();
+        }
+        try (CallableStatement stmt = con.prepareCall(REMOVE_ALL_PLATFORMS)) {
+            stmt.executeUpdate();
+        }
+        try (CallableStatement stmt = con.prepareCall(REMOVE_ALL_DEVELOPERS)) {
             stmt.executeUpdate();
         }
     }

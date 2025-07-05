@@ -1,5 +1,6 @@
 package com.keresman.view;
 
+import com.keresman.dal.ArticleRepository;
 import com.keresman.dal.ReportRepository;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.dal.UserRepository;
@@ -84,11 +85,16 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     private void initServices() throws Exception {
         initUserService();
         initReportService();
+        initArticleService();
         initCommentService();
     }
 
     private void initReportService() throws Exception {
         reportService = new ReportService(RepositoryFactory.getInstance(ReportRepository.class));
+    }
+
+    private void initArticleService() throws Exception {
+        articleService = new ArticleService(RepositoryFactory.getInstance(ArticleRepository.class));
     }
 
     private void initCommentService() throws Exception {

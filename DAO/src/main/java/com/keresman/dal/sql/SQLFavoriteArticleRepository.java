@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLFavouriteArticlesRepository implements FavouriteArticleRepostiory {
+public class SQLFavoriteArticleRepository implements FavouriteArticleRepostiory {
 
     private static final String USER_ID = "UserId";
     private static final String ARTICLE_ID = "ArticleId";

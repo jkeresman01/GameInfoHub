@@ -6,14 +6,14 @@ import javax.swing.table.AbstractTableModel;
 
 public class GameTableModel extends AbstractTableModel {
 
-    private static final String[] COLUMS = {
-        "Id", "Title", "Description", "Genre", "Picture path"
+    private static final String[] COLUMNS = {
+        "Id", "Title", "Release Date", "Genre", "Developer", "Platform"
     };
 
     private List<Game> games;
 
     public GameTableModel(List<Game> games) {
-        setUsers(games);
+        setGames(games);
     }
 
     @Override
@@ -23,42 +23,50 @@ public class GameTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return COLUMS.length;
+        return COLUMNS.length;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Game game = games.get(rowIndex);
-        
+
         return switch (columnIndex) {
-//            case 0 -> game.getId();
-//            case 1 -> game.getFirstName();
-//            case 2 -> game.getLastName();
-//            case 3 -> game.getUsername();
-//            case 4 -> game.getGender();
-//            case 5 -> game.getEmail();
-//            case 6 -> game.isActive() ? "YES" : "NO";
-            default -> null;
+            case 0 ->
+                game.getGameId();
+            case 1 ->
+                game.getName();
+            case 2 ->
+                game.getReleaseDate();
+            case 3 ->
+                !game.getGenres().isEmpty() ? game.getGenres().get(0).getName() : "";
+            case 4 ->
+                !game.getDevelopers().isEmpty() ? game.getDevelopers().get(0).getName() : "";
+            case 5 ->
+                !game.getPlatforms().isEmpty() ? game.getPlatforms().get(0).getName() : "";
+            default ->
+                null;
         };
     }
 
-    public void setUsers(List<Game> games) {
+    public void setGames(List<Game> games) {
         this.games = games;
         fireTableDataChanged();
     }
 
     @Override
     public String getColumnName(int column) {
-        return COLUMS[column];
+        return COLUMNS[column];
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 0) {
-            return Integer.class;
-        }
-
-        return super.getColumnClass(columnIndex);
+        return switch (columnIndex) {
+            case 0 ->
+                Integer.class;
+            case 2 ->
+                java.time.LocalDate.class;
+            default ->
+                String.class;
+        };
     }
-
 }

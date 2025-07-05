@@ -7,6 +7,8 @@ import java.util.Optional;
 public interface GameRepository {
 
     int save(Game game) throws Exception;
+    
+    void saveAll(List<Game> games) throws Exception;
 
     void updateById(int id, Game game) throws Exception;
 
