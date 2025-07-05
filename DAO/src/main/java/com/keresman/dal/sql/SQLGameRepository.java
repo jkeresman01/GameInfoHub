@@ -87,9 +87,13 @@ public class SQLGameRepository implements GameRepository {
 
     @Override
     public void deleteById(int id) throws Exception {
-        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(DELETE)) {
-            stmt.setInt(GAME_ID, id);
-            stmt.executeUpdate();
+        try (Connection con = DataSourceSingleton.getInstance().getConnection()) {
+            clearLinks(con, id);
+
+            try (CallableStatement stmt = con.prepareCall(DELETE)) {
+                stmt.setInt(ID, id);
+                stmt.executeUpdate();
+            }
         }
     }
 

@@ -15,7 +15,6 @@ public abstract class GameArticleManagerDesigner extends JFrame {
     protected javax.swing.JMenuBar mbMainMenu;
     protected javax.swing.JMenu miAbout;
     protected javax.swing.JMenu miArticleArchive;
-    protected javax.swing.JMenu miGameArchive;
     protected javax.swing.JMenu miHelp;
     protected javax.swing.JMenu miLogout;
     protected javax.swing.JTabbedPane tpMain;
@@ -38,7 +37,6 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         mLookAndFeel = new javax.swing.JMenu();
         mExport = new javax.swing.JMenu();
         mUserArchive = new javax.swing.JMenu();
-        miGameArchive = new javax.swing.JMenu();
         miArticleArchive = new javax.swing.JMenu();
         mLogout = new javax.swing.JMenu();
         miLogout = new javax.swing.JMenu();
@@ -94,14 +92,6 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         });
         mExport.add(mUserArchive);
 
-        miGameArchive.setText("Game Archive");
-        miGameArchive.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                miGameArchiveMouseClicked(evt);
-            }
-        });
-        mExport.add(miGameArchive);
-
         miArticleArchive.setText("Article Archive");
         miArticleArchive.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -135,8 +125,6 @@ public abstract class GameArticleManagerDesigner extends JFrame {
     public abstract void miAboutMouseClicked(MouseEvent evt);
 
     public abstract void mUserArchiveMouseClicked(MouseEvent evt);
-
-    public abstract void miGameArchiveMouseClicked(MouseEvent evt);
 
     public abstract void miArticleArchiveMouseClicked(MouseEvent evt);
 

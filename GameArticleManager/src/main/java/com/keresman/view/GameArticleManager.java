@@ -9,14 +9,12 @@ import com.keresman.model.ArticleArchive;
 import com.keresman.model.Comment;
 import com.keresman.model.CommentAddable;
 import com.keresman.model.Game;
-import com.keresman.model.GameArchive;
 import com.keresman.model.Report;
 import com.keresman.model.ReportAddable;
 import com.keresman.model.User;
 import com.keresman.model.UserArchive;
 import com.keresman.service.ArticleService;
 import com.keresman.service.CommentService;
-import com.keresman.service.GameService;
 import com.keresman.service.ReportService;
 import com.keresman.service.UserService;
 import com.keresman.session.SessionManager;
@@ -35,13 +33,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 import com.keresman.dal.CommentRepository;
-import com.keresman.dal.GameRepository;
+import java.io.File;
 
 public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable {
 
-    private static final String USER_ARCHIVE_FILENAME = "src/main/resources/assets/archives/userarchive.xml";
-    private static final String ARTICLES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/articlesarchive.xml";
-    private static final String GAMES_ARCHIVE_FILENAME = "src/main/resources/assets/archives/gamesarchive.xml";
+    private static final String ARCHIVE_BASE_PATH = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "assets" + File.separator + "archives";
+    private static final String USER_ARCHIVE_FILENAME = ARCHIVE_BASE_PATH + File.separator + "userarchive.xml";
+    private static final String ARTICLES_ARCHIVE_FILENAME = ARCHIVE_BASE_PATH + File.separator + "articlesarchive.xml";
 
     private static final String PROFILE = "Profile";
     private static final String FAVOURITES = "Favourites";
@@ -50,7 +48,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     private static final String ADMIN = "Admin";
 
     private UserService userService;
-    private GameService gameService;
     private ArticleService articleService;
     private CommentService commentService;
     private ReportService reportService;
@@ -87,7 +84,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
         initUserService();
         initReportService();
         initArticleService();
-        initGameService();
         initCommentService();
     }
 
@@ -97,10 +93,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
 
     private void initArticleService() throws Exception {
         articleService = new ArticleService(RepositoryFactory.getInstance(ArticleRepository.class));
-    }
-
-    private void initGameService() throws Exception {
-        gameService = new GameService(RepositoryFactory.getInstance(GameRepository.class));
     }
 
     private void initCommentService() throws Exception {
@@ -168,27 +160,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
             notifySuccess("User archive successfully exported!");
         } catch (JAXBException ex) {
             notifyError("Failed to export user archive:\n%s".formatted(ex.getMessage()));
-        }
-    }
-
-    @Override
-    public void miGameArchiveMouseClicked(MouseEvent evt) {
-        new Thread(this::exportGameArchive).start();
-    }
-
-    private void exportGameArchive() {
-        Result<List<Game>> result = gameService.getAllGames();
-
-        if (!result.isSuccess()) {
-            notifyError("Failed to export game archive");
-            return;
-        }
-
-        try {
-            JAXBUtils.save(new GameArchive(result.getData().get()), GAMES_ARCHIVE_FILENAME);
-            notifySuccess("Game archive successfully exported!");
-        } catch (JAXBException ex) {
-            notifyError("Failed to export game archive:\n%s".formatted(ex.getMessage()));
         }
     }
 

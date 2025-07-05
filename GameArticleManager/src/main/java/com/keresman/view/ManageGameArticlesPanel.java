@@ -85,7 +85,6 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
                         .distinct()
                         .toList();
 
-                uniqueGames.forEach(System.out::println);
                 gameRepository.saveAll(uniqueGames);
             }
 
