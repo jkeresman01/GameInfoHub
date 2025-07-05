@@ -1,7 +1,6 @@
 package com.keresman.view;
 
-import com.keresman.dal.ArticleRepository;
-import com.keresman.dal.GameRepository;
+import com.keresman.dal.ReportRepository;
 import com.keresman.dal.RepositoryFactory;
 import com.keresman.dal.UserRepository;
 import com.keresman.model.Article;
@@ -15,14 +14,15 @@ import com.keresman.model.ReportAddable;
 import com.keresman.model.User;
 import com.keresman.model.UserArchive;
 import com.keresman.service.ArticleService;
+import com.keresman.service.CommentService;
 import com.keresman.service.GameService;
+import com.keresman.service.ReportService;
 import com.keresman.service.UserService;
 import com.keresman.session.SessionManager;
 import com.keresman.utilities.JAXBUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.validator.Result;
 import com.keresman.view.designer.GameArticleManagerDesigner;
-import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +33,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
+import com.keresman.dal.CommentRepository;
 
 public class GameArticleManager extends GameArticleManagerDesigner implements CommentAddable, ReportAddable {
 
@@ -49,6 +50,8 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     private UserService userService;
     private GameService gameService;
     private ArticleService articleService;
+    private CommentService commentService;
+    private ReportService reportService;
 
     public GameArticleManager() {
         super();
@@ -69,7 +72,7 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
 
     private void initPanels() throws Exception {
         if (SessionManager.getInstance().getCurrentUser().isAdmin()) {
-            tpMain.add(ADMIN, new AdminPanelManager());
+            tpMain.add(ADMIN, new AdminPanel());
         }
 
         tpMain.add(GAMES, new GamesPanel());
@@ -80,23 +83,21 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
 
     private void initServices() throws Exception {
         initUserService();
-        initGameService();
-        initArticleService();
+        initReportService();
+        initCommentService();
+    }
+
+    private void initReportService() throws Exception {
+        reportService = new ReportService(RepositoryFactory.getInstance(ReportRepository.class));
+    }
+
+    private void initCommentService() throws Exception {
+        commentService = new CommentService(RepositoryFactory.getInstance(CommentRepository.class));
     }
 
     private void initUserService() throws Exception {
         UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
         userService = new UserService(userRepository);
-    }
-
-    private void initGameService() throws Exception {
-        GameRepository gameRepostitory = RepositoryFactory.getInstance(GameRepository.class);
-        gameService = new GameService(gameRepostitory);
-    }
-
-    private void initArticleService() throws Exception {
-        ArticleRepository articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
-        articleService = new ArticleService(articleRepository);
     }
 
     @Override
@@ -214,16 +215,6 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
     }
 
     @Override
-    public void addComment(Comment comment) {
-
-    }
-
-    @Override
-    public void addReport(Report report) {
-
-    }
-
-    @Override
     public void mHelpMouseClicked(MouseEvent evt) {
         MessageUtils.showInformationMessage("HELP", "For any assitance you can contact us on: +385 099 00000000");
     }
@@ -235,4 +226,19 @@ public class GameArticleManager extends GameArticleManagerDesigner implements Co
                 "This desktop application was developed using Java Swing as part of the Java Programming 1 course at Algebra Bernays University."
         );
     }
+
+    @Override
+    public void addComment(Comment comment, Game game) {
+        int gameId = game.getGameId();
+        int userId = SessionManager.getInstance().getCurrentUser().getId();
+        commentService.createComment(comment, userId, gameId);
+    }
+
+    @Override
+    public void addReport(Report report, Article article) {
+        int articleId = article.getArticleId();
+        int userId = SessionManager.getInstance().getCurrentUser().getId();
+        reportService.createReport(report, userId, articleId);
+    }
+
 }

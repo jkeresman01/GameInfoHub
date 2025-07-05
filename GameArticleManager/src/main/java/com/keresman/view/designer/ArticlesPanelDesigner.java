@@ -10,8 +10,8 @@ public abstract class ArticlesPanelDesigner extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnAdd;
     protected javax.swing.JButton btnClear;
-    protected javax.swing.JButton btnComment;
     protected javax.swing.JButton btnDelete;
+    protected javax.swing.JButton btnReport;
     protected javax.swing.JButton btnUpdate;
     protected javax.swing.JScrollPane jScrollPane1;
     protected javax.swing.JLabel lblDescription;
@@ -62,7 +62,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
         lblErrorPubDate = new javax.swing.JLabel();
         lblTitle = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
-        btnComment = new javax.swing.JButton();
+        btnReport = new javax.swing.JButton();
         lblPubDate = new javax.swing.JLabel();
 
         addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -193,13 +193,13 @@ public abstract class ArticlesPanelDesigner extends JPanel {
             }
         });
 
-        btnComment.setBackground(new java.awt.Color(204, 102, 255));
-        btnComment.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
-        btnComment.setForeground(new java.awt.Color(24, 24, 24));
-        btnComment.setText("| Comment |");
-        btnComment.addActionListener(new java.awt.event.ActionListener() {
+        btnReport.setBackground(new java.awt.Color(255, 102, 102));
+        btnReport.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 14)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(24, 24, 24));
+        btnReport.setText("| Report |");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCommentActionPerformed(evt);
+                btnReportActionPerformed(evt);
             }
         });
 
@@ -242,7 +242,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlaceholderLayout.createSequentialGroup()
                                 .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnComment, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblcon, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9))
@@ -287,7 +287,7 @@ public abstract class ArticlesPanelDesigner extends JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnComment, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblcon, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(spGamesTable, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,8 +322,6 @@ public abstract class ArticlesPanelDesigner extends JPanel {
     public abstract void btnClearActionPerformed(ActionEvent evt);
 
     public abstract void btnReportActionPerformed(ActionEvent evt);
-
-    public abstract void btnCommentActionPerformed(ActionEvent evt);
 
     public abstract void tblArticlesMouseClicked(MouseEvent evt);
 

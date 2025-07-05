@@ -267,12 +267,24 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
     @Override
     public void btnReportActionPerformed(ActionEvent evt) {
-        EventQueue.invokeLater(() -> new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true));
-    }
+        int selectedRow = tblArticles.getSelectedRow();
+        selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
 
-    @Override
-    public void btnCommentActionPerformed(ActionEvent evt) {
-        EventQueue.invokeLater(() -> new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true));
+        Optional<Article> optArticle = Optional.empty();
+
+        try {
+            optArticle = articleRepository.findById(selectedArticleId);
+        } catch (Exception ex) {
+            handleCrudError("select article", ex);
+        }
+
+        if (optArticle.isEmpty()) {
+            MessageUtils.showWarningMessage("Warning", "Please select article");
+            return;
+        }
+
+        ReportArticleDialog reportArticleDialog = new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, optArticle.get());
+        EventQueue.invokeLater(() -> reportArticleDialog.setVisible(true));
     }
 
     private void initRepository() throws Exception {

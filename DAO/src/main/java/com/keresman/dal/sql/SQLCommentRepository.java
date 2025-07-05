@@ -1,19 +1,18 @@
 package com.keresman.dal.sql;
 
-import com.keresman.dal.CommentRepostiory;
 import com.keresman.mapper.CommentRowMapper;
 import com.keresman.mapper.RowMapper;
 import com.keresman.model.Comment;
 
-import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import com.keresman.dal.CommentRepository;
 
-public class SQLCommentRepository implements CommentRepostiory {
+public class SQLCommentRepository implements CommentRepository {
 
     private static final String COMMENT_ID = "CommentId";
     private static final String TITLE = "Title";

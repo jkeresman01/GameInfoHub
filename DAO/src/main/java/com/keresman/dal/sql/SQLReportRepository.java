@@ -5,13 +5,13 @@ import com.keresman.mapper.ReportRowMapper;
 import com.keresman.mapper.RowMapper;
 import com.keresman.model.Report;
 
-import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SQLReportRepository implements ReportRepository {
 
@@ -21,6 +21,7 @@ public class SQLReportRepository implements ReportRepository {
     private static final String USER_ID = "UserId";
     private static final String ARTICLE_ID = "ArticleId";
 
+    private static final String SELECT_BY_ID = "{ CALL uspSelectReportById(?) }";
     private static final String INSERT_REPORT = "{ CALL uspInsertReport(?, ?, ?, ?, ?) }";
     private static final String SELECT_BY_ARTICLE_ID = "{ CALL uspSelectReportsByArticleId(?) }";
     private static final String SELECT_ALL = "{ CALL uspSelectAllReports }";
@@ -76,5 +77,20 @@ public class SQLReportRepository implements ReportRepository {
 
             stmt.executeUpdate();
         }
+    }
+
+    @Override
+    public Optional<Report> findById(int id) throws Exception {
+        try (Connection con = DataSourceSingleton.getInstance().getConnection(); CallableStatement stmt = con.prepareCall(SELECT_BY_ID)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(reportRowMapper.map(rs));
+                }
+            }
+        }
+        return Optional.empty();
     }
 }

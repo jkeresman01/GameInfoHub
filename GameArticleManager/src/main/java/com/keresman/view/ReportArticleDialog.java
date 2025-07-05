@@ -1,7 +1,9 @@
 package com.keresman.view;
 
+import com.keresman.model.Article;
 import com.keresman.model.Report;
 import com.keresman.model.ReportAddable;
+import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.ReportArticleDialogDesigner;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -14,10 +16,12 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
     private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
     private final ReportAddable reportAddable;
+    private final Article article;
 
-    public ReportArticleDialog(Frame parent, boolean modal) {
+    public ReportArticleDialog(Frame parent, boolean modal, Article article) {
         super(parent, modal);
         reportAddable = (ReportAddable) parent;
+        this.article = article;
         init();
     }
 
@@ -46,7 +50,11 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
         String title = tfTitle.getText().trim();
         String content = tfContent.getText().trim();
 
-        reportAddable.addReport(new Report(title, content));
+        reportAddable.addReport(new Report(title, content), article);
+
+        MessageUtils.showInformationMessage("Report", "Article reported.");
+
+        dispose();
     }
 
     private boolean isFormValid() {
