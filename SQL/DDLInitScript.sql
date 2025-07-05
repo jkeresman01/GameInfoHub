@@ -753,6 +753,16 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE uspSelectDeveloperWithId
+    @Id INT
+AS
+BEGIN
+    SELECT Id, Name
+    FROM Developer
+    WHERE Id = @Id;
+END
+GO
+
 -- Game
 
 CREATE OR ALTER PROCEDURE uspCreateGame
@@ -896,15 +906,24 @@ GO
 
 CREATE OR ALTER PROCEDURE uspAddGenreToGame
     @GameId INT,
-    @GenreId INT
+    @GenreName NVARCHAR(100)
 AS
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM GameGenre WHERE GameId = @GameId AND GenreId = @GenreId
-    )
+    SET NOCOUNT ON;
+
+    DECLARE @GenreId INT;
+
+    SELECT @GenreId = Id FROM Genre WHERE Name = @GenreName;
+
+    IF @GenreId IS NULL
     BEGIN
-        INSERT INTO GameGenre (GameId, GenreId)
-        VALUES (@GameId, @GenreId);
+        INSERT INTO Genre (Name) VALUES (@GenreName);
+        SET @GenreId = SCOPE_IDENTITY();
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM GameGenre WHERE GameId = @GameId AND GenreId = @GenreId)
+    BEGIN
+        INSERT INTO GameGenre (GameId, GenreId) VALUES (@GameId, @GenreId);
     END
 END
 GO
@@ -917,20 +936,30 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE uspAddPlatformToGame
+CREATE OR ALTER  PROCEDURE uspAddPlatformToGame
     @GameId INT,
-    @PlatformId INT
+    @PlatformName NVARCHAR(100)
 AS
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM GamePlatform WHERE GameId = @GameId AND PlatformId = @PlatformId
-    )
+    SET NOCOUNT ON;
+
+    DECLARE @PlatformId INT;
+
+    SELECT @PlatformId = Id FROM Platform WHERE Name = @PlatformName;
+
+    IF @PlatformId IS NULL
     BEGIN
-        INSERT INTO GamePlatform (GameId, PlatformId)
-        VALUES (@GameId, @PlatformId);
+        INSERT INTO Platform (Name) VALUES (@PlatformName);
+        SET @PlatformId = SCOPE_IDENTITY();
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM GamePlatform WHERE GameId = @GameId AND PlatformId = @PlatformId)
+    BEGIN
+        INSERT INTO GamePlatform (GameId, PlatformId) VALUES (@GameId, @PlatformId);
     END
 END
 GO
+
 
 CREATE OR ALTER PROCEDURE uspRemovePlatformsFromGame
     @GameId INT
@@ -940,17 +969,26 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE uspAddDeveloperToGame
+CREATE OR ALTER  PROCEDURE uspAddDeveloperToGame
     @GameId INT,
-    @DeveloperId INT
+    @DeveloperName NVARCHAR(100)
 AS
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM GameDeveloper WHERE GameId = @GameId AND DeveloperId = @DeveloperId
-    )
+    SET NOCOUNT ON;
+
+    DECLARE @DeveloperId INT;
+
+    SELECT @DeveloperId = Id FROM Developer WHERE Name = @DeveloperName;
+
+    IF @DeveloperId IS NULL
     BEGIN
-        INSERT INTO GameDeveloper (GameId, DeveloperId)
-        VALUES (@GameId, @DeveloperId);
+        INSERT INTO Developer (Name) VALUES (@DeveloperName);
+        SET @DeveloperId = SCOPE_IDENTITY();
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM GameDeveloper WHERE GameId = @GameId AND DeveloperId = @DeveloperId)
+    BEGIN
+        INSERT INTO GameDeveloper (GameId, DeveloperId) VALUES (@GameId, @DeveloperId);
     END
 END
 GO
@@ -1212,6 +1250,16 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE uspSelectReportById
+    @ReportId INT
+AS
+BEGIN
+    SELECT Id, Title, Content
+    FROM Report
+    WHERE Id = @ReportId;
+END
+GO
+
 CREATE OR ALTER PROCEDURE uspSelectReportsByArticleId
     @ArticleId INT
 AS
@@ -1239,15 +1287,26 @@ BEGIN
 END
 GO
 
+-- LINKS DEL --
+
+CREATE PROCEDURE uspRemoveAllGameGenres
+AS
+BEGIN
+    DELETE FROM GameGenre
+END
+GO
+
+CREATE PROCEDURE uspRemoveAllGamePlatforms
+AS
+BEGIN
+    DELETE FROM GamePlatform
+END
+GO
 
 
----- ADMIN -----
-
-select * from [User]
-
-UPDATE [User]
-SET RoleId = 1
-WHERE Username = 'admin'
-
---- ADMIN END -----
-
+CREATE PROCEDURE uspRemoveAllGameDevelopers
+AS
+BEGIN
+    DELETE FROM GameDeveloper
+END
+GO
