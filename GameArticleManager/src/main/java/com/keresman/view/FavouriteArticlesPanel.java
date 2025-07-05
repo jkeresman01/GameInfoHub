@@ -51,15 +51,9 @@ public class FavouriteArticlesPanel extends FavouriteArticlesPanelDesigner {
     private void initExportDnD() {
         lsArticles.setDragEnabled(true);
         lsArticles.setTransferHandler(new AllArticlessExportHandler());
-
-//        lsFavouriteArticless.setDragEnabled(true);
-//        lsFavouriteArticless.setTransferHandler(new FavouriteArticlessExportHandler());
     }
 
     private void initImportDnd() {
-//        lsArticless.setDropMode(DropMode.ON);
-//        lsArticless.setTransferHandler(new AllArticlessImportHandler());
-
         lsFavouriteArticles.setDropMode(DropMode.ON);
         lsFavouriteArticles.setTransferHandler(new FavouriteArticlessImportHandler());
     }
