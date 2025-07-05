@@ -2,14 +2,14 @@ package com.keresman.view.designer;
 
 import javax.swing.JPanel;
 
-public abstract class AdminManagerDesigner extends JPanel {
+public abstract class AdminPanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JLabel lblmage;
     protected javax.swing.JTabbedPane tpAdmin;
     // End of variables declaration//GEN-END:variables
 
-    protected AdminManagerDesigner() {
+    protected AdminPanelDesigner() {
         initComponents();
     }
 

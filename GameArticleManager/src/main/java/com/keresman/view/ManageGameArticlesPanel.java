@@ -5,7 +5,7 @@ import com.keresman.model.Article;
 import com.keresman.model.Game;
 import com.keresman.parser.rss.GameArticleParser;
 import com.keresman.utilities.MessageUtils;
-import com.keresman.view.designer.UploadGameArticlesPanelDesigner;
+import com.keresman.view.designer.ManageGameArticlesPanelDesigner;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 
-public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
+public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
 
     private ArticleRepository articleRepository;
     private GameRepository gameRepository;
@@ -30,7 +30,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
     
     private DefaultListModel<Article> articlesModel = new DefaultListModel<>();
 
-    public UploadGameArticlesPanel() {
+    public ManageGameArticlesPanel() {
         super();
         init();
     }
@@ -40,7 +40,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
             initRepositories();
             loadModel();
         } catch (Exception ex) {
-            Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
             MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
             System.exit(1);
         }
@@ -110,7 +110,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
     }
 
     private void handleLoadError(Exception ex) {
-        Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
         SwingUtilities.invokeLater(() -> MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage()));
     }
 
@@ -120,7 +120,7 @@ public class UploadGameArticlesPanel extends UploadGameArticlesPanelDesigner {
             deleteAll();
             loadModel();
         } catch (Exception ex) {
-            Logger.getLogger(UploadGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -4,7 +4,7 @@ import com.keresman.model.Article;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
-public abstract class UploadGameArticlesPanelDesigner extends JPanel {
+public abstract class ManageGameArticlesPanelDesigner extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnDeleteAll;
@@ -14,7 +14,7 @@ public abstract class UploadGameArticlesPanelDesigner extends JPanel {
     protected javax.swing.JScrollPane spArticles;
     // End of variables declaration//GEN-END:variables
 
-    protected UploadGameArticlesPanelDesigner() {
+    protected ManageGameArticlesPanelDesigner() {
         initComponents();
     }
 

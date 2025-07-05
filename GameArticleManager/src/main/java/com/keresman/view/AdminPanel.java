@@ -1,12 +1,12 @@
 package com.keresman.view;
 
-import com.keresman.view.designer.AdminManagerDesigner;
+import com.keresman.view.designer.AdminPanelDesigner;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-public class AdminPanel extends AdminManagerDesigner {
+public class AdminPanel extends AdminPanelDesigner {
 
     private static final String MANAGE_USERS = "Manage Users";
     private static final String MANAGE_GAME_ARTICLERS = "Manage Game Articles";
@@ -24,7 +24,7 @@ public class AdminPanel extends AdminManagerDesigner {
 
     private void initPanels() {
         tpAdmin.add(MANAGE_USERS, new ManageUsersPanel());
-        tpAdmin.add(MANAGE_GAME_ARTICLERS, new UploadGameArticlesPanel());
+        tpAdmin.add(MANAGE_GAME_ARTICLERS, new ManageGameArticlesPanel());
         tpAdmin.add(BROWSE_REPORTS, new BrowseReportsPanel());
     }
 
