@@ -40,7 +40,7 @@ public abstract class LoginPanelDesigner extends JPanel {
         lblTitle.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 28)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(255, 255, 255));
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("Game articles");
+        lblTitle.setText("Game Info Hub");
         lblTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 10, 0));
 
         lblSignInWithAcc.setBackground(new java.awt.Color(24, 24, 24));

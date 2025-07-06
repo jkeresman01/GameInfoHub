@@ -42,7 +42,7 @@ public abstract class GameArticleManagerDesigner extends JFrame {
         miLogout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Game Articles");
+        setTitle("Game Info Hub");
 
         tpMain.setBackground(new java.awt.Color(24, 24, 24));
         tpMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));

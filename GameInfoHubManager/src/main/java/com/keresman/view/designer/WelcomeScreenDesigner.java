@@ -21,7 +21,7 @@ public abstract class WelcomeScreenDesigner extends JFrame {
         lblWelcomeImg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("GameArticles");
+        setTitle("Game Info Hub");
 
         tpLoginRegister.setBackground(new java.awt.Color(24, 24, 24));
         tpLoginRegister.setForeground(new java.awt.Color(255, 255, 255));
