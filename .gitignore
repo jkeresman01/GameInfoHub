@@ -30,3 +30,4 @@ replay_pid*
 /ArticleGameManager/target/
 /GameArticleManager/target/
 GameArticleManager/src/main/resources/assets/archives/
+/GameInfoHubManager/target/
