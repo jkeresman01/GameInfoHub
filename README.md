@@ -21,7 +21,7 @@ Game Info Hub is a Java-based desktop application that allows users to explore a
 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/game-info-hub.git
+git clone https://github.com/jkeresman01/GameInfoHub
 ```
 
 2. Set Up SQL Server Database  
