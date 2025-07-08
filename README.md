@@ -9,7 +9,7 @@ Game Info Hub is a Java-based desktop application that allows users to explore a
 ![image](https://github.com/user-attachments/assets/0f929eaa-c79b-4daa-9e01-a9cf0f1cd05d)
 
 
-## Database nonsense ## 
+## Database design ## 
 
 ![image](https://github.com/user-attachments/assets/5ed2ca26-7698-475b-8978-0e8522662f04)
 
