@@ -16,6 +16,42 @@ Game Info Hub is a Java-based desktop application that allows users to explore a
 
 ## Project structure
 
+```bash
+GameInfoHub/                              # Game Info Hub project root (Maven multi-module)
+├── Backups/                              # Backup scripts and exports
+│   ├── RSS/                              # Exported RSS backup
+│   └── SQL/                              # DB schema and procedures (DDL, SPs, etc.)
+|
+├── SQL/                                  # Initial DDL script for schema setup
+│   └── DDLInitScript.sql
+|
+├── DAO/                                  # Data Access Module
+│   ├── dal/                              # DAO interfaces and factory
+│   │   └── sql/                          # SQL implementations using JDBC
+│   ├── mapper/                           # Maps result sets to model objects
+│   └── model/                            # Domain models (Article, Game, User, etc.)
+|
+├── GameInfoHubManager/                   # Main desktop application (GUI)
+│   ├── parser/
+│   │   └── rss/                          # RSS feed parsing logic
+│   ├── payload/                          # DTOs for user input and updates
+│   ├── service/                          # Core services (Article, Game, User, etc.)
+│   ├── session/                          # Manages session/user state
+│   ├── validator/
+│   │   └── user/                         # Validation for user registration, login, update
+│   └── view/
+│       ├── designer/                     # GUI form designer classes
+│       └── model/                        # Swing table models for view rendering
+|
+├── Utilities/                            # Common utility classes and factories
+│   ├── factory/                          # Factory methods (e.g., ParserFactory)
+│   └── utilities/                        # Generic helpers (BCrypt, file, HTML, icons, etc.)
+|
+├── LICENSE
+├── pom.xml                               # Parent Maven POM
+└── README.md
+```
+
 ## Getting Started
 
 1. Clone the Repository
