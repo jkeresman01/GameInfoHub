@@ -2,7 +2,7 @@
 
 Game Info Hub is a Java-based desktop application that allows users to explore and manage a collection of video games and related articles. The application connects to a SQL Server database (managed via SSMS) to store, retrieve, and organize game data.
 
-## Overview ##
+## Preview ##
 ![image](https://github.com/user-attachments/assets/024153c3-dae1-49cf-bfbe-7dd0ba3a36b6)
 
 
