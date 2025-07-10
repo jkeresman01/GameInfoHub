@@ -20,7 +20,7 @@
             <version>2.3.4</version>
         </dependency>
     </dependencies>
-    <!--    <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
@@ -45,7 +45,7 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>-->
+    </build>
     <properties>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>

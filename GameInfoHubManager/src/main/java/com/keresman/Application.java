@@ -7,8 +7,8 @@ import java.awt.EventQueue;
 
 public class Application {
 
-    public static void main(String args[]) throws Exception {
-        SwingUtils.setLookAndFeel(new FlatMacDarkLaf());
-        EventQueue.invokeLater(() -> new WelcomeScreen().setVisible(true));
-    }
+  public static void main(String args[]) throws Exception {
+    SwingUtils.setLookAndFeel(new FlatMacDarkLaf());
+    EventQueue.invokeLater(() -> new WelcomeScreen().setVisible(true));
+  }
 }

@@ -5,11 +5,8 @@ import java.sql.ResultSet;
 
 public class PlatformRowMapper implements RowMapper<Platform> {
 
-    @Override
-    public Platform map(ResultSet rs) throws Exception {
-        return new Platform(
-                rs.getInt("Id"),
-                rs.getString("Name")
-        );
-    }
+  @Override
+  public Platform map(ResultSet rs) throws Exception {
+    return new Platform(rs.getInt("Id"), rs.getString("Name"));
+  }
 }

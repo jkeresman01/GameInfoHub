@@ -13,57 +13,55 @@ import javax.swing.text.JTextComponent;
 
 public class AddCommentDialog extends AddCommentDialogDesigner {
 
-    private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
+  private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
-    private final CommentAddable commentAddable;
-    private final Game game;
+  private final CommentAddable commentAddable;
+  private final Game game;
 
-    public AddCommentDialog(Frame parent, boolean modal, Game game) {
-        super(parent, modal);
-        this.commentAddable = (CommentAddable) parent;
-        this.game = game;
-        init();
+  public AddCommentDialog(Frame parent, boolean modal, Game game) {
+    super(parent, modal);
+    this.commentAddable = (CommentAddable) parent;
+    this.game = game;
+    init();
+  }
+
+  private void init() {
+    initValidation();
+    hideErrors();
+  }
+
+  private void initValidation() {
+    fieldsWithErrorLabels =
+        Map.ofEntries(Map.entry(tfTitle, lblErrorTitle), Map.entry(tfContent, lblErrorContent));
+  }
+
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+  }
+
+  @Override
+  public void btnCommentActionPerformed(ActionEvent evt) {
+
+    if (!isFormValid()) {
+      return;
     }
 
-    private void init() {
-        initValidation();
-        hideErrors();
-    }
+    String title = tfTitle.getText().trim();
+    String content = tfContent.getText().trim();
 
-    private void initValidation() {
-        fieldsWithErrorLabels = Map.ofEntries(
-                Map.entry(tfTitle, lblErrorTitle),
-                Map.entry(tfContent, lblErrorContent));
-    }
+    commentAddable.addComment(new Comment(title, content), game);
 
-    private void hideErrors() {
-        fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
-    }
+    MessageUtils.showInformationMessage("Comment", "Comment added.");
 
-    @Override
-    public void btnCommentActionPerformed(ActionEvent evt) {
+    dispose();
+  }
 
-        if (!isFormValid()) {
-            return;
-        }
+  private boolean isFormValid() {
+    hideErrors();
 
-        String title = tfTitle.getText().trim();
-        String content = tfContent.getText().trim();
+    fieldsWithErrorLabels.forEach(
+        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
 
-        commentAddable.addComment(new Comment(title, content), game);
-
-        MessageUtils.showInformationMessage("Comment", "Comment added.");
-
-        dispose();
-    }
-
-    private boolean isFormValid() {
-        hideErrors();
-
-        fieldsWithErrorLabels.forEach(
-                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-
-        return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
-    }
-
+    return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
+  }
 }

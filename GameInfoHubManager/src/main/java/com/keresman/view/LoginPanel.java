@@ -20,96 +20,97 @@ import javax.swing.SwingUtilities;
 
 public class LoginPanel extends LoginPanelDesigner {
 
-    private Map<JTextField, JLabel> fieldsWithErrorLabels;
-    private UserLoginService userLoginService;
+  private Map<JTextField, JLabel> fieldsWithErrorLabels;
+  private UserLoginService userLoginService;
 
-    public LoginPanel() {
-        super();
-        init();
+  public LoginPanel() {
+    super();
+    init();
+  }
+
+  private void init() {
+    try {
+      initValidation();
+      hideErrors();
+      initUserLoginService();
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+      MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+      System.exit(1);
+    }
+  }
+
+  private void initValidation() {
+    fieldsWithErrorLabels =
+        Map.ofEntries(
+            Map.entry(tfUsername, lblErrorUsername), Map.entry(tfPassword, lblErrorPassword));
+  }
+
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+  }
+
+  private void initUserLoginService() throws Exception {
+    UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
+    Validator<UserLoginReq> userLoginValidator = new UserLoginValidator(userRepository);
+
+    userLoginService = new UserLoginService(userRepository, userLoginValidator);
+  }
+
+  @Override
+  public void btnLoginActionPerformed(ActionEvent evt) {
+    if (!isFormValid()) {
+      MessageUtils.showWarningMessage("WARNING", "You forgot to fill soemthing, please try again!");
+      return;
     }
 
-    private void init() {
-        try {
-            initValidation();
-            hideErrors();
-            initUserLoginService();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
-            MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
-            System.exit(1);
-        }
+    String username = tfUsername.getText().trim();
+    String password = String.valueOf(tfPassword.getPassword());
+
+    var userLoginReq = new UserLoginReq(username, password);
+
+    Result<User> result = userLoginService.login(userLoginReq);
+
+    if (!result.isSuccess()) {
+      MessageUtils.showErrorMessage("Login Failed", result.getMessage());
+      return;
     }
 
-    private void initValidation() {
-        fieldsWithErrorLabels = Map.ofEntries(
-                Map.entry(tfUsername, lblErrorUsername),
-                Map.entry(tfPassword, lblErrorPassword));
-    }
+    User loggedInUser = result.getData().get();
+    SessionManager.getInstance().setCurrentUser(loggedInUser);
 
-    private void hideErrors() {
-        fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
-    }
+    clearLoginForm();
+    openMainApplicationWindow();
+  }
 
-    private void initUserLoginService() throws Exception {
-        UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-        Validator<UserLoginReq> userLoginValidator = new UserLoginValidator(userRepository);
+  private boolean isFormValid() {
+    hideErrors();
 
-        userLoginService = new UserLoginService(userRepository, userLoginValidator);
-    }
+    fieldsWithErrorLabels.forEach(
+        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
 
-    @Override
-    public void btnLoginActionPerformed(ActionEvent evt) {
-        if (!isFormValid()) {
-            MessageUtils.showWarningMessage("WARNING", "You forgot to fill soemthing, please try again!");
-            return;
-        }
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+  }
 
-        String username = tfUsername.getText().trim();
-        String password = String.valueOf(tfPassword.getPassword());
+  private void clearLoginForm() {
+    hideErrors();
 
-        var userLoginReq = new UserLoginReq(username, password);
+    fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
+  }
 
-        Result<User> result = userLoginService.login(userLoginReq);
+  private void openMainApplicationWindow() {
+    Runnable showMainForm =
+        () -> {
+          Window window = SwingUtilities.getWindowAncestor(this);
 
-        if (!result.isSuccess()) {
-            MessageUtils.showErrorMessage("Login Failed", result.getMessage());
-            return;
-        }
+          if (window != null) {
+            window.dispose();
+          }
 
-        User loggedInUser = result.getData().get();
-        SessionManager.getInstance().setCurrentUser(loggedInUser);
-
-        clearLoginForm();
-        openMainApplicationWindow();
-    }
-
-    private boolean isFormValid() {
-        hideErrors();
-
-        fieldsWithErrorLabels.forEach(
-                (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-
-        return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-    }
-
-    private void clearLoginForm() {
-        hideErrors();
-
-        fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
-    }
-
-    private void openMainApplicationWindow() {
-        Runnable showMainForm = () -> {
-            Window window = SwingUtilities.getWindowAncestor(this);
-
-            if (window != null) {
-                window.dispose();
-            }
-
-            new GameArticleManager().setVisible(true);
+          new GameArticleManager().setVisible(true);
         };
 
-        SwingUtilities.invokeLater(showMainForm);
-    }
+    SwingUtilities.invokeLater(showMainForm);
+  }
 }

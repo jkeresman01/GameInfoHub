@@ -12,21 +12,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class GameArchive {
 
-    @XmlElementWrapper
-    @XmlElement(name = "game")
-    private List<Game> games;
+  @XmlElementWrapper
+  @XmlElement(name = "game")
+  private List<Game> games;
 
-    public GameArchive() {
-    }
+  public GameArchive() {}
 
-    public GameArchive(List<Game> games) {
-    }
+  public GameArchive(List<Game> games) {}
 
-    public List<Game> getGames() {
-        return new ArrayList<>(games);
-    }
+  public List<Game> getGames() {
+    return new ArrayList<>(games);
+  }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
+  public void setGames(List<Game> games) {
+    this.games = games;
+  }
 }

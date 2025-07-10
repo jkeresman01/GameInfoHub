@@ -1,6 +1,6 @@
 package com.keresman.validator;
 
 @FunctionalInterface
-public interface Validator <T> {
-    Result validate(T input);
+public interface Validator<T> {
+  Result validate(T input);
 }

@@ -5,12 +5,8 @@ import java.sql.ResultSet;
 
 public class CategoryRowMapper implements RowMapper<Category> {
 
-    @Override
-    public Category map(ResultSet resultSet) throws Exception {
-        return new Category(
-                resultSet.getInt("Id"),
-                resultSet.getString("Name")
-        );
-    }
-
+  @Override
+  public Category map(ResultSet resultSet) throws Exception {
+    return new Category(resultSet.getInt("Id"), resultSet.getString("Name"));
+  }
 }

@@ -9,13 +9,13 @@ import javax.swing.ImageIcon;
 
 public class IconUtils {
 
-    private IconUtils() {
-        // Suppresses default constructor, ensuring non-instantiability.
-    }
+  private IconUtils() {
+    // Suppresses default constructor, ensuring non-instantiability.
+  }
 
-    public static ImageIcon createIcon(File file, int width, int height) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(file);
-        Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        return new ImageIcon(image);
-    }
+  public static ImageIcon createIcon(File file, int width, int height) throws IOException {
+    BufferedImage bufferedImage = ImageIO.read(file);
+    Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    return new ImageIcon(image);
+  }
 }

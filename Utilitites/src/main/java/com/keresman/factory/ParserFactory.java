@@ -7,13 +7,11 @@ import javax.xml.stream.XMLStreamException;
 
 public class ParserFactory {
 
-    private ParserFactory() {
-        // Suppresses default constructor, ensuring non-instantiability.
-    }
+  private ParserFactory() {
+    // Suppresses default constructor, ensuring non-instantiability.
+  }
 
-    public static XMLEventReader createStaxParser(InputStream inputStream) throws XMLStreamException {
-        return XMLInputFactory
-                .newInstance()
-                .createXMLEventReader(inputStream);
-    }
+  public static XMLEventReader createStaxParser(InputStream inputStream) throws XMLStreamException {
+    return XMLInputFactory.newInstance().createXMLEventReader(inputStream);
+  }
 }

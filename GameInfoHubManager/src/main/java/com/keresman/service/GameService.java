@@ -7,18 +7,18 @@ import java.util.List;
 
 public class GameService {
 
-    private final GameRepository gameRepository;
+  private final GameRepository gameRepository;
 
-    public GameService(GameRepository gameRepostitory) {
-        this.gameRepository = gameRepostitory;
-    }
+  public GameService(GameRepository gameRepostitory) {
+    this.gameRepository = gameRepostitory;
+  }
 
-    public Result<List<Game>> getAllGames() {
-        try {
-            List<Game> games = gameRepository.findAll();
-            return Result.success(games);
-        } catch (Exception e) {
-            return Result.error("Failed to fetch users.");
-        }
+  public Result<List<Game>> getAllGames() {
+    try {
+      List<Game> games = gameRepository.findAll();
+      return Result.success(games);
+    } catch (Exception e) {
+      return Result.error("Failed to fetch users.");
     }
+  }
 }

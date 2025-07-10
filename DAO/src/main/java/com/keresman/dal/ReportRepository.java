@@ -6,14 +6,13 @@ import java.util.Optional;
 
 public interface ReportRepository {
 
-    int save(Report report, int userId, int articleId) throws Exception;
+  int save(Report report, int userId, int articleId) throws Exception;
 
-    List<Report> findByArticleId(int articleId) throws Exception;
+  List<Report> findByArticleId(int articleId) throws Exception;
 
-    List<Report> findAll() throws Exception;
-    
-    Optional<Report> findById(int id) throws Exception;
+  List<Report> findAll() throws Exception;
 
-    void deleteAll() throws Exception;
+  Optional<Report> findById(int id) throws Exception;
 
+  void deleteAll() throws Exception;
 }

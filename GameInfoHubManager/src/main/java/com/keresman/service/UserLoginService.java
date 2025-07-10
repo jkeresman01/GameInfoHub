@@ -12,43 +12,43 @@ import java.util.logging.Logger;
 
 public class UserLoginService {
 
-    private static final Logger LOGGER = Logger.getLogger(UserLoginService.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(UserLoginService.class.getName());
 
-    private final UserRepository userRepository;
-    private final Validator<UserLoginReq> validator;
+  private final UserRepository userRepository;
+  private final Validator<UserLoginReq> validator;
 
-    public UserLoginService(UserRepository userRepository, Validator<UserLoginReq> validator) {
-        this.userRepository = userRepository;
-        this.validator = validator;
+  public UserLoginService(UserRepository userRepository, Validator<UserLoginReq> validator) {
+    this.userRepository = userRepository;
+    this.validator = validator;
+  }
+
+  public Result login(UserLoginReq userLoginReq) {
+    Result validation = validator.validate(userLoginReq);
+
+    if (!validation.isSuccess()) {
+      return validation;
     }
 
-    public Result login(UserLoginReq userLoginReq) {
-        Result validation = validator.validate(userLoginReq);
+    return loginUser(userLoginReq);
+  }
 
-        if (!validation.isSuccess()) {
-            return validation;
-        }
+  private Result loginUser(UserLoginReq userLoginReq) {
+    try {
+      Optional<User> optionalUser = userRepository.findByUsername(userLoginReq.username());
 
-        return loginUser(userLoginReq);
+      if (optionalUser.isEmpty()) {
+        return Result.error("User not found.");
+      }
+
+      User user = optionalUser.get();
+      if (!BCryptUtils.veriftyPassword(userLoginReq.password(), user.getPasswordHash())) {
+        return Result.error("Invalid password.");
+      }
+
+      return Result.success(user);
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, "Login error", e);
+      return Result.error("Login failed. Please try again.");
     }
-
-    private Result loginUser(UserLoginReq userLoginReq) {
-        try {
-            Optional<User> optionalUser = userRepository.findByUsername(userLoginReq.username());
-
-            if (optionalUser.isEmpty()) {
-                return Result.error("User not found.");
-            }
-
-            User user = optionalUser.get();
-            if (!BCryptUtils.veriftyPassword(userLoginReq.password(), user.getPasswordHash())) {
-                return Result.error("Invalid password.");
-            }
-
-            return Result.success(user);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Login error", e);
-            return Result.error("Login failed. Please try again.");
-        }
-    }
+  }
 }

@@ -6,14 +6,13 @@ import java.util.Optional;
 
 public interface PlatformRepository {
 
-    int save(Platform platform) throws Exception;
+  int save(Platform platform) throws Exception;
 
-    void updateById(int id, Platform platform) throws Exception;
+  void updateById(int id, Platform platform) throws Exception;
 
-    Optional<Platform> findById(int id) throws Exception;
+  Optional<Platform> findById(int id) throws Exception;
 
-    List<Platform> findAll() throws Exception;
+  List<Platform> findAll() throws Exception;
 
-    void deleteAll() throws Exception;
-
+  void deleteAll() throws Exception;
 }

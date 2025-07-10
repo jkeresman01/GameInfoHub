@@ -11,23 +11,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "userarchive")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class UserArchive {
-    
-    @XmlElementWrapper
-    @XmlElement(name = "user")
-    private List<User> users;
 
-    public UserArchive() {
-    }
+  @XmlElementWrapper
+  @XmlElement(name = "user")
+  private List<User> users;
 
-    public UserArchive(List<User> users) {
-        this.users = users;
-    }
+  public UserArchive() {}
 
-    public List<User> getUsers() {
-        return new ArrayList<>(users);
-    }
+  public UserArchive(List<User> users) {
+    this.users = users;
+  }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+  public List<User> getUsers() {
+    return new ArrayList<>(users);
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
+  }
 }

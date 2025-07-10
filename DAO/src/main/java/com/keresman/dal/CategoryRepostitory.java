@@ -6,14 +6,13 @@ import java.util.Optional;
 
 public interface CategoryRepostitory {
 
-    int save(Category category) throws Exception;
+  int save(Category category) throws Exception;
 
-    void updateById(int id, Category category) throws Exception;
+  void updateById(int id, Category category) throws Exception;
 
-    Optional<Category> findById(int id) throws Exception;
+  Optional<Category> findById(int id) throws Exception;
 
-    List<Category> findAll() throws Exception;
+  List<Category> findAll() throws Exception;
 
-    void deleteAll() throws Exception;
-
+  void deleteAll() throws Exception;
 }

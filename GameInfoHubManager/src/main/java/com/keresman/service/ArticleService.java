@@ -7,19 +7,18 @@ import java.util.List;
 
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
-    
-    public ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+  private final ArticleRepository articleRepository;
 
-    public Result<List<Article>> getAllArticles() {
-         try {
-            List<Article> articles = articleRepository.findAll();
-            return Result.success(articles);
-        } catch (Exception e) {
-            return Result.error("Failed to fetch users.");
-        }
+  public ArticleService(ArticleRepository articleRepository) {
+    this.articleRepository = articleRepository;
+  }
+
+  public Result<List<Article>> getAllArticles() {
+    try {
+      List<Article> articles = articleRepository.findAll();
+      return Result.success(articles);
+    } catch (Exception e) {
+      return Result.error("Failed to fetch users.");
     }
-    
+  }
 }
