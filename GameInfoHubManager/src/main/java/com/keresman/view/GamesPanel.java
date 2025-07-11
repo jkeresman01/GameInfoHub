@@ -29,13 +29,13 @@ public class GamesPanel extends GamesPanelDesigner {
   private GameRepository gameRepository;
   private CommentRepository commentRepository;
   private GameTableModel gameTableModel;
-  private int selectedGameId;
   private Game selectedGame;
+  private int selectedGameId;
 
-  private DefaultListModel<Genre> genreModel = new DefaultListModel<>();
-  private DefaultListModel<Developer> developerModel = new DefaultListModel<>();
-  private DefaultListModel<Platform> platformModel = new DefaultListModel<>();
-  private DefaultListModel<Comment> commentModel = new DefaultListModel<>();
+  private final DefaultListModel<Genre> genreModel = new DefaultListModel<>();
+  private final DefaultListModel<Developer> developerModel = new DefaultListModel<>();
+  private final DefaultListModel<Platform> platformModel = new DefaultListModel<>();
+  private final DefaultListModel<Comment> commentModel = new DefaultListModel<>();
 
   public GamesPanel() {
     super();
@@ -50,9 +50,7 @@ public class GamesPanel extends GamesPanelDesigner {
       initTable();
       initModels();
     } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, null, ex);
-      MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-      System.exit(1);
+      handleInitializationError(ex);
     }
   }
 
@@ -87,6 +85,12 @@ public class GamesPanel extends GamesPanelDesigner {
 
   private void hideErrors() {
     fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  }
+
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
   }
 
   @Override

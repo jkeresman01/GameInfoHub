@@ -27,7 +27,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
   private PlatformRepository platformRepository;
   private CategoryRepostitory categoryRepository;
 
-  private DefaultListModel<Article> articlesModel = new DefaultListModel<>();
+  private final DefaultListModel<Article> articlesModel = new DefaultListModel<>();
 
   public ManageGameArticlesPanel() {
     super();
@@ -39,9 +39,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
       initRepositories();
       loadModel();
     } catch (Exception ex) {
-      Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-      MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-      System.exit(1);
+      handleInitializationError(ex);
     }
   }
 
@@ -66,6 +64,12 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     lsArticles.setModel(articlesModel);
   }
 
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
+  }
+
   @Override
   public void btnLoadDbActionPerformed(ActionEvent evt) {
     new Thread(this::loadArticlesFromSource).start();
@@ -78,10 +82,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
       if (articles.isEmpty()) {
         articles = GameArticleParser.parse();
         articleRepository.saveAll(articles);
-
-        List<Game> uniqueGames =
-            articles.stream().flatMap(article -> article.getGames().stream()).distinct().toList();
-
+        List<Game> uniqueGames = getUniqueGames(articles);
         gameRepository.saveAll(uniqueGames);
       }
 
@@ -89,6 +90,10 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     } catch (Exception ex) {
       handleLoadError(ex);
     }
+  }
+
+  private List<Game> getUniqueGames(List<Article> articles) {
+    return articles.stream().flatMap(article -> article.getGames().stream()).distinct().toList();
   }
 
   private List<Article> fetchArticlesFromDatabase() throws Exception {

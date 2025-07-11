@@ -21,11 +21,11 @@ import javax.swing.TransferHandler;
 
 public class FavouriteGamesPanel extends FavouriteGamesPanelDesigner {
 
-  private Set<Game> allGames = new TreeSet<>();
-  private Set<Game> favGames = new TreeSet<>();
-
   private GameRepository gameRepository;
   private FavoriteGamesRepository favoriteGamesRepository;
+
+  private final Set<Game> allGames = new TreeSet<>();
+  private final Set<Game> favGames = new TreeSet<>();
 
   private final DefaultListModel<Game> allGamesModel = new DefaultListModel<>();
   private final DefaultListModel<Game> favGamesModel = new DefaultListModel<>();

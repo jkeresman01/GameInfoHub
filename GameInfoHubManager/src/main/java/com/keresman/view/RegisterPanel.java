@@ -39,9 +39,7 @@ public class RegisterPanel extends RegisterPanelDesigner {
       hideErrors();
       initRegistrationService();
     } catch (Exception ex) {
-      Logger.getLogger(RegisterPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
-      MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-      System.exit(1);
+      handleInitializationError(ex);
     }
   }
 
@@ -70,6 +68,12 @@ public class RegisterPanel extends RegisterPanelDesigner {
         new UserRegistrationValidator(userRepository);
 
     registrationService = new UserRegistrationService(userRepository, userRegistrationValidator);
+  }
+
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(RegisterPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
   }
 
   @Override

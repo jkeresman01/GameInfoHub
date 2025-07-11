@@ -28,8 +28,8 @@ public class ProfilePanel extends ProfilePanelDesigner {
   private FavoriteGamesRepository favoriteGamesRepository;
   private FavouriteArticleRepostiory favouriteArticleRepostiory;
 
-  private DefaultListModel<Game> favGamesModel = new DefaultListModel<>();
-  private DefaultListModel<Article> favArticlesModel = new DefaultListModel<>();
+  private final DefaultListModel<Game> favGamesModel = new DefaultListModel<>();
+  private final DefaultListModel<Article> favArticlesModel = new DefaultListModel<>();
 
   public ProfilePanel() {
     super();

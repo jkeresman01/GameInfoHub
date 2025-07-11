@@ -1,10 +1,7 @@
 package com.keresman.view;
 
+import com.keresman.components.CustomBasicTabbedPaneUI;
 import com.keresman.view.designer.AdminPanelDesigner;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class AdminPanel extends AdminPanelDesigner {
 
@@ -22,29 +19,13 @@ public class AdminPanel extends AdminPanelDesigner {
     initPanels();
   }
 
+  private void initUI() {
+    tpAdmin.setUI(new CustomBasicTabbedPaneUI());
+  }
+
   private void initPanels() {
     tpAdmin.add(MANAGE_USERS, new ManageUsersPanel());
     tpAdmin.add(MANAGE_GAME_ARTICLERS, new ManageGameArticlesPanel());
     tpAdmin.add(BROWSE_REPORTS, new BrowseReportsPanel());
-  }
-
-  private void initUI() {
-    tpAdmin.setUI(
-        new BasicTabbedPaneUI() {
-          @Override
-          protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-            return tabPane.getWidth() / tabPane.getTabCount();
-          }
-
-          @Override
-          protected void paintFocusIndicator(
-              Graphics g,
-              int tabPlacement,
-              Rectangle[] rects,
-              int tabIndex,
-              Rectangle iconRect,
-              Rectangle textRect,
-              boolean isSelected) {}
-        });
   }
 }

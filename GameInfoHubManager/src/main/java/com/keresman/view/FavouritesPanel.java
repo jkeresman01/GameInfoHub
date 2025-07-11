@@ -1,9 +1,6 @@
 package com.keresman.view;
 
 import com.keresman.view.designer.FavouritesPanelDesigner;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class FavouritesPanel extends FavouritesPanelDesigner {
@@ -21,28 +18,12 @@ public class FavouritesPanel extends FavouritesPanelDesigner {
     initPanels();
   }
 
+  private void initUI() {
+    tpFavourites.setUI(new BasicTabbedPaneUI());
+  }
+
   private void initPanels() throws Exception {
     tpFavourites.add(FAVOURITE_ARTICLES, new FavouriteArticlesPanel());
     tpFavourites.add(FAVOURITE_GAMES, new FavouriteGamesPanel());
-  }
-
-  private void initUI() {
-    tpFavourites.setUI(
-        new BasicTabbedPaneUI() {
-          @Override
-          protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-            return tabPane.getWidth() / tabPane.getTabCount();
-          }
-
-          @Override
-          protected void paintFocusIndicator(
-              Graphics g,
-              int tabPlacement,
-              Rectangle[] rects,
-              int tabIndex,
-              Rectangle iconRect,
-              Rectangle textRect,
-              boolean isSelected) {}
-        });
   }
 }

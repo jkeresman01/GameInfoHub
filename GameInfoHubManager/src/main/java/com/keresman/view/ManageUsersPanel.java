@@ -29,16 +29,8 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
       initUserService();
       initTable();
     } catch (Exception e) {
-      e.printStackTrace();
-      MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
-      MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
-      System.exit(1);
+      handleInitializationError(e);
     }
-  }
-
-  private void initUserService() throws Exception {
-    UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-    userService = new UserService(userRepository);
   }
 
   private void initTable() throws Exception {
@@ -55,6 +47,17 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
     userTableModel = new UserTableModel(result.getData().get());
     tblUsers.setModel(userTableModel);
+  }
+
+  private void initUserService() throws Exception {
+    userService = new UserService(RepositoryFactory.getInstance(UserRepository.class));
+  }
+
+  private void handleInitializationError(Exception e) {
+    e.printStackTrace();
+    MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+    MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+    System.exit(1);
   }
 
   @Override
