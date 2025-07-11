@@ -6,6 +6,19 @@ import javax.swing.JPanel;
 
 public abstract class FavouriteArticlesPanelDesigner extends JPanel {
 
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  protected javax.swing.JLabel lblArticles2;
+  protected javax.swing.JLabel lblDndDirection1;
+  protected javax.swing.JLabel lblDndDirection2;
+  protected javax.swing.JLabel lblFavouriteArticles;
+  protected javax.swing.JLabel lblFavourites1;
+  protected javax.swing.JList<Article> lsArticles;
+  protected javax.swing.JList<Article> lsFavouriteArticles;
+  protected javax.swing.JScrollPane spArticles;
+  protected javax.swing.JScrollPane spFavArticles;
+
+  // End of variables declaration//GEN-END:variables
+
   protected FavouriteArticlesPanelDesigner() {
     initComponents();
   }
@@ -233,16 +246,4 @@ public abstract class FavouriteArticlesPanelDesigner extends JPanel {
   } // </editor-fold>//GEN-END:initComponents
 
   public abstract void formComponentShown(ComponentEvent evt);
-
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  protected javax.swing.JLabel lblArticles2;
-  protected javax.swing.JLabel lblDndDirection1;
-  protected javax.swing.JLabel lblDndDirection2;
-  protected javax.swing.JLabel lblFavouriteArticles;
-  protected javax.swing.JLabel lblFavourites1;
-  protected javax.swing.JList<Article> lsArticles;
-  protected javax.swing.JList<Article> lsFavouriteArticles;
-  protected javax.swing.JScrollPane spArticles;
-  protected javax.swing.JScrollPane spFavArticles;
-  // End of variables declaration//GEN-END:variables
 }

@@ -21,15 +21,15 @@ public final class Game implements Comparable<Game> {
   private LocalDate releaseDate;
 
   @XmlElementWrapper
-  @XmlElement(name = "category")
+  @XmlElement(name = "genre")
   private List<Genre> genres = new ArrayList<>();
 
   @XmlElementWrapper
-  @XmlElement(name = "category")
+  @XmlElement(name = "developer")
   private List<Developer> developers = new ArrayList<>();
 
   @XmlElementWrapper
-  @XmlElement(name = "category")
+  @XmlElement(name = "platform")
   private List<Platform> platforms = new ArrayList<>();
 
   public Game() {}
@@ -68,7 +68,7 @@ public final class Game implements Comparable<Game> {
   }
 
   public List<Genre> getGenres() {
-    return genres;
+    return new ArrayList<>(this.genres);
   }
 
   public void addGenre(Genre genre) {
@@ -76,7 +76,7 @@ public final class Game implements Comparable<Game> {
   }
 
   public List<Developer> getDevelopers() {
-    return developers;
+    return new ArrayList<>(this.developers);
   }
 
   public void addDeveloper(Developer developer) {
@@ -84,7 +84,7 @@ public final class Game implements Comparable<Game> {
   }
 
   public List<Platform> getPlatforms() {
-    return platforms;
+    return new ArrayList<>(this.platforms);
   }
 
   public void addPlatform(Platform platform) {

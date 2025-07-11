@@ -75,9 +75,7 @@ public class GameArticleManager extends GameArticleManagerDesigner
       initServices();
       handleLookAndFeel();
     } catch (Exception ex) {
-      Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
-      MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-      System.exit(1);
+      handleInitializationError(ex);
     }
   }
 
@@ -113,6 +111,12 @@ public class GameArticleManager extends GameArticleManagerDesigner
 
   private void initUserService() throws Exception {
     userService = new UserService(RepositoryFactory.getInstance(UserRepository.class));
+  }
+
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
   }
 
   @Override
@@ -160,15 +164,15 @@ public class GameArticleManager extends GameArticleManagerDesigner
   }
 
   private void exportUserArchive() {
-    Result<List<User>> result = userService.getAllUsers();
+    Result<List<User>> getAllUsersResult = userService.getAllUsers();
 
-    if (!result.isSuccess()) {
+    if (!getAllUsersResult.isSuccess()) {
       notifyError("Failed to export user archive");
       return;
     }
 
     try {
-      JAXBUtils.save(new UserArchive(result.getData().get()), USER_ARCHIVE_FILENAME);
+      JAXBUtils.save(new UserArchive(getAllUsersResult.getData().get()), USER_ARCHIVE_FILENAME);
       notifySuccess("User archive successfully exported!");
     } catch (JAXBException ex) {
       notifyError("Failed to export user archive:\n%s".formatted(ex.getMessage()));

@@ -1,5 +1,6 @@
-package com.keresman.model;
+package com.keresman.handler;
 
+import com.keresman.model.Game;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;

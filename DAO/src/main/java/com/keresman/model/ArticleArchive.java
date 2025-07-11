@@ -23,7 +23,7 @@ public final class ArticleArchive {
   }
 
   public List<Article> getArticles() {
-    return new ArrayList<>(articles);
+    return new ArrayList<>(this.articles);
   }
 
   public void setArticles(List<Article> articles) {

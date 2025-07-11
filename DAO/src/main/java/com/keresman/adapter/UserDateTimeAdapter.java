@@ -1,5 +1,6 @@
-package com.keresman.model;
+package com.keresman.adapter;
 
+import com.keresman.model.User;
 import java.time.LocalDateTime;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

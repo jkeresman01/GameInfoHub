@@ -7,7 +7,6 @@ import com.keresman.model.Category;
 import com.keresman.model.Game;
 import com.keresman.service.WikiDataService;
 import com.keresman.utilities.FileUtils;
-import com.keresman.utilities.GameUtils;
 import com.keresman.utilities.HtmlUtils;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +55,7 @@ public class GameArticleParser {
         XMLEvent xmlEvent = xMLEventReader.nextEvent();
 
         switch (xmlEvent.getEventType()) {
-          case XMLStreamConstants.START_ELEMENT:
+          case XMLStreamConstants.START_ELEMENT -> {
             startElement = xmlEvent.asStartElement();
             String qualifiedName = startElement.getName().getLocalPart();
             String prefix = startElement.getName().getPrefix();
@@ -72,8 +71,8 @@ public class GameArticleParser {
                 reviews.add(article);
               }
             }
-            break;
-          case XMLStreamConstants.CHARACTERS:
+          }
+          case XMLStreamConstants.CHARACTERS -> {
             Characters characters = xmlEvent.asCharacters();
             String data = characters.getData().trim();
 
@@ -88,7 +87,7 @@ public class GameArticleParser {
                 case CONTENT -> handleContent(article, startElement);
               }
             }
-            break;
+          }
         }
       }
     }
@@ -98,13 +97,8 @@ public class GameArticleParser {
 
   private static void handleCategory(Article article, String data) {
     article.addCategory(new Category(data));
-
-    Optional<String> extractGameName = GameUtils.extractGameName(data);
-
-    if (extractGameName.isPresent()) {
-      Optional<Game> enrichedGame = WikiDataService.enrichGameInfo(data);
-      enrichedGame.ifPresent(article::addGame);
-    }
+    Optional<Game> enrichedGame = WikiDataService.enrichGameInfo(data);
+    enrichedGame.ifPresent(article::addGame);
   }
 
   private static void handleContent(Article article, StartElement startElement) {

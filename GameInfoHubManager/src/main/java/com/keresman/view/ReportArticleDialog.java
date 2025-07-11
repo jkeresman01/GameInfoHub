@@ -13,55 +13,69 @@ import javax.swing.text.JTextComponent;
 
 public class ReportArticleDialog extends ReportArticleDialogDesigner {
 
-  private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
-
   private final Reportable reportAddable;
   private final Article article;
 
+  private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
+
   public ReportArticleDialog(Frame parent, boolean modal, Article article) {
     super(parent, modal);
-    reportAddable = (Reportable) parent;
+    this.reportAddable = (Reportable) parent;
     this.article = article;
     init();
   }
 
   private void init() {
     initValidation();
-    hideErrors();
+    hideValidationErrors();
   }
 
   private void initValidation() {
     fieldsWithErrorLabels =
-        Map.ofEntries(Map.entry(tfTitle, lblErrorTitle), Map.entry(tfContent, lblErrorContent));
+        Map.of(
+            tfTitle, lblErrorTitle,
+            tfContent, lblErrorContent);
   }
 
-  private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+  private void hideValidationErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
   @Override
   public void btnReportActionPerformed(ActionEvent evt) {
-
     if (!isFormValid()) {
       return;
     }
 
-    String title = tfTitle.getText().trim();
-    String content = tfContent.getText().trim();
-
-    reportAddable.report(new Report(title, content), article);
+    Report report = extractReportFromForm();
+    reportAddable.report(report, article);
 
     MessageUtils.showInformationMessage("Report", "Article reported.");
-
     dispose();
   }
 
+  private Report extractReportFromForm() {
+    String title = tfTitle.getText().trim();
+    String content = tfContent.getText().trim();
+    return new Report(title, content);
+  }
+
   private boolean isFormValid() {
-    hideErrors();
+    hideValidationErrors();
+    showValidationErrors();
+    return areAllFieldsValid();
+  }
 
+  private void showValidationErrors() {
     fieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+        (field, label) -> {
+          if (field.getText().trim().isEmpty()) {
+            label.setVisible(true);
+          }
+        });
+  }
 
-    return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
+  private boolean areAllFieldsValid() {
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 }

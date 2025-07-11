@@ -15,15 +15,20 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 public class GamesPanel extends GamesPanelDesigner {
+
+  private static final int TABLE_ROW_HEIGHT = 25;
 
   private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
   private GameRepository gameRepository;
@@ -48,7 +53,7 @@ public class GamesPanel extends GamesPanelDesigner {
       hideErrors();
       initRepositories();
       initTable();
-      initModels();
+      bindListModels();
     } catch (Exception ex) {
       handleInitializationError(ex);
     }
@@ -61,30 +66,35 @@ public class GamesPanel extends GamesPanelDesigner {
             tfRelDate, lblErrorRelDate);
   }
 
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  }
+
+  private boolean isFormValid() {
+    hideErrors();
+    fieldsWithErrorLabels.forEach(
+        (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+  }
+
   private void initRepositories() throws Exception {
     gameRepository = RepositoryFactory.getInstance(GameRepository.class);
     commentRepository = RepositoryFactory.getInstance(CommentRepository.class);
   }
 
   private void initTable() throws Exception {
-    tblGames.setRowHeight(25);
+    tblGames.setRowHeight(TABLE_ROW_HEIGHT);
     tblGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblGames.setAutoCreateRowSorter(true);
-
-    List<Game> games = gameRepository.findAll();
-    gameTableModel = new GameTableModel(games);
+    gameTableModel = new GameTableModel(gameRepository.findAll());
     tblGames.setModel(gameTableModel);
   }
 
-  private void initModels() {
+  private void bindListModels() {
     lsGenre.setModel(genreModel);
     lsDevelopement.setModel(developerModel);
     lsPlatform.setModel(platformModel);
     lsComments.setModel(commentModel);
-  }
-
-  private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
   private void handleInitializationError(Exception ex) {
@@ -98,18 +108,40 @@ public class GamesPanel extends GamesPanelDesigner {
     if (!isFormValid()) {
       return;
     }
+    addGame();
+  }
 
+  private void addGame() {
     try {
-      Game game = new Game();
-      game.setName(tfGameName.getText().trim());
-      game.setReleaseDate(LocalDate.parse(tfRelDate.getText().trim()));
-
+      Game game = createGameFromForm();
       gameRepository.save(game);
-      gameTableModel.setGames(gameRepository.findAll());
+      refreshGameTable();
       clearForm();
     } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to add game", ex);
-      MessageUtils.showErrorMessage("Error", "Failed to add game.");
+      showError("add", ex);
+    }
+  }
+
+  @Override
+  public void btnUpdateActionPerformed(ActionEvent evt) {
+    if (selectedGame == null) {
+      MessageUtils.showWarningMessage("Warning", "Please select a game to update.");
+      return;
+    }
+    if (!isFormValid()) {
+      return;
+    }
+    updateGame();
+  }
+
+  private void updateGame() {
+    try {
+      updateSelectedGameFromForm();
+      gameRepository.updateById(selectedGame.getGameId(), selectedGame);
+      refreshGameTable();
+      clearForm();
+    } catch (Exception ex) {
+      showError("update", ex);
     }
   }
 
@@ -125,67 +157,86 @@ public class GamesPanel extends GamesPanelDesigner {
       return;
     }
 
-    try {
-      gameRepository.deleteById(selectedGame.getGameId());
-      gameTableModel.setGames(gameRepository.findAll());
-      clearForm();
-    } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to delete game", ex);
-      MessageUtils.showErrorMessage("Error", "Failed to delete game.");
-    }
+    deleteGame();
   }
 
-  @Override
-  public void btnUpdateActionPerformed(ActionEvent evt) {
-    if (selectedGame == null) {
-      MessageUtils.showWarningMessage("Warning", "Please select a game to update.");
-      return;
-    }
-
-    if (!isFormValid()) {
-      return;
-    }
-
+  private void deleteGame() {
     try {
-      selectedGame.setName(tfGameName.getText().trim());
-      selectedGame.setReleaseDate(LocalDate.parse(tfRelDate.getText().trim()));
-
-      gameRepository.updateById(selectedGame.getGameId(), selectedGame);
-      gameTableModel.setGames(gameRepository.findAll());
+      gameRepository.deleteById(selectedGame.getGameId());
+      refreshGameTable();
       clearForm();
     } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to update game", ex);
-      MessageUtils.showErrorMessage("Error", "Failed to update game.");
+      showError("delete", ex);
     }
   }
 
   @Override
   public void tblGamesMouseClicked(MouseEvent evt) {
-    int selectedRow = tblGames.getSelectedRow();
-    if (selectedRow == -1) {
+    if (tblGames.getSelectedRow() == -1) {
       return;
     }
+    selectedGameId = (int) tblGames.getValueAt(tblGames.getSelectedRow(), 0);
+    loadSelectedGame();
+  }
 
-    selectedGameId = (int) tblGames.getValueAt(selectedRow, 0);
-
+  private void loadSelectedGame() {
     try {
       Optional<Game> optGame = gameRepository.findById(selectedGameId);
       if (optGame.isEmpty()) {
         MessageUtils.showWarningMessage("Warning", "Game not found.");
         return;
       }
-
       selectedGame = optGame.get();
-      tfGameName.setText(selectedGame.getName());
-      tfRelDate.setText(
-          selectedGame.getReleaseDate() != null ? selectedGame.getReleaseDate().toString() : "");
-
-      loadListModels();
-
+      populateFormFromGame(selectedGame);
+      loadAssociatedLists();
     } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Error loading game", ex);
-      MessageUtils.showErrorMessage("Error", "Failed to load game data.");
+      showError("load game", ex);
     }
+  }
+
+  private void populateFormFromGame(Game game) {
+    tfGameName.setText(game.getName());
+    tfRelDate.setText(game.getReleaseDate() != null ? game.getReleaseDate().toString() : "");
+  }
+
+  private void loadAssociatedLists() throws Exception {
+    loadGenres();
+    loadDevelopers();
+    loadPlatforms();
+    loadComments();
+  }
+
+  private void loadGenres() {
+    genreModel.clear();
+    selectedGame.getGenres().forEach(genreModel::addElement);
+  }
+
+  private void loadDevelopers() {
+    developerModel.clear();
+    selectedGame.getDevelopers().forEach(developerModel::addElement);
+  }
+
+  private void loadPlatforms() {
+    platformModel.clear();
+    selectedGame.getPlatforms().forEach(platformModel::addElement);
+  }
+
+  private void loadComments() throws Exception {
+    commentModel.clear();
+    commentRepository.findByGameId(selectedGameId).forEach(commentModel::addElement);
+  }
+
+  private void refreshGameTable() throws Exception {
+    gameTableModel.setGames(gameRepository.findAll());
+  }
+
+  private Game createGameFromForm() {
+    return new Game(tfGameName.getText().trim());
+  }
+
+  private void updateSelectedGameFromForm() {
+    selectedGame.setName(tfGameName.getText().trim());
+    selectedGame.setReleaseDate(LocalDate.parse(tfRelDate.getText().trim()));
   }
 
   private void clearForm() {
@@ -200,57 +251,37 @@ public class GamesPanel extends GamesPanelDesigner {
     commentModel.clear();
   }
 
-  private void loadListModels() throws Exception {
-    genreModel.clear();
-    selectedGame.getGenres().forEach(genreModel::addElement);
-    lsGenre.setModel(genreModel);
-
-    developerModel.clear();
-    selectedGame.getDevelopers().forEach(developerModel::addElement);
-    lsDevelopement.setModel(developerModel);
-
-    platformModel.clear();
-    selectedGame.getPlatforms().forEach(platformModel::addElement);
-    lsPlatform.setModel(platformModel);
-
-    commentModel.clear();
-    commentRepository.findByGameId(selectedGameId).forEach(commentModel::addElement);
-    lsComments.setModel(commentModel);
-  }
-
-  private boolean isFormValid() {
-    hideErrors();
-    fieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-  }
-
   @Override
   public void btnCommentActionPerformed(ActionEvent evt) {
-    int selectedRow = tblGames.getSelectedRow();
-
-    if (selectedRow == -1) {
+    if (tblGames.getSelectedRow() == -1) {
       MessageUtils.showWarningMessage("Warning", "Please select a game");
       return;
     }
 
-    selectedGameId = (int) tblGames.getValueAt(selectedRow, 0);
-    Optional<Game> optGame = Optional.empty();
+    selectedGameId = (int) tblGames.getValueAt(tblGames.getSelectedRow(), 0);
 
     try {
-      optGame = gameRepository.findById(selectedGameId);
+      Optional<Game> optGame = gameRepository.findById(selectedGameId);
+      if (optGame.isEmpty()) {
+        MessageUtils.showWarningMessage("Warning", "Game not found in database.");
+        return;
+      }
+
+      openCommentDialog(optGame.get());
     } catch (Exception ex) {
-      Logger.getLogger(GamesPanel.class.getName()).log(Level.SEVERE, "Unable to select game", ex);
-      MessageUtils.showErrorMessage("Error", "Unable to select game!");
+      showError("select game", ex);
     }
+  }
 
-    if (optGame.isEmpty()) {
-      MessageUtils.showWarningMessage("Warning", "Game not found in database.");
-      return;
-    }
+  private void openCommentDialog(Game game) {
+    AddCommentDialog dialog =
+        new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, game);
+    EventQueue.invokeLater(() -> dialog.setVisible(true));
+  }
 
-    AddCommentDialog commentGameDialog =
-        new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, optGame.get());
-    EventQueue.invokeLater(() -> commentGameDialog.setVisible(true));
+  private void showError(String action, Exception ex) {
+    Logger.getLogger(GamesPanel.class.getName())
+        .log(Level.SEVERE, "Unable to " + action + " game", ex);
+    MessageUtils.showErrorMessage("Error", "Failed to " + action + " game.");
   }
 }

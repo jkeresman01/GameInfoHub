@@ -26,42 +26,57 @@ public class AddCommentDialog extends AddCommentDialogDesigner {
   }
 
   private void init() {
-    initValidation();
+    mapValidationFields();
     hideErrors();
   }
 
-  private void initValidation() {
+  private void mapValidationFields() {
     fieldsWithErrorLabels =
-        Map.ofEntries(Map.entry(tfTitle, lblErrorTitle), Map.entry(tfContent, lblErrorContent));
+        Map.of(
+            tfTitle, lblErrorTitle,
+            tfContent, lblErrorContent);
   }
 
   private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
   @Override
   public void btnCommentActionPerformed(ActionEvent evt) {
-
     if (!isFormValid()) {
       return;
     }
 
-    String title = tfTitle.getText().trim();
-    String content = tfContent.getText().trim();
-
-    commentAddable.addComment(new Comment(title, content), game);
-
-    MessageUtils.showInformationMessage("Comment", "Comment added.");
-
-    dispose();
+    addCommentToGame();
+    showSuccessMessage();
+    closeDialog();
   }
 
   private boolean isFormValid() {
     hideErrors();
+    showFieldErrorsIfEmpty();
+    return allFieldsValid();
+  }
 
+  private void showFieldErrorsIfEmpty() {
     fieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+        (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+  }
 
-    return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
+  private boolean allFieldsValid() {
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+  }
+
+  private void addCommentToGame() {
+    Comment comment = new Comment(tfTitle.getText().trim(), tfContent.getText().trim());
+    commentAddable.addComment(comment, game);
+  }
+
+  private void showSuccessMessage() {
+    MessageUtils.showInformationMessage("Comment", "Comment added.");
+  }
+
+  private void closeDialog() {
+    dispose();
   }
 }

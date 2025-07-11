@@ -39,54 +39,86 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
     reportService = new ReportService(RepositoryFactory.getInstance(ReportRepository.class));
   }
 
-  private void handleInitializationError(Exception ex) {
-    Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-    System.exit(1);
+  private void initTable() throws Exception {
+    setupTableUI();
+    loadReportsToTable();
   }
 
-  private void initTable() throws Exception {
+  private void setupTableUI() {
     tblReports.setRowHeight(25);
     tblReports.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblReports.setAutoCreateRowSorter(true);
+  }
 
-    Result<List<Report>> allReports = reportService.getAllReports();
+  private void loadReportsToTable() {
+    Result<List<Report>> result = reportService.getAllReports();
 
-    if (allReports.isSuccess()) {
-      reportTableModel = new ReportTableModel(allReports.getData().get());
+    if (result.isSuccess()) {
+      List<Report> reports = result.getData().orElse(List.of());
+      reportTableModel = new ReportTableModel(reports);
       tblReports.setModel(reportTableModel);
     } else {
-      MessageUtils.showErrorMessage("Failed to Load Reports", allReports.getMessage());
+      showError("Failed to Load Reports", result.getMessage());
     }
   }
 
   @Override
   public void tblReportsMouseClicked(MouseEvent evt) {
-    int selectedRow = tblReports.getSelectedRow();
-    selectedReportId = (int) reportTableModel.getValueAt(selectedRow, 0);
-
-    Result<Report> reportById = reportService.getReportById(selectedReportId);
-
-    if (reportById.isSuccess() && reportById.getData().isPresent()) {
-      Report report = reportById.getData().get();
-      tfTitle.setText(report.getTitle());
-      tfContent.setText(report.getContent());
-    } else {
-      tfTitle.setText("");
-      tfContent.setText("");
-      MessageUtils.showErrorMessage("Error", reportById.getMessage());
+    if (!hasSelectedRow()) {
+      return;
     }
+    loadSelectedReport();
+  }
+
+  private boolean hasSelectedRow() {
+    return tblReports.getSelectedRow() != -1;
+  }
+
+  private void loadSelectedReport() {
+    selectedReportId = getSelectedReportId();
+    Result<Report> result = reportService.getReportById(selectedReportId);
+
+    if (result.isSuccess()) {
+      result
+          .getData()
+          .ifPresentOrElse(this::populateForm, () -> clearFormAndShowError(result.getMessage()));
+    } else {
+      clearFormAndShowError(result.getMessage());
+    }
+  }
+
+  private int getSelectedReportId() {
+    int selectedRow = tblReports.getSelectedRow();
+    return (int) reportTableModel.getValueAt(selectedRow, 0);
+  }
+
+  private void populateForm(Report report) {
+    tfTitle.setText(report.getTitle());
+    tfContent.setText(report.getContent());
+  }
+
+  private void clearFormAndShowError(String message) {
+    clearForm();
+    showError("Error", message);
+  }
+
+  private void clearForm() {
+    tfTitle.setText("");
+    tfContent.setText("");
+  }
+
+  private void showError(String title, String message) {
+    MessageUtils.showErrorMessage(title, message);
   }
 
   @Override
   public void formComponentShown(ComponentEvent evt) {
-    Result<List<Report>> allReports = reportService.getAllReports();
+    loadReportsToTable();
+  }
 
-    if (allReports.isSuccess()) {
-      reportTableModel = new ReportTableModel(allReports.getData().get());
-      tblReports.setModel(reportTableModel);
-    } else {
-      MessageUtils.showErrorMessage("Failed to Load Reports", allReports.getMessage());
-    }
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(BrowseReportsPanel.class.getName()).log(Level.SEVERE, null, ex);
+    showError("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
   }
 }

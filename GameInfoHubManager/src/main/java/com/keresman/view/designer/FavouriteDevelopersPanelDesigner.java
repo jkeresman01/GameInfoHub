@@ -5,6 +5,19 @@ import javax.swing.JPanel;
 
 public abstract class FavouriteDevelopersPanelDesigner extends JPanel {
 
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  protected javax.swing.JLabel lblDevelopers;
+  protected javax.swing.JLabel lblDndDirection1;
+  protected javax.swing.JLabel lblDndDirection2;
+  protected javax.swing.JLabel lblFavouriteDevelopers;
+  protected javax.swing.JLabel lblFavourites;
+  protected javax.swing.JList<Developer> lsDevelopers;
+  protected javax.swing.JList<Developer> lsFavouriteDevelopers;
+  protected javax.swing.JScrollPane spDevelopers;
+  protected javax.swing.JScrollPane spFavDevelopers;
+
+  // End of variables declaration//GEN-END:variables
+
   protected FavouriteDevelopersPanelDesigner() {
     initComponents();
   }
@@ -207,16 +220,4 @@ public abstract class FavouriteDevelopersPanelDesigner extends JPanel {
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addContainerGap(349, Short.MAX_VALUE))));
   } // </editor-fold>//GEN-END:initComponents
-
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  protected javax.swing.JLabel lblDevelopers;
-  protected javax.swing.JLabel lblDndDirection1;
-  protected javax.swing.JLabel lblDndDirection2;
-  protected javax.swing.JLabel lblFavouriteDevelopers;
-  protected javax.swing.JLabel lblFavourites;
-  protected javax.swing.JList<Developer> lsDevelopers;
-  protected javax.swing.JList<Developer> lsFavouriteDevelopers;
-  protected javax.swing.JScrollPane spDevelopers;
-  protected javax.swing.JScrollPane spFavDevelopers;
-  // End of variables declaration//GEN-END:variables
 }

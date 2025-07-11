@@ -8,7 +8,7 @@ import com.keresman.utilities.IconUtils;
 import com.keresman.utilities.MessageUtils;
 import com.keresman.view.designer.ArticlesPanelDesigner;
 import com.keresman.view.model.ArticleTableModel;
-import java.awt.*;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -22,7 +22,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.text.JTextComponent;
 
@@ -53,12 +56,6 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     }
   }
 
-  private void handleInitializationError(Exception ex) {
-    Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-    System.exit(1);
-  }
-
   private void initValidation() {
     fieldsWithErrorLabels =
         Map.of(
@@ -68,25 +65,25 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
             tfPubDate, lblErrorPubDate);
   }
 
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  }
+
+  private void initRepository() throws Exception {
+    articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+  }
+
   private void initTable() throws Exception {
     tblArticles.setRowHeight(25);
     tblArticles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblArticles.setAutoCreateRowSorter(true);
-
-    List<Article> articles = articleRepository.findAll();
-    articleTableModel = new ArticleTableModel(articles);
-    tblArticles.setModel(articleTableModel);
+    refreshArticleTable();
   }
 
-  private boolean isFormValid() {
-    hideErrors();
-    fieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-  }
-
-  private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  private void handleInitializationError(Exception ex) {
+    Logger.getLogger(ArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
   }
 
   @Override
@@ -94,7 +91,10 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     if (!isFormValid()) {
       return;
     }
+    createArticle();
+  }
 
+  private void createArticle() {
     try {
       Article article = createArticleFromForm();
       articleRepository.save(article);
@@ -105,35 +105,27 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     }
   }
 
-  private Article createArticleFromForm() {
-    return new Article(
-        tfTitle.getText().trim(),
-        tfLink.getText().trim(),
-        taDescription.getText().trim(),
-        LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER),
-        picturePath);
-  }
-
-  private void refreshArticleTable() throws Exception {
-    articleTableModel.setArticles(articleRepository.findAll());
-  }
-
   @Override
   public void btnUpdateActionPerformed(ActionEvent evt) {
+    if (!canUpdateArticle()) {
+      return;
+    }
+    updateArticle();
+  }
+
+  private boolean canUpdateArticle() {
     if (selectedArticle == null) {
       MessageUtils.showInformationMessage("Wrong operation", "Please choose article to update");
-      return;
+      return false;
     }
-
     if (picturePath == null) {
-      MessageUtils.showInformationMessage("Wrong operation", "Please choose picture path!!!!");
-      return;
+      MessageUtils.showInformationMessage("Wrong operation", "Please choose picture path");
+      return false;
     }
+    return isFormValid();
+  }
 
-    if (!isFormValid()) {
-      return;
-    }
-
+  private void updateArticle() {
     try {
       handlePictureUpdateIfNeeded();
       updateSelectedArticleFromForm();
@@ -152,36 +144,96 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     }
   }
 
-  private void updateSelectedArticleFromForm() {
-    selectedArticle.setTitle(tfTitle.getText().trim());
-    selectedArticle.setLink(tfLink.getText().trim());
-    selectedArticle.setDescription(taDescription.getText().trim());
-    selectedArticle.setPublishedDateTime(
-        LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER));
-  }
-
   @Override
   public void btnDeleteActionPerformed(ActionEvent evt) {
-    if (selectedArticle == null) {
-      MessageUtils.showInformationMessage("Wrong operation", "Please choose article to delete");
+    if (!canDeleteArticle()) {
       return;
     }
+    deleteArticle();
+  }
 
-    if (MessageUtils.showConfirmDialog("Delete article", "Do you really want to delete article?")) {
-      try {
-        deleteArticlePictureIfExists();
-        articleRepository.deleteById(selectedArticle.getArticleId());
-        refreshArticleTable();
-        clearForm();
-      } catch (Exception ex) {
-        handleCrudError("delete", ex);
-      }
+  private boolean canDeleteArticle() {
+    if (selectedArticle == null) {
+      MessageUtils.showInformationMessage("Wrong operation", "Please choose article to delete");
+      return false;
+    }
+    return MessageUtils.showConfirmDialog(
+        "Delete article", "Do you really want to delete article?");
+  }
+
+  private void deleteArticle() {
+    try {
+      deleteArticlePictureIfExists();
+      articleRepository.deleteById(selectedArticle.getArticleId());
+      refreshArticleTable();
+      clearForm();
+    } catch (Exception ex) {
+      handleCrudError("delete", ex);
     }
   }
 
   private void deleteArticlePictureIfExists() throws IOException {
     if (selectedArticle.getPicturePath() != null) {
       Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
+    }
+  }
+
+  @Override
+  public void btnClearActionPerformed(ActionEvent evt) {
+    clearForm();
+  }
+
+  @Override
+  public void formAncestorAdded(AncestorEvent evt) {
+    refreshData();
+  }
+
+  private void refreshData() {
+    try {
+      refreshArticleTable();
+    } catch (Exception ex) {
+      handleCrudError("refresh", ex);
+    }
+  }
+
+  private void refreshArticleTable() throws Exception {
+    List<Article> articles = articleRepository.findAll();
+    if (articleTableModel == null) {
+      articleTableModel = new ArticleTableModel(articles);
+      tblArticles.setModel(articleTableModel);
+    } else {
+      articleTableModel.setArticles(articles);
+    }
+  }
+
+  @Override
+  public void tblArticlesMouseClicked(MouseEvent evt) {
+    int selectedRow = tblArticles.getSelectedRow();
+    selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
+    loadSelectedArticle();
+  }
+
+  private void loadSelectedArticle() {
+    try {
+      Optional<Article> optArticle = articleRepository.findById(selectedArticleId);
+      optArticle.ifPresent(this::populateFormFromArticle);
+    } catch (Exception ex) {
+      handleCrudError("select article", ex);
+    }
+  }
+
+  private void populateFormFromArticle(Article article) {
+    tfTitle.setText(article.getTitle());
+    tfLink.setText(article.getLink());
+    taDescription.setText(article.getDescription());
+    tfPubDate.setText(article.getPublishedDateTime().toString());
+    selectedArticle = article;
+    picturePath = article.getPicturePath();
+
+    if (picturePath != null) {
+      setIcon(lblcon, new File(picturePath));
+    } else {
+      lblcon.setIcon(null);
     }
   }
 
@@ -211,47 +263,36 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     return localPicturePath;
   }
 
-  @Override
-  public void formAncestorAdded(AncestorEvent evt) {
-    refreshData();
+  private Article createArticleFromForm() {
+    return new Article(
+        tfTitle.getText().trim(),
+        tfLink.getText().trim(),
+        taDescription.getText().trim(),
+        LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER),
+        picturePath);
   }
 
-  private void refreshData() {
-    try {
-      List<Article> articles = articleRepository.findAll();
-      articleTableModel.setArticles(articles);
-    } catch (Exception ex) {
-      handleCrudError("refresh", ex);
-    }
+  private void updateSelectedArticleFromForm() {
+    selectedArticle.setTitle(tfTitle.getText().trim());
+    selectedArticle.setLink(tfLink.getText().trim());
+    selectedArticle.setDescription(taDescription.getText().trim());
+    selectedArticle.setPublishedDateTime(
+        LocalDateTime.parse(tfPubDate.getText().trim(), Article.DATE_TIME_FORMATTER));
   }
 
-  @Override
-  public void tblArticlesMouseClicked(MouseEvent evt) {
-    int selectedRow = tblArticles.getSelectedRow();
-    selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
-
-    try {
-      Optional<Article> optArticle = articleRepository.findById(selectedArticleId);
-      optArticle.ifPresent(this::populateFormFromArticle);
-    } catch (Exception ex) {
-      handleCrudError("select article", ex);
-    }
+  private boolean isFormValid() {
+    hideErrors();
+    showFieldErrorsIfEmpty();
+    return areAllFieldsValid();
   }
 
-  private void populateFormFromArticle(Article article) {
-    tfTitle.setText(article.getTitle());
-    tfLink.setText(article.getLink());
-    taDescription.setText(article.getDescription());
-    tfPubDate.setText(article.getPublishedDateTime().toString());
+  private void showFieldErrorsIfEmpty() {
+    fieldsWithErrorLabels.forEach(
+        (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+  }
 
-    selectedArticle = article;
-    picturePath = article.getPicturePath();
-
-    if (picturePath != null) {
-      setIcon(lblcon, new File(picturePath));
-    } else {
-      lblcon.setIcon(null);
-    }
+  private boolean areAllFieldsValid() {
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 
   private void clearForm() {
@@ -263,42 +304,33 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
   }
 
   @Override
-  public void btnClearActionPerformed(ActionEvent evt) {
-    clearForm();
-  }
-
-  @Override
   public void btnReportActionPerformed(ActionEvent evt) {
-    int selectedRow = tblArticles.getSelectedRow();
-
-    if (selectedRow == -1) {
+    if (!hasSelectedRow()) {
       MessageUtils.showWarningMessage("Warning", "Please select a game");
       return;
     }
 
-    selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
-
-    Optional<Article> optArticle = Optional.empty();
-
-    try {
-      optArticle = articleRepository.findById(selectedArticleId);
-    } catch (Exception ex) {
-      handleCrudError("select article", ex);
-    }
-
-    if (optArticle.isEmpty()) {
-      MessageUtils.showWarningMessage("Warning", "Please select article");
-      return;
-    }
-
-    ReportArticleDialog reportArticleDialog =
-        new ReportArticleDialog(
-            (JFrame) SwingUtilities.getWindowAncestor(this), true, optArticle.get());
-    EventQueue.invokeLater(() -> reportArticleDialog.setVisible(true));
+    loadSelectedArticleForReport().ifPresent(this::openReportDialog);
   }
 
-  private void initRepository() throws Exception {
-    articleRepository = RepositoryFactory.getInstance(ArticleRepository.class);
+  private boolean hasSelectedRow() {
+    return tblArticles.getSelectedRow() != -1;
+  }
+
+  private Optional<Article> loadSelectedArticleForReport() {
+    selectedArticleId = (int) articleTableModel.getValueAt(tblArticles.getSelectedRow(), 0);
+    try {
+      return articleRepository.findById(selectedArticleId);
+    } catch (Exception ex) {
+      handleCrudError("select article", ex);
+      return Optional.empty();
+    }
+  }
+
+  private void openReportDialog(Article article) {
+    ReportArticleDialog dialog =
+        new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, article);
+    EventQueue.invokeLater(() -> dialog.setVisible(true));
   }
 
   private void handleCrudError(String action, Exception ex) {

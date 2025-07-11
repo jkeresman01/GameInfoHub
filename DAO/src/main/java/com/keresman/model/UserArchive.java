@@ -23,7 +23,7 @@ public final class UserArchive {
   }
 
   public List<User> getUsers() {
-    return new ArrayList<>(users);
+    return new ArrayList<>(this.users);
   }
 
   public void setUsers(List<User> users) {

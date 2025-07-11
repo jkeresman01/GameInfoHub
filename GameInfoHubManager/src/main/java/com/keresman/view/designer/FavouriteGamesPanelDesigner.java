@@ -5,6 +5,19 @@ import javax.swing.JPanel;
 
 public abstract class FavouriteGamesPanelDesigner extends JPanel {
 
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  protected javax.swing.JLabel lblDndDirection1;
+  protected javax.swing.JLabel lblDndDirection2;
+  protected javax.swing.JLabel lblFavouriteGames;
+  protected javax.swing.JLabel lblFavourites;
+  protected javax.swing.JLabel lblGames;
+  protected javax.swing.JList<Game> lsFavouriteGames;
+  protected javax.swing.JList<Game> lsGames;
+  protected javax.swing.JScrollPane spFavGames;
+  protected javax.swing.JScrollPane spGames;
+
+  // End of variables declaration//GEN-END:variables
+
   protected FavouriteGamesPanelDesigner() {
     initComponents();
   }
@@ -199,16 +212,4 @@ public abstract class FavouriteGamesPanelDesigner extends JPanel {
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addContainerGap(349, Short.MAX_VALUE))));
   } // </editor-fold>//GEN-END:initComponents
-
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  protected javax.swing.JLabel lblDndDirection1;
-  protected javax.swing.JLabel lblDndDirection2;
-  protected javax.swing.JLabel lblFavouriteGames;
-  protected javax.swing.JLabel lblFavourites;
-  protected javax.swing.JLabel lblGames;
-  protected javax.swing.JList<Game> lsFavouriteGames;
-  protected javax.swing.JList<Game> lsGames;
-  protected javax.swing.JScrollPane spFavGames;
-  protected javax.swing.JScrollPane spGames;
-  // End of variables declaration//GEN-END:variables
 }

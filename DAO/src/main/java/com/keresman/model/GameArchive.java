@@ -21,7 +21,7 @@ public final class GameArchive {
   public GameArchive(List<Game> games) {}
 
   public List<Game> getGames() {
-    return new ArrayList<>(games);
+    return new ArrayList<>(this.games);
   }
 
   public void setGames(List<Game> games) {

@@ -26,22 +26,29 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
   private void init() {
     try {
-      initUserService();
-      initTable();
-    } catch (Exception e) {
-      handleInitializationError(e);
+      initService();
+      setupTable();
+      loadUsersToTable();
+    } catch (Exception ex) {
+      handleCriticalInitError(ex);
     }
   }
 
-  private void initTable() throws Exception {
+  private void initService() throws Exception {
+    userService = new UserService(RepositoryFactory.getInstance(UserRepository.class));
+  }
+
+  private void setupTable() {
     tblUsers.setRowHeight(25);
     tblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblUsers.setAutoCreateRowSorter(true);
+  }
 
+  private void loadUsersToTable() {
     Result<List<User>> result = userService.getAllUsers();
 
     if (!result.isSuccess()) {
-      MessageUtils.showErrorMessage("Error", result.getMessage());
+      handleError("Error loading users", result.getMessage());
       return;
     }
 
@@ -49,59 +56,65 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
     tblUsers.setModel(userTableModel);
   }
 
-  private void initUserService() throws Exception {
-    userService = new UserService(RepositoryFactory.getInstance(UserRepository.class));
-  }
-
-  private void handleInitializationError(Exception e) {
-    e.printStackTrace();
+  private void handleCriticalInitError(Exception ex) {
+    ex.printStackTrace();
     MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
     MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
     System.exit(1);
   }
 
+  private void handleError(String title, String message) {
+    MessageUtils.showErrorMessage(title, message);
+  }
+
   @Override
   public void tblUsersMouseClicked(MouseEvent evt) {
     int selectedRow = tblUsers.getSelectedRow();
-    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
+    if (selectedRow == -1) return;
 
-    Result<User> result = userService.getUserById(selectedUserId);
+    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
+    loadUserDetails(selectedUserId);
+  }
+
+  private void loadUserDetails(int userId) {
+    Result<User> result = userService.getUserById(userId);
 
     if (!result.isSuccess()) {
-      MessageUtils.showErrorMessage("Error", result.getMessage());
+      handleError("Error", result.getMessage());
       return;
     }
 
-    User user = result.getData().get();
+    populateUserForm(result.getData().get());
+  }
 
+  private void populateUserForm(User user) {
     tfUsername.setText(user.getUsername());
     tfFirstName.setText(user.getFirstName());
     tfLastName.setText(user.getLastName());
     tfEmail.setText(user.getEmail());
   }
 
-  private void refreshData() {
-    Result<List<User>> result = userService.getAllUsers();
-
-    if (!result.isSuccess()) {
-      MessageUtils.showErrorMessage("Error", result.getMessage());
-      return;
-    }
-
-    userTableModel = new UserTableModel(result.getData().get());
-    tblUsers.setModel(userTableModel);
-  }
-
   @Override
   public void btnActivateDeactiveProfileActionPerformed(ActionEvent evt) {
     int selectedRow = tblUsers.getSelectedRow();
-    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
-
-    Result<User> deactivateProfileResult = userService.deactivateProfileById(selectedUserId);
-
-    if (deactivateProfileResult.isSuccess()) {
-      MessageUtils.showInformationMessage("INFO", "User profile deactivated successfully!");
-      refreshData();
+    if (selectedRow == -1) {
+      MessageUtils.showWarningMessage("Warning", "Please select a user.");
+      return;
     }
+
+    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
+    toggleUserActivation(selectedUserId);
+  }
+
+  private void toggleUserActivation(int userId) {
+    Result<User> result = userService.deactivateProfileById(userId);
+
+    if (!result.isSuccess()) {
+      handleError("Activation Failed", result.getMessage());
+      return;
+    }
+
+    MessageUtils.showInformationMessage("INFO", "User profile deactivated successfully!");
+    loadUsersToTable();
   }
 }

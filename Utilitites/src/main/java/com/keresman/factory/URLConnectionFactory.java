@@ -8,9 +8,17 @@ import java.net.URL;
 public class URLConnectionFactory {
 
   private static final int TIMEOUT = 10_000;
-  private static final String REQUEST_METHOD = "GET";
-  private static final String USER_AGENT = "User-Agent";
-  private static final String MOZILLA = "Mozilla/5.0";
+
+  private static final String REQUEST_METHOD_GET = "GET";
+  private static final String REQUEST_METHOD_POST = "POST";
+
+  private static final String HEADER_USER_AGENT = "User-Agent";
+  private static final String HEADER_ACCEPT = "Accept";
+  private static final String HEADER_CONTENT_TYPE = "Content-Type";
+
+  private static final String USER_AGENT_VALUE = "Mozilla/5.0";
+  private static final String ACCEPT_SPARQL_JSON = "application/sparql-results+json";
+  private static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
 
   private URLConnectionFactory() {
     // Suppresses default constructor, ensuring non-instantiability.
@@ -18,12 +26,21 @@ public class URLConnectionFactory {
 
   public static HttpURLConnection getHttpUrlConnection(String path)
       throws MalformedURLException, IOException {
-    URL url = new URL(path);
-    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+    HttpURLConnection con = (HttpURLConnection) new URL(path).openConnection();
     con.setConnectTimeout(TIMEOUT);
     con.setReadTimeout(TIMEOUT);
-    con.setRequestMethod(REQUEST_METHOD);
-    con.addRequestProperty(USER_AGENT, MOZILLA);
+    con.setRequestMethod(REQUEST_METHOD_GET);
+    con.addRequestProperty(HEADER_USER_AGENT, USER_AGENT_VALUE);
     return con;
+  }
+
+  public static HttpURLConnection getPostSparqlConnection(String endpoint) throws IOException {
+    HttpURLConnection connection = (HttpURLConnection) new URL(endpoint).openConnection();
+    connection.setRequestMethod(REQUEST_METHOD_POST);
+    connection.setConnectTimeout(TIMEOUT);
+    connection.setDoOutput(true);
+    connection.setRequestProperty(HEADER_ACCEPT, ACCEPT_SPARQL_JSON);
+    connection.setRequestProperty(HEADER_CONTENT_TYPE, CONTENT_TYPE_FORM);
+    return connection;
   }
 }

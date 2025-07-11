@@ -1,5 +1,6 @@
 package com.keresman.model;
 
+import com.keresman.adapter.UserDateTimeAdapter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;

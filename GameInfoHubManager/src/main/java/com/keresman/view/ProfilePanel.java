@@ -1,9 +1,6 @@
 package com.keresman.view;
 
-import com.keresman.dal.FavoriteGamesRepository;
-import com.keresman.dal.FavouriteArticleRepostiory;
-import com.keresman.dal.RepositoryFactory;
-import com.keresman.dal.UserRepository;
+import com.keresman.dal.*;
 import com.keresman.model.Article;
 import com.keresman.model.Game;
 import com.keresman.model.User;
@@ -22,7 +19,7 @@ import javax.swing.JTextField;
 
 public class ProfilePanel extends ProfilePanelDesigner {
 
-  private Map<JTextField, JLabel> validationsFieldsWithErrorLabels;
+  private Map<JTextField, JLabel> fieldsWithErrorLabels;
   private UserService userService;
 
   private FavoriteGamesRepository favoriteGamesRepository;
@@ -42,14 +39,20 @@ public class ProfilePanel extends ProfilePanelDesigner {
       hideErrors();
       initRepositories();
       initUserService();
-      fillForm();
-      loadListModels();
+      populateUserForm();
+      loadFavoriteLists();
     } catch (Exception ex) {
-      ex.printStackTrace();
-      MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
-      MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
-      System.exit(1);
+      handleInitializationError(ex);
     }
+  }
+
+  private void initValidation() {
+    fieldsWithErrorLabels =
+        Map.of(
+            tfUsername, lblErrorUsername,
+            tfFirstName, lblErrorFirstName,
+            tfLastName, lblErrorLastName,
+            tfEmail, lblErrorEmail);
   }
 
   private void initRepositories() throws Exception {
@@ -57,7 +60,42 @@ public class ProfilePanel extends ProfilePanelDesigner {
     favouriteArticleRepostiory = RepositoryFactory.getInstance(FavouriteArticleRepostiory.class);
   }
 
-  private void loadListModels() throws Exception {
+  private void initUserService() throws Exception {
+    var userRepository = RepositoryFactory.getInstance(UserRepository.class);
+    userService = new UserService(userRepository);
+  }
+
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  }
+
+  private boolean isFormValid() {
+    hideErrors();
+    showValidationErrorsIfEmpty();
+    return areAllFieldsValid();
+  }
+
+  private void showValidationErrorsIfEmpty() {
+    fieldsWithErrorLabels.forEach(
+        (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+  }
+
+  private boolean areAllFieldsValid() {
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+  }
+
+  private void populateUserForm() {
+    User user = SessionManager.getInstance().getCurrentUser();
+
+    tfFirstName.setText(user.getFirstName());
+    tfLastName.setText(user.getLastName());
+    tfEmail.setText(user.getEmail());
+    tfUsername.setText(user.getUsername());
+
+    lblProfileImage.setIcon(new ImageIcon(getClass().getResource(user.getPicturePath())));
+  }
+
+  private void loadFavoriteLists() throws Exception {
     User user = SessionManager.getInstance().getCurrentUser();
 
     favGamesModel.clear();
@@ -69,52 +107,24 @@ public class ProfilePanel extends ProfilePanelDesigner {
     lsFavArticles.setModel(favArticlesModel);
   }
 
-  private void initValidation() {
-    validationsFieldsWithErrorLabels =
-        Map.ofEntries(
-            Map.entry(tfUsername, lblErrorUsername),
-            Map.entry(tfFirstName, lblErrorFirstName),
-            Map.entry(tfLastName, lblErrorLastName),
-            Map.entry(tfEmail, lblErrorEmail));
-  }
-
-  private void hideErrors() {
-    validationsFieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
-  }
-
-  private boolean isFormValid() {
-    hideErrors();
-
-    validationsFieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
-
-    return validationsFieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
-  }
-
-  private void fillForm() {
-    User user = SessionManager.getInstance().getCurrentUser();
-
-    tfFirstName.setText(user.getFirstName());
-    tfLastName.setText(user.getLastName());
-    tfEmail.setText(user.getEmail());
-    tfUsername.setText(user.getUsername());
-
-    lblProfileImage.setIcon(new ImageIcon(getClass().getResource(user.getPicturePath())));
-  }
-
-  private void initUserService() throws Exception {
-    var userRepository = RepositoryFactory.getInstance(UserRepository.class);
-    userService = new UserService(userRepository);
+  private void handleInitializationError(Exception ex) {
+    ex.printStackTrace();
+    MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
+    MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
+    System.exit(1);
   }
 
   @Override
   public void btnUpdateProfileActionPerformed(ActionEvent evt) {
-
     if (!isFormValid()) {
       MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
       return;
     }
 
+    updateUserProfile();
+  }
+
+  private void updateUserProfile() {
     User user = SessionManager.getInstance().getCurrentUser();
 
     String firstName = tfFirstName.getText().trim();
@@ -122,15 +132,17 @@ public class ProfilePanel extends ProfilePanelDesigner {
     String username = tfUsername.getText().trim();
     String email = tfEmail.getText().trim();
 
-    var userUpdateReq = new UserUpdateReq(user.getId(), username, email, firstName, lastName);
+    var updateRequest = new UserUpdateReq(user.getId(), username, email, firstName, lastName);
+    Result<Void> result = userService.updateUser(updateRequest);
 
-    Result<Void> userUpdateResult = userService.updateUser(userUpdateReq);
+    handleUpdateResult(result);
+  }
 
-    if (!userUpdateResult.isSuccess()) {
-      MessageUtils.showErrorMessage("Update failed", userUpdateResult.getMessage());
-      return;
+  private void handleUpdateResult(Result<Void> result) {
+    if (!result.isSuccess()) {
+      MessageUtils.showErrorMessage("Update failed", result.getMessage());
+    } else {
+      MessageUtils.showInformationMessage("Update Successful", "Profile updated successfully!");
     }
-
-    MessageUtils.showInformationMessage("Update Successful", "Profile updated successfully!");
   }
 }

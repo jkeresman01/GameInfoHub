@@ -1,5 +1,6 @@
 package com.keresman.model;
 
+import com.keresman.adapter.ArticlePublishedDateAdapter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -139,10 +140,10 @@ public final class Article implements Comparable<Article> {
   }
 
   public List<Game> getGames() {
-    return new ArrayList<>(games);
+    return new ArrayList<>(this.games);
   }
 
-  public void setGames(List<Game> games) {
+  public void addGames(List<Game> games) {
     this.games = games;
   }
 

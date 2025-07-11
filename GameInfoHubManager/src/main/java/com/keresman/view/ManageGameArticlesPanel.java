@@ -1,6 +1,17 @@
 package com.keresman.view;
 
-import com.keresman.dal.*;
+import com.keresman.dal.ArticleRepository;
+import com.keresman.dal.CategoryRepostitory;
+import com.keresman.dal.CommentRepository;
+import com.keresman.dal.DeveloperRepository;
+import com.keresman.dal.FavoriteGamesRepository;
+import com.keresman.dal.FavouriteArticleRepostiory;
+import com.keresman.dal.GameRepository;
+import com.keresman.dal.GenreRepository;
+import com.keresman.dal.PlatformRepository;
+import com.keresman.dal.ReportRepository;
+import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
 import com.keresman.model.Article;
 import com.keresman.model.Game;
 import com.keresman.parser.rss.GameArticleParser;
@@ -37,9 +48,9 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
   private void init() {
     try {
       initRepositories();
-      loadModel();
+      loadArticlesIntoModel();
     } catch (Exception ex) {
-      handleInitializationError(ex);
+      handleCriticalInitFailure(ex);
     }
   }
 
@@ -57,33 +68,32 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     categoryRepository = RepositoryFactory.getInstance(CategoryRepostitory.class);
   }
 
-  private void loadModel() throws Exception {
-    List<Article> articles = fetchArticlesFromDatabase();
+  private void handleCriticalInitFailure(Exception ex) {
+    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+    System.exit(1);
+  }
+
+  private void loadArticlesIntoModel() throws Exception {
+    List<Article> articles = articleRepository.findAll();
     articlesModel.clear();
     articles.forEach(articlesModel::addElement);
     lsArticles.setModel(articlesModel);
   }
 
-  private void handleInitializationError(Exception ex) {
-    Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
-    MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
-    System.exit(1);
-  }
-
   @Override
   public void btnLoadDbActionPerformed(ActionEvent evt) {
-    new Thread(this::loadArticlesFromSource).start();
+    new Thread(this::loadArticlesAsync).start();
   }
 
-  private void loadArticlesFromSource() {
+  private void loadArticlesAsync() {
     try {
-      List<Article> articles = fetchArticlesFromDatabase();
+      List<Article> articles = articleRepository.findAll();
 
       if (articles.isEmpty()) {
         articles = GameArticleParser.parse();
         articleRepository.saveAll(articles);
-        List<Game> uniqueGames = getUniqueGames(articles);
-        gameRepository.saveAll(uniqueGames);
+        gameRepository.saveAll(extractUniqueGames(articles));
       }
 
       updateUIWithArticles(articles);
@@ -92,27 +102,22 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     }
   }
 
-  private List<Game> getUniqueGames(List<Article> articles) {
+  private List<Game> extractUniqueGames(List<Article> articles) {
     return articles.stream().flatMap(article -> article.getGames().stream()).distinct().toList();
   }
 
-  private List<Article> fetchArticlesFromDatabase() throws Exception {
-    return articleRepository.findAll();
-  }
-
   private void updateUIWithArticles(List<Article> articles) {
-    List<Article> finalArticles = articles;
     SwingUtilities.invokeLater(
         () -> {
           articlesModel.clear();
-          finalArticles.forEach(articlesModel::addElement);
+          articles.forEach(articlesModel::addElement);
           lsArticles.setModel(articlesModel);
           MessageUtils.showInformationMessage("INFO", "Articles loaded successfully!");
         });
   }
 
   private void handleLoadError(Exception ex) {
-    Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
     SwingUtilities.invokeLater(
         () ->
             MessageUtils.showErrorMessage("Error", "Failed to load articles: " + ex.getMessage()));
@@ -121,14 +126,14 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
   @Override
   public void btnDeleteAllActionPerformed(ActionEvent evt) {
     try {
-      deleteAll();
-      loadModel();
+      deleteAllEntities();
+      loadArticlesIntoModel();
     } catch (Exception ex) {
-      Logger.getLogger(ManageGameArticlesPanel.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
     }
   }
 
-  private void deleteAll() throws Exception {
+  private void deleteAllEntities() throws Exception {
     commentRepository.deleteAll();
     reportRepository.deleteAll();
     favGamesRepository.deleteAll();

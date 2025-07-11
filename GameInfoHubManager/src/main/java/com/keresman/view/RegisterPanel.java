@@ -34,8 +34,8 @@ public class RegisterPanel extends RegisterPanelDesigner {
 
   private void init() {
     try {
-      initValidation();
-      initGenders();
+      initFieldsWithErrorLabels();
+      initGenderComboBox();
       hideErrors();
       initRegistrationService();
     } catch (Exception ex) {
@@ -43,85 +43,58 @@ public class RegisterPanel extends RegisterPanelDesigner {
     }
   }
 
-  private void initValidation() {
+  private void initFieldsWithErrorLabels() {
     fieldsWithErrorLabels =
-        Map.ofEntries(
-            Map.entry(tfLastName, lblErrorLastName),
-            Map.entry(tfFirstName, lblErrorFirstName),
-            Map.entry(tfUsername, lblErrorUsername),
-            Map.entry(tfPassword, lblErrorPassword),
-            Map.entry(tfCfmPassword, lblErrorCfmPassword),
-            Map.entry(tfEmail, lblErrorEmail));
+        Map.of(
+            tfLastName, lblErrorLastName,
+            tfFirstName, lblErrorFirstName,
+            tfUsername, lblErrorUsername,
+            tfPassword, lblErrorPassword,
+            tfCfmPassword, lblErrorCfmPassword,
+            tfEmail, lblErrorEmail);
   }
 
-  private void initGenders() {
+  private void initGenderComboBox() {
     cbGender.setModel(new DefaultComboBoxModel<>(Gender.values()));
-  }
-
-  private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(e -> e.setVisible(false));
   }
 
   private void initRegistrationService() throws Exception {
     UserRepository userRepository = RepositoryFactory.getInstance(UserRepository.class);
-    Validator<UserRegistrationReq> userRegistrationValidator =
-        new UserRegistrationValidator(userRepository);
-
-    registrationService = new UserRegistrationService(userRepository, userRegistrationValidator);
+    Validator<UserRegistrationReq> validator = new UserRegistrationValidator(userRepository);
+    registrationService = new UserRegistrationService(userRepository, validator);
   }
 
   private void handleInitializationError(Exception ex) {
-    Logger.getLogger(RegisterPanelDesigner.class.getName()).log(Level.SEVERE, null, ex);
+    Logger.getLogger(RegisterPanel.class.getName()).log(Level.SEVERE, null, ex);
     MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
     System.exit(1);
   }
 
-  @Override
-  public void btnRegisterActionPerformed(ActionEvent evt) {
-    if (!isFormValid()) {
-      MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
-      return;
-    }
-
-    String username = tfUsername.getText().trim();
-    String firstName = tfFirstName.getText().trim();
-    String lastName = tfLastName.getText().trim();
-    String email = tfEmail.getText().trim();
-    String password = String.valueOf(tfPassword.getPassword());
-    String cfmPassword = String.valueOf(tfCfmPassword.getPassword());
-    Gender gender = (Gender) cbGender.getSelectedItem();
-
-    var registerReq =
-        new UserRegistrationReq(
-            username, email, password, cfmPassword, lastName, firstName, gender);
-
-    Result validationResult = registrationService.register(registerReq);
-
-    if (!validationResult.isSuccess()) {
-      MessageUtils.showErrorMessage("Registration failed", validationResult.getMessage());
-      showFieldErrors(validationResult.getMessage());
-      return;
-    }
-
-    MessageUtils.showInformationMessage(
-        "Registration successful", "You have successfully registered, go to login page now!!");
-
-    clearRegisterForm();
-    redirectToLoginPage();
-  }
-
   private boolean isFormValid() {
     hideErrors();
+    showValidationErrors();
+    return areAllFieldsValid();
+  }
 
+  private void showValidationErrors() {
     fieldsWithErrorLabels.forEach(
-        (field, errLabel) -> errLabel.setVisible(field.getText().trim().isEmpty()));
+        (field, label) -> {
+          if (field.getText().trim().isEmpty()) {
+            label.setVisible(true);
+          }
+        });
+  }
 
-    return fieldsWithErrorLabels.values().stream().noneMatch(errLabel -> errLabel.isVisible());
+  private boolean areAllFieldsValid() {
+    return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
+  }
+
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
   private void clearRegisterForm() {
     hideErrors();
-
     fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
   }
 
@@ -132,18 +105,48 @@ public class RegisterPanel extends RegisterPanelDesigner {
     }
   }
 
-  private void showFieldErrors(String message) {
-    if (message.contains("Username")) {
-      lblErrorUsername.setVisible(true);
-    }
+  private UserRegistrationReq extractFormData() {
+    return new UserRegistrationReq(
+        tfUsername.getText().trim(),
+        tfEmail.getText().trim(),
+        String.valueOf(tfPassword.getPassword()),
+        String.valueOf(tfCfmPassword.getPassword()),
+        tfLastName.getText().trim(),
+        tfFirstName.getText().trim(),
+        (Gender) cbGender.getSelectedItem());
+  }
 
-    if (message.contains("Email")) {
-      lblErrorEmail.setVisible(true);
-    }
+  private void handleValidationResult(Result<?> result) {
+    MessageUtils.showErrorMessage("Registration failed", result.getMessage());
 
-    if (message.contains("Passwords")) {
+    String msg = result.getMessage();
+
+    if (msg.contains("Username")) lblErrorUsername.setVisible(true);
+    if (msg.contains("Email")) lblErrorEmail.setVisible(true);
+    if (msg.contains("Passwords")) {
       lblErrorPassword.setVisible(true);
       lblErrorCfmPassword.setVisible(true);
     }
+  }
+
+  @Override
+  public void btnRegisterActionPerformed(ActionEvent evt) {
+    if (!isFormValid()) {
+      MessageUtils.showErrorMessage("ERROR", "Invalid input, all fields must be set");
+      return;
+    }
+
+    UserRegistrationReq req = extractFormData();
+    Result<?> result = registrationService.register(req);
+
+    if (!result.isSuccess()) {
+      handleValidationResult(result);
+      return;
+    }
+
+    MessageUtils.showInformationMessage(
+        "Registration successful", "You have successfully registered, go to login page now!!");
+    clearRegisterForm();
+    redirectToLoginPage();
   }
 }

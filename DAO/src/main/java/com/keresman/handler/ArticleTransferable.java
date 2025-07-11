@@ -1,20 +1,21 @@
-package com.keresman.model;
+package com.keresman.handler;
 
+import com.keresman.model.Article;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class DeveloperTransferable implements Transferable {
+public class ArticleTransferable implements Transferable {
 
-  public static final DataFlavor DEVELOPER_FLAVOUR = new DataFlavor(Developer.class, "Developer");
-  private static final DataFlavor[] SUPPORTED_FLAVORS = {DEVELOPER_FLAVOUR};
+  public static final DataFlavor ARTICLE_FLAVOUR = new DataFlavor(Article.class, "Article");
+  private static final DataFlavor[] SUPPORTED_FLAVORS = {ARTICLE_FLAVOUR};
 
-  private final Developer developer;
+  private final Article article;
 
-  public DeveloperTransferable(Developer developer) {
-    this.developer = developer;
+  public ArticleTransferable(Article article) {
+    this.article = article;
   }
 
   @Override
@@ -30,7 +31,7 @@ public class DeveloperTransferable implements Transferable {
   @Override
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     if (isDataFlavorSupported(flavor)) {
-      return developer;
+      return article;
     }
 
     throw new UnsupportedFlavorException(flavor);
