@@ -106,13 +106,21 @@ public class LoginPanel extends LoginPanelDesigner {
   }
 
   private void handleLoginSuccess(User user) {
-    SessionManager.getInstance().setCurrentUser(user);
+    loginUser(user);
     clearLoginForm();
     openMainApplicationWindow();
   }
 
+  private void loginUser(User user) {
+    SessionManager.getInstance().setCurrentUser(user);
+  }
+
   private void clearLoginForm() {
     hideErrors();
+    resetFormFields();
+  }
+
+  private void resetFormFields() {
     fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
   }
 

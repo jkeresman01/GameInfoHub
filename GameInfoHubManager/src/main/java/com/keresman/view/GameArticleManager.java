@@ -172,11 +172,15 @@ public class GameArticleManager extends GameArticleManagerDesigner
     }
 
     try {
-      JAXBUtils.save(new UserArchive(getAllUsersResult.getData().get()), USER_ARCHIVE_FILENAME);
+      saveUserArchive(getAllUsersResult);
       notifySuccess("User archive successfully exported!");
     } catch (JAXBException ex) {
       notifyError("Failed to export user archive:\n%s".formatted(ex.getMessage()));
     }
+  }
+
+  private void saveUserArchive(Result<List<User>> getAllUsersResult) throws JAXBException {
+    JAXBUtils.save(new UserArchive(getAllUsersResult.getData().get()), USER_ARCHIVE_FILENAME);
   }
 
   @Override

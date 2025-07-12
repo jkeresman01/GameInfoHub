@@ -171,12 +171,16 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
   private void deleteArticle() {
     try {
       deleteArticlePicture();
-      articleRepository.deleteById(selectedArticle.getArticleId());
+      persistArticleDelete();
       refreshArticleTable();
       clearForm();
     } catch (Exception ex) {
       handleCrudError("delete", ex);
     }
+  }
+
+  private void persistArticleDelete() throws Exception {
+    articleRepository.deleteById(selectedArticle.getArticleId());
   }
 
   private void deleteArticlePicture() throws IOException {
