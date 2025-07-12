@@ -17,6 +17,8 @@ import javax.swing.ListSelectionModel;
 
 public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
 
+  private static final int REPORTS_TABLE_ROW_HEIGHT = 25;
+
   private ReportService reportService;
   private ReportTableModel reportTableModel;
   private int selectedReportId;
@@ -45,7 +47,7 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
   }
 
   private void setupTableUI() {
-    tblReports.setRowHeight(25);
+    tblReports.setRowHeight(REPORTS_TABLE_ROW_HEIGHT);
     tblReports.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblReports.setAutoCreateRowSorter(true);
   }
