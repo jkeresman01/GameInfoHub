@@ -1,6 +1,9 @@
 package com.keresman.view;
 
-import com.keresman.dal.*;
+import com.keresman.dal.FavoriteGamesRepository;
+import com.keresman.dal.FavouriteArticleRepostiory;
+import com.keresman.dal.RepositoryFactory;
+import com.keresman.dal.UserRepository;
 import com.keresman.model.Article;
 import com.keresman.model.Game;
 import com.keresman.model.User;
