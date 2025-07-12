@@ -15,6 +15,8 @@ import javax.swing.ListSelectionModel;
 
 public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
+  private static final int USER_TABLE_ROW_HEIGHT = 25;
+
   private int selectedUserId;
   private UserService userService;
   private UserTableModel userTableModel;
@@ -39,7 +41,7 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
   }
 
   private void setupTable() {
-    tblUsers.setRowHeight(25);
+    tblUsers.setRowHeight(USER_TABLE_ROW_HEIGHT);
     tblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblUsers.setAutoCreateRowSorter(true);
   }
@@ -70,7 +72,9 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
   @Override
   public void tblUsersMouseClicked(MouseEvent evt) {
     int selectedRow = tblUsers.getSelectedRow();
-    if (selectedRow == -1) return;
+    if (selectedRow == -1) {
+      return;
+    }
 
     selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
     loadUserDetails(selectedUserId);
