@@ -20,7 +20,6 @@ public final class FileUtils {
   private static final String TEXT_DOCUMENTS = "Text documents (*.txt)";
   private static final String TXT = "txt";
   private static final String DOT = ".";
-  private static final String FILE_COPIED_MSG = "File copied";
 
   private FileUtils() {
     // Suppresses default constructor, ensuring non-instantiability.
@@ -57,7 +56,6 @@ public final class FileUtils {
   public static void copy(String source, String destination) throws IOException {
     createDirHierarchy(destination);
     Files.copy(Paths.get(source), Paths.get(destination));
-    System.out.println(FILE_COPIED_MSG);
   }
 
   public static void copyFromUrl(String sourceUrl, String destination) throws IOException {
