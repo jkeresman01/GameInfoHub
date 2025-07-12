@@ -6,7 +6,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-public class JAXBUtils {
+public final class JAXBUtils {
 
   private JAXBUtils() {
     // Suppresses default constructor, ensuring non-instantiability.

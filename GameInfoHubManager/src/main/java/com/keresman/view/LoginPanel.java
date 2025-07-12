@@ -34,7 +34,7 @@ public class LoginPanel extends LoginPanelDesigner {
       hideErrors();
       initLoginService();
     } catch (Exception ex) {
-      handleCriticalInitializationFailure(ex);
+      handleInitializationError(ex);
     }
   }
 
@@ -51,7 +51,7 @@ public class LoginPanel extends LoginPanelDesigner {
     userLoginService = new UserLoginService(userRepository, validator);
   }
 
-  private void handleCriticalInitializationFailure(Exception ex) {
+  private void handleInitializationError(Exception ex) {
     ex.printStackTrace();
     MessageUtils.showErrorMessage("ERROR", "Critical error, failed to initialize the form.");
     MessageUtils.showErrorMessage("ERROR", "!!! Shutting down !!!");
@@ -64,8 +64,16 @@ public class LoginPanel extends LoginPanelDesigner {
 
   private boolean isFormValid() {
     hideErrors();
+    showFieldErrorsIfEmpty();
+    return areAllFieldsValid();
+  }
+
+  private void showFieldErrorsIfEmpty() {
     fieldsWithErrorLabels.forEach(
         (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+  }
+
+  private boolean areAllFieldsValid() {
     return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 

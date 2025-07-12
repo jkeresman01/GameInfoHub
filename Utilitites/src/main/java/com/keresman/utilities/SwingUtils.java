@@ -3,7 +3,7 @@ package com.keresman.utilities;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
-public class SwingUtils {
+public final class SwingUtils {
 
   private SwingUtils() {
     // Suppresses default constructor, ensuring non-instantiability.

@@ -96,13 +96,16 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
   private void createArticle() {
     try {
-      Article article = createArticleFromForm();
-      articleRepository.save(article);
+      saveArticle();
       refreshArticleTable();
       clearForm();
     } catch (Exception ex) {
       handleCrudError("create", ex);
     }
+  }
+
+  private void saveArticle() throws Exception {
+    articleRepository.save(createArticleFromForm());
   }
 
   @Override
@@ -129,7 +132,7 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     try {
       handlePictureUpdateIfNeeded();
       updateSelectedArticleFromForm();
-      articleRepository.updateById(selectedArticle.getArticleId(), selectedArticle);
+      persistArticleUpdate();
       refreshArticleTable();
       clearForm();
     } catch (Exception ex) {
@@ -142,6 +145,10 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
       Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
       selectedArticle.setPicturePath(uploadPicture());
     }
+  }
+
+  private void persistArticleUpdate() throws Exception {
+    articleRepository.updateById(selectedArticle.getArticleId(), selectedArticle);
   }
 
   @Override
@@ -163,7 +170,7 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
   private void deleteArticle() {
     try {
-      deleteArticlePictureIfExists();
+      deleteArticlePicture();
       articleRepository.deleteById(selectedArticle.getArticleId());
       refreshArticleTable();
       clearForm();
@@ -172,7 +179,7 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
     }
   }
 
-  private void deleteArticlePictureIfExists() throws IOException {
+  private void deleteArticlePicture() throws IOException {
     if (selectedArticle.getPicturePath() != null) {
       Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
     }
@@ -208,9 +215,13 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
   @Override
   public void tblArticlesMouseClicked(MouseEvent evt) {
+    selectArticle();
+    loadSelectedArticle();
+  }
+
+  private void selectArticle() {
     int selectedRow = tblArticles.getSelectedRow();
     selectedArticleId = (int) articleTableModel.getValueAt(selectedRow, 0);
-    loadSelectedArticle();
   }
 
   private void loadSelectedArticle() {
@@ -297,6 +308,10 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
 
   private void clearForm() {
     hideErrors();
+    resetForm();
+  }
+
+  private void resetForm() {
     fieldsWithErrorLabels.keySet().forEach(tf -> tf.setText(""));
     lblcon.setIcon(null);
     picturePath = null;

@@ -79,11 +79,9 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
     Result<Report> result = reportService.getReportById(selectedReportId);
 
     if (result.isSuccess()) {
-      result
-          .getData()
-          .ifPresentOrElse(this::populateForm, () -> clearFormAndShowError(result.getMessage()));
+      result.getData().ifPresent(this::populateForm);
     } else {
-      clearFormAndShowError(result.getMessage());
+      resetForm(result.getMessage());
     }
   }
 
@@ -97,7 +95,7 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
     tfContent.setText(report.getContent());
   }
 
-  private void clearFormAndShowError(String message) {
+  private void resetForm(String message) {
     clearForm();
     showError("Error", message);
   }

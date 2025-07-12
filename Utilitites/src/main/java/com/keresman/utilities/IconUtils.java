@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class IconUtils {
+public final class IconUtils {
 
   private IconUtils() {
     // Suppresses default constructor, ensuring non-instantiability.

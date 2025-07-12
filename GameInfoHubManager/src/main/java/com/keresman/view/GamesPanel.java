@@ -113,13 +113,16 @@ public class GamesPanel extends GamesPanelDesigner {
 
   private void addGame() {
     try {
-      Game game = createGameFromForm();
-      gameRepository.save(game);
+      saveGame();
       refreshGameTable();
       clearForm();
     } catch (Exception ex) {
       showError("add", ex);
     }
+  }
+
+  private void saveGame() throws Exception {
+    gameRepository.save(createGameFromForm());
   }
 
   @Override
@@ -240,11 +243,22 @@ public class GamesPanel extends GamesPanelDesigner {
   }
 
   private void clearForm() {
+    resetForm();
+    resetFields();
+    resetViewModels();
+  }
+
+  private void resetForm() {
     tfGameName.setText("");
     tfRelDate.setText("");
+  }
+
+  private void resetFields() {
     selectedGame = null;
     selectedGameId = 0;
+  }
 
+  private void resetViewModels() {
     genreModel.clear();
     developerModel.clear();
     platformModel.clear();

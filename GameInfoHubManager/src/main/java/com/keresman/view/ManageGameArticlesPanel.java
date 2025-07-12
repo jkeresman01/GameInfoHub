@@ -50,7 +50,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
       initRepositories();
       loadArticlesIntoModel();
     } catch (Exception ex) {
-      handleCriticalInitFailure(ex);
+      handleInitializationError(ex);
     }
   }
 
@@ -68,7 +68,7 @@ public class ManageGameArticlesPanel extends ManageGameArticlesPanelDesigner {
     categoryRepository = RepositoryFactory.getInstance(CategoryRepostitory.class);
   }
 
-  private void handleCriticalInitFailure(Exception ex) {
+  private void handleInitializationError(Exception ex) {
     Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
     MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
     System.exit(1);

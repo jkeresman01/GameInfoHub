@@ -76,6 +76,10 @@ public class RegisterPanel extends RegisterPanelDesigner {
     return areAllFieldsValid();
   }
 
+  private void hideErrors() {
+    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
+  }
+
   private void showValidationErrors() {
     fieldsWithErrorLabels.forEach(
         (field, label) -> {
@@ -89,12 +93,12 @@ public class RegisterPanel extends RegisterPanelDesigner {
     return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 
-  private void hideErrors() {
-    fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
-  }
-
   private void clearRegisterForm() {
     hideErrors();
+    resetFields();
+  }
+
+  private void resetFields() {
     fieldsWithErrorLabels.keySet().forEach(field -> field.setText(""));
   }
 
@@ -117,13 +121,30 @@ public class RegisterPanel extends RegisterPanelDesigner {
   }
 
   private void handleValidationResult(Result<?> result) {
+    notifyRegistrationFailed(result);
+    handleInvalidUsername(result);
+    handleInvalidEmail(result);
+    handleInvalidPassword(result);
+  }
+
+  private void notifyRegistrationFailed(Result<?> result) {
     MessageUtils.showErrorMessage("Registration failed", result.getMessage());
+  }
 
-    String msg = result.getMessage();
+  private void handleInvalidUsername(Result<?> result) {
+    if (result.getMessage().contains("Username")) {
+      lblErrorUsername.setVisible(true);
+    }
+  }
 
-    if (msg.contains("Username")) lblErrorUsername.setVisible(true);
-    if (msg.contains("Email")) lblErrorEmail.setVisible(true);
-    if (msg.contains("Passwords")) {
+  private void handleInvalidEmail(Result<?> result) {
+    if (result.getMessage().contains("Email")) {
+      lblErrorEmail.setVisible(true);
+    }
+  }
+
+  private void handleInvalidPassword(Result<?> result) {
+    if (result.getMessage().contains("Passwords")) {
       lblErrorPassword.setVisible(true);
       lblErrorCfmPassword.setVisible(true);
     }

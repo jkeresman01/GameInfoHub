@@ -2,7 +2,7 @@ package com.keresman.utilities;
 
 import javax.swing.JOptionPane;
 
-public class MessageUtils {
+public final class MessageUtils {
 
   private MessageUtils() {
     // Suppresses default constructor, ensuring non-instantiability.

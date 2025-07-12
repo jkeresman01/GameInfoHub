@@ -1,6 +1,6 @@
 package com.keresman.utilities;
 
-public class HtmlUtils {
+public final class HtmlUtils {
 
   private static final String REGEX_HTML_TAGS = "<[^>]*>";
   private static final String REGEX_HTML_ENTITIES = "&[^;]+;";

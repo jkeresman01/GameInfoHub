@@ -27,7 +27,7 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
 
   private void init() {
     initValidation();
-    hideValidationErrors();
+    hideErrors();
   }
 
   private void initValidation() {
@@ -37,7 +37,7 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
             tfContent, lblErrorContent);
   }
 
-  private void hideValidationErrors() {
+  private void hideErrors() {
     fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
@@ -61,7 +61,7 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
   }
 
   private boolean isFormValid() {
-    hideValidationErrors();
+    hideErrors();
     showValidationErrors();
     return areAllFieldsValid();
   }
