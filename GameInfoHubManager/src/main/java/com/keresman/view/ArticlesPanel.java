@@ -31,6 +31,7 @@ import javax.swing.text.JTextComponent;
 
 public class ArticlesPanel extends ArticlesPanelDesigner {
 
+  private static final int ARTICLE_TABLE_ROW_HEIGHT = 25;
   private static final String DIR = "assets" + File.separator + "articles";
 
   private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
@@ -74,10 +75,14 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
   }
 
   private void initTable() throws Exception {
-    tblArticles.setRowHeight(25);
+    setupArticleTable();
+    refreshArticleTable();
+  }
+
+  private void setupArticleTable() {
+    tblArticles.setRowHeight(ARTICLE_TABLE_ROW_HEIGHT);
     tblArticles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tblArticles.setAutoCreateRowSorter(true);
-    refreshArticleTable();
   }
 
   private void handleInitializationError(Exception ex) {
@@ -347,8 +352,8 @@ public class ArticlesPanel extends ArticlesPanelDesigner {
   }
 
   private void openReportDialog(Article article) {
-    ReportArticleDialog dialog =
-        new ReportArticleDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, article);
+    ReportDialog dialog =
+        new ReportDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, article);
     EventQueue.invokeLater(() -> dialog.setVisible(true));
   }
 

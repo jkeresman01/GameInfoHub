@@ -131,7 +131,7 @@ public class LoginPanel extends LoginPanelDesigner {
           if (window != null) {
             window.dispose();
           }
-          new GameArticleManager().setVisible(true);
+          new GameInfoHubManager().setVisible(true);
         });
   }
 }

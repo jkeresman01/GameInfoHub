@@ -66,14 +66,22 @@ public class GamesPanel extends GamesPanelDesigner {
             tfRelDate, lblErrorRelDate);
   }
 
+  private boolean isFormValid() {
+    hideErrors();
+    showFieldErrorsIfEmpty();
+    return areAllFieldsValid();
+  }
+
   private void hideErrors() {
     fieldsWithErrorLabels.values().forEach(label -> label.setVisible(false));
   }
 
-  private boolean isFormValid() {
-    hideErrors();
+  private void showFieldErrorsIfEmpty() {
     fieldsWithErrorLabels.forEach(
         (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
+  }
+
+  private boolean areAllFieldsValid() {
     return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 
@@ -140,12 +148,16 @@ public class GamesPanel extends GamesPanelDesigner {
   private void updateGame() {
     try {
       updateSelectedGameFromForm();
-      gameRepository.updateById(selectedGame.getGameId(), selectedGame);
+      persistGameUpdate();
       refreshGameTable();
       clearForm();
     } catch (Exception ex) {
       showError("update", ex);
     }
+  }
+
+  private void persistGameUpdate() throws Exception {
+    gameRepository.updateById(selectedGame.getGameId(), selectedGame);
   }
 
   @Override
@@ -165,7 +177,7 @@ public class GamesPanel extends GamesPanelDesigner {
 
   private void deleteGame() {
     try {
-      gameRepository.deleteById(selectedGame.getGameId());
+      persistGameDelete();
       refreshGameTable();
       clearForm();
     } catch (Exception ex) {
@@ -173,13 +185,25 @@ public class GamesPanel extends GamesPanelDesigner {
     }
   }
 
+  private void persistGameDelete() throws Exception {
+    gameRepository.deleteById(selectedGame.getGameId());
+  }
+
   @Override
   public void tblGamesMouseClicked(MouseEvent evt) {
-    if (tblGames.getSelectedRow() == -1) {
+    if (!hasSelectedRow()) {
       return;
     }
-    selectedGameId = (int) tblGames.getValueAt(tblGames.getSelectedRow(), 0);
+    selectGame();
     loadSelectedGame();
+  }
+
+  private boolean hasSelectedRow() {
+    return tblGames.getSelectedRow() != -1;
+  }
+
+  private void selectGame() {
+    selectedGameId = (int) tblGames.getValueAt(tblGames.getSelectedRow(), 0);
   }
 
   private void loadSelectedGame() {
@@ -267,7 +291,7 @@ public class GamesPanel extends GamesPanelDesigner {
 
   @Override
   public void btnCommentActionPerformed(ActionEvent evt) {
-    if (tblGames.getSelectedRow() == -1) {
+    if (!hasSelectedRow()) {
       MessageUtils.showWarningMessage("Warning", "Please select a game");
       return;
     }
@@ -288,8 +312,8 @@ public class GamesPanel extends GamesPanelDesigner {
   }
 
   private void openCommentDialog(Game game) {
-    AddCommentDialog dialog =
-        new AddCommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, game);
+    CommentDialog dialog =
+        new CommentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, game);
     EventQueue.invokeLater(() -> dialog.setVisible(true));
   }
 

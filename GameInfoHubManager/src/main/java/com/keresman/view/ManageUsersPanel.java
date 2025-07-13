@@ -71,24 +71,24 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
   @Override
   public void tblUsersMouseClicked(MouseEvent evt) {
-    int selectedRow = tblUsers.getSelectedRow();
-    if (selectedRow == -1) {
+    if (!hasSelectedRow()) {
+      MessageUtils.showWarningMessage("Warning", "Please select a user.");
       return;
     }
 
-    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
-    loadUserDetails(selectedUserId);
+    selectUser();
+    loadUserDetails();
   }
 
-  private void loadUserDetails(int userId) {
-    Result<User> result = userService.getUserById(userId);
+  private void loadUserDetails() {
+    Result<User> getUserByIdResult = userService.getUserById(selectedUserId);
 
-    if (!result.isSuccess()) {
-      handleError("Error", result.getMessage());
+    if (!getUserByIdResult.isSuccess()) {
+      handleError("Error", getUserByIdResult.getMessage());
       return;
     }
 
-    populateUserForm(result.getData().get());
+    populateUserForm(getUserByIdResult.getData().get());
   }
 
   private void populateUserForm(User user) {
@@ -100,21 +100,28 @@ public class ManageUsersPanel extends ManageUsersPanelDesigner {
 
   @Override
   public void btnActivateDeactiveProfileActionPerformed(ActionEvent evt) {
-    int selectedRow = tblUsers.getSelectedRow();
-    if (selectedRow == -1) {
+    if (!hasSelectedRow()) {
       MessageUtils.showWarningMessage("Warning", "Please select a user.");
       return;
     }
 
-    selectedUserId = (int) userTableModel.getValueAt(selectedRow, 0);
-    toggleUserActivation(selectedUserId);
+    selectUser();
+    toggleUserActivation();
   }
 
-  private void toggleUserActivation(int userId) {
-    Result<User> result = userService.deactivateProfileById(userId);
+  private boolean hasSelectedRow() {
+    return tblUsers.getSelectedRow() != -1;
+  }
 
-    if (!result.isSuccess()) {
-      handleError("Activation Failed", result.getMessage());
+  private void selectUser() {
+    selectedUserId = (int) userTableModel.getValueAt(tblUsers.getSelectedRow(), 0);
+  }
+
+  private void toggleUserActivation() {
+    Result<User> deactivateProfileResult = userService.deactivateProfileById(selectedUserId);
+
+    if (!deactivateProfileResult.isSuccess()) {
+      handleError("Activation Failed", deactivateProfileResult.getMessage());
       return;
     }
 

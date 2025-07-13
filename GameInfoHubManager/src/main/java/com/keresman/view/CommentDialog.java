@@ -11,14 +11,14 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.text.JTextComponent;
 
-public class AddCommentDialog extends AddCommentDialogDesigner {
+public class CommentDialog extends AddCommentDialogDesigner {
 
   private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
   private final CommentAddable commentAddable;
   private final Game game;
 
-  public AddCommentDialog(Frame parent, boolean modal, Game game) {
+  public CommentDialog(Frame parent, boolean modal, Game game) {
     super(parent, modal);
     this.commentAddable = (CommentAddable) parent;
     this.game = game;
@@ -55,7 +55,7 @@ public class AddCommentDialog extends AddCommentDialogDesigner {
   private boolean isFormValid() {
     hideErrors();
     showFieldErrorsIfEmpty();
-    return allFieldsValid();
+    return areAllFieldValid();
   }
 
   private void showFieldErrorsIfEmpty() {
@@ -63,7 +63,7 @@ public class AddCommentDialog extends AddCommentDialogDesigner {
         (field, label) -> label.setVisible(field.getText().trim().isEmpty()));
   }
 
-  private boolean allFieldsValid() {
+  private boolean areAllFieldValid() {
     return fieldsWithErrorLabels.values().stream().noneMatch(JLabel::isVisible);
   }
 

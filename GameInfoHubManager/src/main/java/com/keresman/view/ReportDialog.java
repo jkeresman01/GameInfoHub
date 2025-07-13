@@ -11,16 +11,16 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.text.JTextComponent;
 
-public class ReportArticleDialog extends ReportArticleDialogDesigner {
+public class ReportDialog extends ReportArticleDialogDesigner {
 
-  private final Reportable reportAddable;
+  private final Reportable reportable;
   private final Article article;
 
   private Map<JTextComponent, JLabel> fieldsWithErrorLabels;
 
-  public ReportArticleDialog(Frame parent, boolean modal, Article article) {
+  public ReportDialog(Frame parent, boolean modal, Article article) {
     super(parent, modal);
-    this.reportAddable = (Reportable) parent;
+    this.reportable = (Reportable) parent;
     this.article = article;
     init();
   }
@@ -48,7 +48,7 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
     }
 
     Report report = extractReportFromForm();
-    reportAddable.report(report, article);
+    reportable.report(report, article);
 
     MessageUtils.showInformationMessage("Report", "Article reported.");
     dispose();
@@ -67,12 +67,9 @@ public class ReportArticleDialog extends ReportArticleDialogDesigner {
   }
 
   private void showValidationErrors() {
-    fieldsWithErrorLabels.forEach(
-        (field, label) -> {
-          if (field.getText().trim().isEmpty()) {
-            label.setVisible(true);
-          }
-        });
+    fieldsWithErrorLabels.entrySet().stream()
+        .filter(entry -> entry.getKey().getText().trim().isEmpty())
+        .forEach(entry -> entry.getValue().setVisible(true));
   }
 
   private boolean areAllFieldsValid() {

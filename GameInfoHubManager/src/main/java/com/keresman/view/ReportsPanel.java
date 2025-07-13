@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 
-public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
+public class ReportsPanel extends BrowseReportsPanelDesigner {
 
   private static final int REPORTS_TABLE_ROW_HEIGHT = 25;
 
@@ -23,7 +23,7 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
   private ReportTableModel reportTableModel;
   private int selectedReportId;
 
-  public BrowseReportsPanel() {
+  public ReportsPanel() {
     super();
     init();
   }
@@ -117,7 +117,7 @@ public class BrowseReportsPanel extends BrowseReportsPanelDesigner {
   }
 
   private void handleInitializationError(Exception ex) {
-    Logger.getLogger(BrowseReportsPanel.class.getName()).log(Level.SEVERE, null, ex);
+    Logger.getLogger(ReportsPanel.class.getName()).log(Level.SEVERE, null, ex);
     showError("Unrecoverable error", "Cannot initiate the form");
     System.exit(1);
   }

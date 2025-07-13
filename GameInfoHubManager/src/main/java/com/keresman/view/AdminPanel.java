@@ -26,6 +26,6 @@ public class AdminPanel extends AdminPanelDesigner {
   private void initPanels() {
     tpAdmin.add(MANAGE_USERS, new ManageUsersPanel());
     tpAdmin.add(MANAGE_GAME_ARTICLERS, new ManageGameArticlesPanel());
-    tpAdmin.add(BROWSE_REPORTS, new BrowseReportsPanel());
+    tpAdmin.add(BROWSE_REPORTS, new ReportsPanel());
   }
 }

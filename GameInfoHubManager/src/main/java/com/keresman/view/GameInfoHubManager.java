@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.bind.JAXBException;
 
-public class GameArticleManager extends GameArticleManagerDesigner
+public class GameInfoHubManager extends GameArticleManagerDesigner
     implements CommentAddable, Reportable {
 
   private static final String ARCHIVE_BASE_PATH =
@@ -64,7 +64,7 @@ public class GameArticleManager extends GameArticleManagerDesigner
   private CommentService commentService;
   private ReportService reportService;
 
-  public GameArticleManager() {
+  public GameInfoHubManager() {
     super();
     init();
   }
@@ -114,15 +114,23 @@ public class GameArticleManager extends GameArticleManagerDesigner
   }
 
   private void handleInitializationError(Exception ex) {
-    Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
+    Logger.getLogger(GameInfoHubManager.class.getName()).log(Level.SEVERE, null, ex);
     MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
     System.exit(1);
   }
 
   @Override
   public void miLogoutMouseClicked(MouseEvent evt) {
-    SessionManager.getInstance().clear();
+    logoutUser();
     dispose();
+    openWelcomeScreen();
+  }
+
+  private void logoutUser() {
+    SessionManager.getInstance().clear();
+  }
+
+  private void openWelcomeScreen() {
     SwingUtilities.invokeLater(() -> new WelcomeScreen().setVisible(true));
   }
 
@@ -139,14 +147,14 @@ public class GameArticleManager extends GameArticleManagerDesigner
   }
 
   private JRadioButtonMenuItem createLookAndFeelMenuItem(UIManager.LookAndFeelInfo lf) {
-    JRadioButtonMenuItem mi = new JRadioButtonMenuItem(lf.getName());
+    JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(lf.getName());
 
     if ("Nimbus".equals(lf.getName())) {
-      mi.setSelected(true);
+      menuItem.setSelected(true);
     }
 
-    mi.addActionListener(e -> applyLookAndFeel(lf.getClassName()));
-    return mi;
+    menuItem.addActionListener(e -> applyLookAndFeel(lf.getClassName()));
+    return menuItem;
   }
 
   private void applyLookAndFeel(String className) {
@@ -154,7 +162,7 @@ public class GameArticleManager extends GameArticleManagerDesigner
       UIManager.setLookAndFeel(className);
       SwingUtilities.updateComponentTreeUI(this);
     } catch (Exception ex) {
-      Logger.getLogger(GameArticleManager.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(GameInfoHubManager.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
 

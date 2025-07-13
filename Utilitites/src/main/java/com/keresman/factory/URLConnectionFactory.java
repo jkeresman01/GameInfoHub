@@ -26,12 +26,12 @@ public class URLConnectionFactory {
 
   public static HttpURLConnection getHttpUrlConnection(String path)
       throws MalformedURLException, IOException {
-    HttpURLConnection con = (HttpURLConnection) new URL(path).openConnection();
-    con.setConnectTimeout(TIMEOUT);
-    con.setReadTimeout(TIMEOUT);
-    con.setRequestMethod(REQUEST_METHOD_GET);
-    con.addRequestProperty(HEADER_USER_AGENT, USER_AGENT_VALUE);
-    return con;
+    HttpURLConnection connection = (HttpURLConnection) new URL(path).openConnection();
+    connection.setConnectTimeout(TIMEOUT);
+    connection.setReadTimeout(TIMEOUT);
+    connection.setRequestMethod(REQUEST_METHOD_GET);
+    connection.addRequestProperty(HEADER_USER_AGENT, USER_AGENT_VALUE);
+    return connection;
   }
 
   public static HttpURLConnection getPostSparqlConnection(String endpoint) throws IOException {
