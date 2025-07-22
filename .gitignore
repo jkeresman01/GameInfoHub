@@ -28,3 +28,7 @@ DAO/target/
 GameInfoHubManager/assets/
 GameInfoHubManager/target/
 Utilitites/target/
+/gameinfohub-dao/target/
+/gaminfohub-manager/target/
+/gameinfohub-utilities/target/
+/gameinfohub-manager/target/

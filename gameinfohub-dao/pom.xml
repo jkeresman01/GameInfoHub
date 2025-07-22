@@ -6,7 +6,7 @@
         <artifactId>IGNGamesRSSFeed</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>DAO</artifactId>
+    <artifactId>gameinfohub-dao</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -50,4 +50,5 @@
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
     </properties>
+    <name>gameinfohub-dao</name>
 </project>

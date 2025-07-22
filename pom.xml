@@ -6,9 +6,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>Utilitites</module>
-        <module>DAO</module>
-        <module>GameInfoHubManager</module>
+        <module>gameinfohub-dao</module>
+        <module>gameinfohub-utilities</module>
+        <module>gameinfohub-manager</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
